@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>عروض قطر — Qatar Deals</title>
-<meta name="theme-color" content="#0E8F6E">
+<meta name="theme-color" content="#8A1538">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -358,6 +358,61 @@ footer{padding-bottom:40px}
 .pdotc{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer;transition:.2s}
 .pdotc.on{background:var(--gold-2);width:22px;border-radius:50px}
 @media(max-width:600px){.promo{height:178px}.promo-title{font-size:21px}}
+/* compare search + inline comparison */
+.cmpsearch{margin:16px 0 10px}
+.cmpsearch input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);
+  font-family:inherit;font-size:15px;font-weight:700;color:var(--ink);box-shadow:0 4px 12px var(--shadow)}
+.cmpsearch input:focus{outline:none;border-color:var(--gold)}
+.cmpsugg{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cmpsugg .sl{font-size:12.5px;color:var(--gray);font-weight:800}
+.sgchip{background:var(--surface);border:1px solid var(--line);border-radius:50px;padding:7px 14px;font-size:13px;font-weight:800;color:var(--ink);cursor:pointer;transition:.15s}
+.sgchip:hover{border-color:var(--gold)}
+.sgchip.on{background:var(--green);color:#fff;border-color:transparent}
+/* splash screen */
+.splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow:hidden;
+  background:radial-gradient(120% 120% at 50% 0%, #9B1A42 0%, #5C0E25 52%, #1F060E 100%);
+  transition:opacity .6s ease, visibility .6s}
+.splash.hide{opacity:0;visibility:hidden}
+.splash-halo{position:absolute;width:560px;height:560px;max-width:120vw;max-height:120vw;border-radius:50%;
+  background:radial-gradient(circle, rgba(235,205,110,.38), rgba(138,21,56,0) 62%);filter:blur(6px);
+  animation:halopulse 2.6s ease-in-out infinite}
+@keyframes halopulse{0%,100%{transform:scale(.9);opacity:.65}50%{transform:scale(1.1);opacity:1}}
+.splash-in{position:relative;text-align:center;padding:0 24px;animation:splashpop .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes splashpop{from{opacity:0;transform:translateY(18px) scale(.95)}to{opacity:1;transform:none}}
+.splash-ring{width:128px;height:128px;margin:0 auto 24px;border-radius:50%;display:grid;place-items:center;position:relative}
+.splash-ring::before{content:"";position:absolute;inset:0;border-radius:50%;border:2.5px dashed var(--gold);
+  animation:mispin 9s linear infinite;box-shadow:0 0 26px rgba(201,162,39,.55), inset 0 0 18px rgba(201,162,39,.35)}
+.splash-ring::after{content:"";position:absolute;inset:10px;border-radius:50%;border:1px solid rgba(235,205,110,.45)}
+.splash-title{font-size:48px;font-weight:900;line-height:1.1;letter-spacing:.5px;
+  background:linear-gradient(95deg,var(--gold),var(--gold-2) 38%,#fff7da 50%,var(--gold-2) 62%,var(--gold));
+  background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:sheen 3.5s linear infinite, glowstrong 2.4s ease-in-out infinite}
+@keyframes glowstrong{0%,100%{filter:drop-shadow(0 0 6px rgba(201,162,39,.6))}50%{filter:drop-shadow(0 0 22px rgba(235,205,110,1))}}
+.splash-sub{color:#f6e2e7;font-size:14px;font-weight:700;margin-top:12px;opacity:.92;max-width:330px;margin-inline:auto}
+.splash-bar{width:180px;height:5px;border-radius:50px;background:rgba(255,255,255,.16);margin:28px auto 0;overflow:hidden}
+.splash-bar span{display:block;height:100%;width:38%;border-radius:50px;background:linear-gradient(90deg,var(--gold),#fff7da,var(--gold-2));animation:loadbar 1.3s ease-in-out infinite}
+@keyframes loadbar{0%{transform:translateX(-130%)}100%{transform:translateX(430%)}}
+.spk{position:absolute;z-index:1;color:var(--gold-2);font-size:22px;text-shadow:0 0 12px rgba(235,205,110,.9);animation:mitwinkle 1.8s ease-in-out infinite}
+.spk.s1{top:23%;left:20%}.spk.s2{top:28%;right:18%;font-size:28px;animation-delay:.5s}
+.spk.s3{bottom:30%;left:24%;font-size:17px;animation-delay:.9s}.spk.s4{bottom:25%;right:22%;font-size:24px;animation-delay:1.3s}
+.splash-sign{position:absolute;bottom:40px;left:0;right:0;text-align:center;font-family:"Aref Ruqaa",serif;font-size:28px;
+  background:linear-gradient(95deg,var(--gold),#fff7da 50%,var(--gold));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  opacity:.95;animation:sheen 4s linear infinite, signfloat 3.4s ease-in-out infinite}
+.cmpblock{max-width:780px;margin:0 auto 14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px var(--shadow)}
+.cmpb-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.cmpb-head .blogo{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;flex:none}
+.cmpb-head .bname{font-weight:900;font-size:16px}
+.cmpb-item{font-size:12.5px;color:var(--gray);font-weight:700;margin-top:1px}
+.cmpb-save{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green);font-weight:900;font-size:12.5px;padding:6px 11px;border-radius:50px;flex:none}
+.cmpb-rows{padding:6px 10px 10px}
+.cmpb-row{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:11px}
+.cmpb-row.best{background:color-mix(in srgb,var(--gold) 13%,transparent)}
+.cmpb-row .pdot{width:11px;height:11px;border-radius:50%;flex:none}
+.cmpb-row .pn{flex:1;font-weight:800;font-size:14px}
+.cmpb-row .pn b{color:var(--green)}
+.cmpb-row .pp{font-weight:900;font-size:15px;color:var(--ink)}
+.cmpb-row.best .pp{color:var(--green)}
+.miniorder{background:var(--green);color:#fff;border:none;border-radius:9px;padding:7px 13px;font-weight:900;font-size:12px;font-family:inherit;cursor:pointer;flex:none}
 .dealstrip{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:none}
 .dealstrip::-webkit-scrollbar{display:none}
 .dealseal{flex:none;text-align:center;cursor:pointer;width:86px}
@@ -424,6 +479,17 @@ footer{padding-bottom:40px}
 </style>
 </head>
 <body>
+<div class="splash" id="splash">
+  <div class="splash-halo"></div>
+  <span class="spk s1">✦</span><span class="spk s2">✧</span><span class="spk s3">✦</span><span class="spk s4">✧</span>
+  <div class="splash-in">
+    <div class="splash-ring"><div class="qflag" style="width:76px;height:50px"><svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#fff"/><path d="M28 0 L11 0 L9 2 L11 4 L9 6 L11 8 L9 10 L11 12 L9 14 L11 16 L9 18 L28 18 Z" fill="#8A1538"/></svg></div></div>
+    <div class="splash-title">عروض قطر</div>
+    <div class="splash-sub">كل عروض التوصيل في قطر… ومقارنة الأسعار في مكان واحد</div>
+    <div class="splash-bar"><span></span></div>
+  </div>
+  <div class="splash-sign">بلال الأنصاري</div>
+</div>
 <header>
   <div class="bar">
     <div class="logo"><span class="dot">ع</span><span class="ttl">عروض قطر</span></div>
@@ -544,6 +610,15 @@ let OFFERS=[
 let nextId=200;
 // المنصة المباشرة (المطعم نفسه)
 PLAT.direct={n:"مباشر من المطعم",c:"#0E8F6E",url:""};
+// أصناف إضافية متعددة المنصات لإثراء المقارنة
+OFFERS.push(
+  {id:60,biz:"بيتزا هت",item:"بيتزا متوسطة",logo:"🍕",cat:"resto",plat:"talabat",pct:35,oldP:55,newP:36,cmp:40,area:"الدوحة",img:"imgC",emoji:"🍕",feat:false,flash:false,hours:60,vh:3,desc:"بيتزا متوسطة على طلبات",terms:"يشمل أنواع مختارة",phone:"+97444010101",wa:"97455010101"},
+  {id:61,biz:"بيتزا هت",item:"بيتزا متوسطة",logo:"🍕",cat:"resto",plat:"snoonu",pct:38,oldP:55,newP:34,cmp:37,area:"الدوحة",img:"imgC",emoji:"🍕",feat:false,flash:false,hours:60,vh:4,desc:"بيتزا متوسطة على سنونو",terms:"يشمل أنواع مختارة",phone:"+97444010101",wa:"97455010101"},
+  {id:62,biz:"بيتزا هت",item:"بيتزا متوسطة",logo:"🍕",cat:"resto",plat:"keeta",pct:42,oldP:55,newP:32,cmp:35,area:"الدوحة",img:"imgC",emoji:"🍕",feat:false,flash:false,hours:60,vh:2,desc:"بيتزا متوسطة على كيتا",terms:"يشمل أنواع مختارة",phone:"+97444010101",wa:"97455010101"},
+  {id:63,biz:"ستاربكس",item:"لاتيه وسط",logo:"☕",cat:"coffee",plat:"talabat",pct:20,oldP:32,newP:26,cmp:28,area:"الدوحة",img:"imgB",emoji:"☕",feat:false,flash:false,hours:50,vh:5,desc:"لاتيه وسط على طلبات",terms:"حجم وسط",phone:"+97444020202",wa:"97455020202"},
+  {id:64,biz:"ستاربكس",item:"لاتيه وسط",logo:"☕",cat:"coffee",plat:"snoonu",pct:25,oldP:32,newP:24,cmp:25,area:"الدوحة",img:"imgB",emoji:"☕",feat:false,flash:false,hours:50,vh:6,desc:"لاتيه وسط على سنونو",terms:"حجم وسط",phone:"+97444020202",wa:"97455020202"},
+  {id:65,biz:"ستاربكس",item:"لاتيه وسط",logo:"☕",cat:"coffee",plat:"rafeeq",pct:18,oldP:32,newP:27,cmp:30,area:"الدوحة",img:"imgB",emoji:"☕",feat:false,flash:false,hours:50,vh:7,desc:"لاتيه وسط على رفيق",terms:"حجم وسط",phone:"+97444020202",wa:"97455020202"}
+);
 // تحديد رابط "اطلب الآن" + خاصية التوصيل المجاني لكل عرض
 const FD=new Set([1,2,4,6,9,10,20,21,23,30,40,50]);
 OFFERS.forEach(o=>{o.orderUrl=o.direct?(o.menuUrl||""):(PLAT[o.plat]?.url||"");o.fd=FD.has(o.id);o.orders=Math.round(120+o.pct*8+Math.random()*420);o.ic=EMOJI2IC[o.emoji]||CATIC[o.cat]||"tag";o.owner=o.biz;});
@@ -558,6 +633,7 @@ const store={get:(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:J
 let view="home", cat="all", q="", sort="discount", offerType="all";
 const TYPES=[["all","كل العروض","🏷️"],["d50","خصم 50%","🔥"],["d40","خصم 40%","💥"],["d30","خصم 30%","✅"],["d20","خصم 20%","🟢"],["free","توصيل مجاني","🚚"],["freedeal","عرض + توصيل مجاني","🎁"]];
 let platSel="all", openMenu=null;
+let cmpQ="", cmpCat="all";
 let role=store.get("qd_role","customer");
 let merchantName=store.get("qd_merchant","");
 const ADMIN_PASS="Qatar@2026"; // كلمة مرور الأدمن (غيّرها من الكود)
@@ -728,30 +804,55 @@ function viewFavs(){
 }
 
 /* ===== COMPARE ITEMS across delivery apps ===== */
-function viewCompare(){
+function compareGroups(){
   const seen=new Set(),groups=[];
   OFFERS.forEach(o=>{if(seen.has(o.biz))return;const g=brandGroup(o.biz);if(g.length>1){seen.add(o.biz);groups.push(g);}});
-  const cards=groups.map(g=>{
-    const sorted=[...g].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9));
-    const min=sorted[0].cmp,max=Math.max(...g.map(o=>o.cmp)),save=max-min;
-    const item=g[0].item||ITEM[g[0].biz]||"نفس الطلب";
-    return `<div class="card" data-cmp="${g[0].biz}">
-      <div class="img ${g[0].img}">${iconFor(g[0],72)}<span class="cmpflag" style="position:static;display:inline-flex">🔀 ${g.length} تطبيقات</span></div>
-      <div class="body">
-        <div class="row1"><div class="blogo">${g[0].logo}</div><div class="bname">${g[0].biz}</div></div>
-        <div class="title">الصنف: ${item}</div>
-        <div class="pricerow"><span class="new">من ${min} ر.ق</span><span class="old">حتى ${max} ر.ق</span></div>
-        <div class="foot"><span class="verify v-fresh">💰 وفّر حتى ${save} ر.ق</span><span style="color:var(--green);font-weight:800">قارن ⇄</span></div>
-      </div></div>`;
-  }).join("");
+  return groups;
+}
+function cmpBlock(g){
+  const sorted=[...g].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9));
+  const min=sorted[0].cmp,max=Math.max(...g.map(o=>o.cmp)),save=max-min;
+  const item=g[0].item||ITEM[g[0].biz]||"نفس الطلب";
+  return `<div class="cmpblock">
+    <div class="cmpb-head">
+      <div class="blogo">${g[0].logoData?`<img class="logoimg" src="${g[0].logoData}">`:g[0].logo}</div>
+      <div style="flex:1;min-width:0"><div class="bname">${g[0].biz}</div><div class="cmpb-item">الصنف: ${item} · ${CATNAME[g[0].cat]}</div></div>
+      ${save>0?`<div class="cmpb-save">وفّر ${save} ر.ق</div>`:''}
+    </div>
+    <div class="cmpb-rows">${sorted.map((o,i)=>`<div class="cmpb-row ${i===0?'best':''}">
+      <span class="pdot" style="background:${PLAT[o.plat].c}"></span>
+      <span class="pn">${PLAT[o.plat].n}${i===0?' <b>· الأرخص</b>':''}</span>
+      <span class="pp">${o.cmp} ر.ق</span>
+      <button class="miniorder" data-orderurl="${o.orderUrl}" data-platn="${PLAT[o.plat].n}">اطلب</button>
+    </div>`).join("")}</div>
+  </div>`;
+}
+function saveOf(g){const ps=g.map(o=>o.cmp||0);return Math.max(...ps)-Math.min(...ps);}
+function cmpResultsHtml(){
+  const q=cmpQ.trim();
+  const res=compareGroups().filter(g=>{
+    const item=g[0].item||ITEM[g[0].biz]||"";
+    const catOk=cmpCat==="all"||g[0].cat===cmpCat;
+    const qOk=!q||g[0].biz.includes(q)||item.includes(q)||(CATNAME[g[0].cat]||"").includes(q);
+    return catOk&&qOk;
+  }).sort((a,b)=>saveOf(b)-saveOf(a));
+  if(!res.length)return `<div class="empty">${MI("search",56)}<div style="margin-top:10px">مفيش صنف مطابق${q?` لـ«${q}»`:''}<br>جرّب اسم مطعم (مثل: ماكدونالدز) أو قسم.</div></div>`;
+  return `<div class="toolbar"><h2>النتائج <span>(${res.length})</span></h2><span style="color:var(--green);font-weight:800;font-size:13px">⬇️ الأكثر توفيرًا أولًا</span></div>`+res.map(cmpBlock).join("");
+}
+function bindCmp(){
+  document.querySelectorAll("#cmpResults [data-orderurl]").forEach(b=>b.onclick=()=>{const u=b.dataset.orderurl;if(u){window.open(u,"_blank","noopener");toast(`فتح ${b.dataset.platn}…`);}else toast("الرابط غير متاح");});
+}
+function viewCompare(){
+  const cats=[["all","الكل"]].concat(CATS.filter(c=>c[0]!=="all").map(c=>[c[0],c[1]]));
   return `
-  <div class="hero" style="background:linear-gradient(120deg,#0A6B53,#0E8F6E 60%,#16b58a)">
+  <div class="hero" style="background:linear-gradient(120deg,#5C0E25,#8A1538 60%,#A83258)">
     <h1>قارن الأصناف عبر تطبيقات التوصيل</h1>
-    <p>نفس الصنف بسعر مختلف على كل تطبيق — اعرف الأرخص قبل ما تطلب ووفّر فلوسك.</p>
+    <p>اكتب اسم الصنف أو المطعم، أو اختر القسم — ونوريك سعره على كل شركات التوصيل مرتّبة من الأرخص.</p>
   </div>
-  <div class="toolbar"><h2>أصناف قابلة للمقارنة <span>(${groups.length})</span></h2></div>
-  <div class="grid list">${groups.length?cards:'<div class="empty">لا توجد أصناف متعددة المنصات حاليًا.</div>'}</div>
-  <div class="insnote" style="margin-top:8px">💡 المقارنة بتشتغل لما يكون نفس المتجر/الصنف متاح على أكتر من تطبيق توصيل. كل ما زادت المتاجر المشتركة، زادت قوة المقارنة — وهي الميزة اللي بتميّز عروض قطر.</div>`;
+  <div class="cmpsearch"><input id="cmpSearch" placeholder="🔍 اكتب اسم الصنف أو المطعم..." value="${cmpQ}"></div>
+  <div class="cmpsugg"><span class="sl">بحث سريع:</span>${[...new Set(compareGroups().map(g=>g[0].biz))].slice(0,6).map(b=>`<span class="sgchip ${cmpQ===b?'on':''}" data-csugg="${b}">${b}</span>`).join("")}</div>
+  <div class="typebar">${cats.map(c=>`<div class="chip ${c[0]===cmpCat?'on':''}" data-ccat="${c[0]}">${c[1]}</div>`).join("")}</div>
+  <div id="cmpResults">${cmpResultsHtml()}</div>`;
 }
 
 /* ===== INSIGHTS (market intelligence) ===== */
@@ -929,6 +1030,10 @@ function bind(){
   const ba=$("bn_add");if(ba)ba.onclick=addBanner;
   const bimg=$("bn_img");if(bimg)bimg.onchange=()=>readImg(bimg.files[0],d=>{bannerImg=d;$("bn_imgPrev").innerHTML=`<img src="${d}">`;});
   p.querySelectorAll("[data-bdel]").forEach(e=>e.onclick=()=>confirmAction("متأكد من حذف هذا البانر؟",()=>deleteBanner(+e.dataset.bdel)));
+  const cs=$("cmpSearch");if(cs){cs.oninput=()=>{cmpQ=cs.value;$("cmpResults").innerHTML=cmpResultsHtml();bindCmp();};}
+  p.querySelectorAll("[data-ccat]").forEach(e=>e.onclick=()=>{cmpCat=e.dataset.ccat;render();});
+  p.querySelectorAll("[data-csugg]").forEach(e=>e.onclick=()=>{cmpQ=(cmpQ===e.dataset.csugg)?"":e.dataset.csugg;render();});
+  bindCmp();
 }
 function applyFilter(key,val){
   if(key==="cat")cat=val;
@@ -1170,7 +1275,7 @@ $("behaviorBtn").onclick=()=>{view="behavior";render();window.scrollTo({top:0,be
 $("nav").addEventListener("click",e=>{const a=e.target.closest("[data-view]");if(a){view=a.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
 $("botnav").addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(b){view=b.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
 $("hsearch").oninput=e=>{q=e.target.value.trim();if(view!=="home")view="home";render();};
-function toggleTheme(){const d=document.documentElement.dataset.theme==="dark";document.documentElement.dataset.theme=d?"light":"dark";$("themeBtn").textContent=d?"🌙":"☀️";document.querySelector('meta[name=theme-color]').setAttribute("content",d?"#0E8F6E":"#0E8F6E");store.set("qd_theme",d?"light":"dark");}
+function toggleTheme(){const d=document.documentElement.dataset.theme==="dark";document.documentElement.dataset.theme=d?"light":"dark";$("themeBtn").textContent=d?"🌙":"☀️";document.querySelector("meta[name=theme-color]").setAttribute("content",d?"#14060B":"#8A1538");store.set("qd_theme",d?"light":"dark");}
 $("themeBtn").onclick=toggleTheme;
 document.documentElement.dataset.theme=store.get("qd_theme","light");
 $("themeBtn").textContent=document.documentElement.dataset.theme==="dark"?"☀️":"🌙";
@@ -1226,6 +1331,8 @@ setTimeout(notifyStrong,6000);
 setInterval(notifyStrong,38000);
 
 render();
+// إخفاء شاشة الترحيب بعد التحميل
+setTimeout(()=>{const s=document.getElementById("splash");if(s){s.classList.add("hide");setTimeout(()=>{s.style.display="none";},650);}},3000);
 </script>
 </body>
 </html>

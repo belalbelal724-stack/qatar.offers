@@ -1,4 +1,4 @@
-const CACHE = "qatar-deals-v8";
+const CACHE = "qatar-deals-v13";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
