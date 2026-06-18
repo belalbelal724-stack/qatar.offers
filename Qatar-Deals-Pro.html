@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عروض قطر — Qatar Deals</title>
+<meta name="theme-color" content="#0E8F6E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* العنابي القطري الرسمي كلون أساسي + ذهبي للفخامة */
+  --green:#8A1538; --green-d:#5C0E25; --green-l:#A83258; --orange:#E0762C;
+  --gold:#C9A227; --gold-2:#EBCD6E; --maroon:#8A1538;
+  --ink:#2A0E1A; --gray:#7A5662; --amber:#C9892A;
+  --bg:#F4EEE8; --surface:#FFFFFF; --surface-2:#F8F1EC; --line:rgba(138,21,56,.14);
+  --shadow:rgba(60,10,28,.12);
+}
+[data-theme="dark"]{
+  --bg:#14060B; --surface:#1E0A12; --surface-2:#2A0F1A; --ink:#F7E9EC;
+  --gray:#C49AA6; --line:rgba(201,162,39,.20); --shadow:rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Cairo",system-ui,sans-serif;color:var(--ink);background:var(--bg);transition:background .35s;min-height:100vh}
+header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--surface) 88%,transparent);
+  backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.bar{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:13px clamp(16px,3vw,32px)}
+.logo{display:flex;align-items:center;gap:11px;font-weight:900;font-size:22px;flex:none}
+.logo .dot{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,var(--green),var(--green-d));font-size:20px;box-shadow:0 6px 16px var(--shadow)}
+nav{display:flex;gap:4px}
+nav a{padding:9px 14px;border-radius:11px;font-weight:800;font-size:14.5px;color:var(--gray);cursor:pointer;transition:.15s;white-space:nowrap}
+nav a:hover{color:var(--ink);background:var(--surface-2)}
+nav a.on{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.hsearch{flex:1;max-width:300px;display:flex;align-items:center;gap:9px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:13px;padding:10px 15px}
+.hsearch input{border:none;background:none;outline:none;color:var(--ink);font-family:inherit;font-size:15px;width:100%}
+.hsearch input::placeholder{color:var(--gray)}
+.spacer{flex:1}
+.hbtn{height:44px;padding:0 14px;border-radius:13px;border:1px solid var(--line);background:var(--surface-2);
+  color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.hbtn.green{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;border:none}
+.hbtn.orange{background:linear-gradient(135deg,var(--orange),#e0492b);color:#fff;border:none}
+.icobtn{width:44px;flex:none;justify-content:center;font-size:17px;padding:0}
+.page{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,32px) 60px}
+.hero{margin-top:24px;border-radius:28px;padding:clamp(28px,4vw,52px);color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(120deg,var(--green-d),var(--green) 60%,#16b58a);box-shadow:0 22px 50px var(--shadow)}
+.hero::after{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 88% 12%,rgba(255,255,255,.2),transparent 42%)}
+.hero h1{font-size:clamp(28px,4.2vw,48px);font-weight:900;line-height:1.15;position:relative;z-index:1;max-width:740px}
+.hero p{margin-top:14px;font-size:clamp(15px,2vw,19px);opacity:.93;position:relative;z-index:1;max-width:640px}
+.herostats{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap;position:relative;z-index:1}
+.hstat{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:12px 20px;backdrop-filter:blur(6px)}
+.hstat .n{font-size:25px;font-weight:900}
+.hstat .l{font-size:12.5px;opacity:.9}
+.catbar{position:sticky;top:71px;z-index:30;display:flex;gap:9px;overflow-x:auto;padding:18px 0 14px;
+  background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);scrollbar-width:none}
+.catbar::-webkit-scrollbar{display:none}
+.chip{flex:none;display:flex;align-items:center;gap:7px;padding:10px 18px;border-radius:50px;font-size:14px;
+  font-weight:800;background:var(--surface);border:1px solid var(--line);white-space:nowrap;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--green)}
+.chip.on{background:var(--green);color:#fff;border-color:transparent;box-shadow:0 6px 16px var(--shadow)}
+.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:8px 0 18px}
+.toolbar h2{font-size:23px;font-weight:900;flex:1;min-width:160px}
+.toolbar h2 span{color:var(--green)}
+.select{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 16px;
+  color:var(--ink);font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
+.plats{display:flex;gap:8px;flex-wrap:wrap}
+.platchip{cursor:pointer;font-size:13px;font-weight:800;padding:9px 15px;border-radius:50px;
+  border:1.5px solid var(--line);background:var(--surface);color:var(--gray);transition:.15s;display:flex;align-items:center;gap:7px}
+.platchip .d{width:9px;height:9px;border-radius:50%}
+.platchip.on{color:#fff;border-color:transparent}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;
+  box-shadow:0 10px 26px var(--shadow);transition:transform .18s,box-shadow .18s;position:relative}
+.card:hover{transform:translateY(-6px);box-shadow:0 22px 44px var(--shadow)}
+.card .img{height:170px;position:relative;display:grid;place-items:center;font-size:64px}
+.card .badge{position:absolute;top:13px;right:13px;background:var(--orange);color:#fff;font-weight:900;font-size:16px;padding:7px 14px;border-radius:50px;box-shadow:0 6px 14px rgba(0,0,0,.2)}
+.card .feat{position:absolute;top:13px;left:13px;background:var(--gold);color:#3a2c00;font-weight:900;font-size:11px;padding:6px 12px;border-radius:50px}
+.card .cmpflag{position:absolute;bottom:13px;left:13px;background:rgba(14,143,110,.95);color:#fff;font-weight:800;font-size:11.5px;padding:6px 12px;border-radius:50px;display:flex;align-items:center;gap:5px}
+.card .body{padding:16px 18px 18px}
+.card .row1{display:flex;align-items:center;gap:9px}
+.card .blogo{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:15px;background:var(--surface-2);border:1px solid var(--line)}
+.card .bname{font-size:12.5px;font-weight:800;color:var(--gray);flex:1}
+.card .heart{font-size:19px;cursor:pointer;border:none;background:none;padding:4px}
+.card .title{font-size:16.5px;font-weight:900;margin:10px 0;line-height:1.4;min-height:46px}
+.card .pricerow{display:flex;align-items:center;gap:10px}
+.card .new{color:var(--green);font-weight:900;font-size:18px}
+.card .old{color:var(--gray);text-decoration:line-through;font-size:13px}
+.card .time{margin-inline-start:auto;color:var(--orange);font-weight:800;font-size:12.5px}
+.card .foot{margin-top:11px;font-size:12px;color:var(--gray);display:flex;justify-content:space-between;align-items:center}
+.verify{display:inline-flex;align-items:center;gap:4px;font-weight:800;font-size:11.5px;padding:3px 9px;border-radius:50px}
+.v-fresh{color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)}
+.v-ok{color:var(--amber);background:color-mix(in srgb,var(--amber) 14%,transparent)}
+.v-old{color:var(--gray);background:var(--surface-2)}
+.empty{grid-column:1/-1;text-align:center;color:var(--gray);padding:70px 20px;font-size:16px;line-height:1.9}
+
+/* business + insights */
+.bizwrap{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;margin-top:26px;align-items:start}
+@media(max-width:880px){.bizwrap{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 12px 30px var(--shadow)}
+.panel h2{font-size:26px;font-weight:900}
+.panel h2 span{color:var(--green)}
+.panel .sub{color:var(--gray);margin:10px 0 22px;font-size:15px;line-height:1.7}
+.field{margin-bottom:14px}
+.field.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px;color:var(--gray)}
+.field input,.field select,.field textarea{width:100%;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:13px;padding:12px 14px;color:var(--ink);font-family:inherit;font-size:15px;outline:none}
+.field textarea{resize:vertical;min-height:80px}
+.subbtn{width:100%;background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;border:none;
+  border-radius:14px;padding:15px;font-family:inherit;font-weight:900;font-size:16px;cursor:pointer;margin-top:6px}
+.tiers{display:flex;flex-direction:column;gap:12px}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 8px 20px var(--shadow)}
+.tier.best{border-color:var(--green)}
+.tier .nm{font-weight:900;font-size:16px;flex:1}
+.tier .pr{font-weight:900;color:var(--green);font-size:16px;white-space:nowrap}
+.tier .ds{font-size:12px;color:var(--gray);margin-top:3px;font-weight:700}
+.badge2{background:var(--green);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:50px;margin-inline-start:8px}
+
+/* insights */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:24px 0}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 10px 24px var(--shadow)}
+.kpi .n{font-size:34px;font-weight:900;color:var(--green);line-height:1}
+.kpi .l{font-size:13px;color:var(--gray);margin-top:6px;font-weight:700}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.charts{grid-template-columns:1fr}}
+.chartcard{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 10px 24px var(--shadow)}
+.chartcard h3{font-size:17px;font-weight:900;margin-bottom:18px}
+.brow{display:flex;align-items:center;gap:12px;margin-bottom:13px}
+.brow .lab{width:96px;font-size:13px;font-weight:800;flex:none;text-align:start}
+.btrack{flex:1;height:14px;background:var(--surface-2);border-radius:50px;overflow:hidden}
+.bfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--green-d),var(--green))}
+.brow .val{width:52px;font-size:13px;font-weight:900;color:var(--green);text-align:start}
+.insnote{color:var(--gray);font-size:13px;margin-top:18px;line-height:1.7;background:var(--surface-2);padding:14px 16px;border-radius:14px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.backdrop{position:absolute;inset:0;background:rgba(5,12,9,.55);backdrop-filter:blur(3px)}
+.sheet{position:relative;background:var(--surface);border-radius:26px;max-width:600px;width:100%;max-height:90vh;
+  overflow-y:auto;scrollbar-width:none;box-shadow:0 40px 90px rgba(0,0,0,.4);animation:pop .25s ease}
+.sheet::-webkit-scrollbar{display:none}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.close{position:absolute;top:16px;left:16px;z-index:3;width:40px;height:40px;border-radius:50%;border:none;
+  background:rgba(0,0,0,.4);color:#fff;font-size:20px;cursor:pointer;backdrop-filter:blur(4px)}
+.dhero{height:230px;position:relative;display:grid;place-items:center;font-size:96px;border-radius:26px 26px 0 0}
+.dhero .dbadge{position:absolute;bottom:18px;right:18px;background:var(--orange);color:#fff;font-weight:900;font-size:24px;padding:9px 18px;border-radius:50px;box-shadow:0 8px 18px rgba(0,0,0,.25)}
+.dbody{padding:24px 28px 28px}
+.dbiz{display:flex;align-items:center;gap:12px}
+.dbiz .l{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:var(--surface-2);border:1px solid var(--line)}
+.dbiz .nm{font-weight:900;font-size:17px}
+.dbiz .pl{font-size:12.5px;color:var(--gray)}
+.dtitle{font-size:24px;font-weight:900;margin:14px 0;line-height:1.35}
+.dprice{display:flex;align-items:center;gap:14px;margin:6px 0}
+.dprice .n{color:var(--green);font-weight:900;font-size:30px}
+.dprice .o{color:var(--gray);text-decoration:line-through;font-size:18px}
+.countdown{background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange);font-weight:900;
+  border-radius:14px;padding:14px;text-align:center;margin:16px 0;font-size:16px}
+.dlabel{font-weight:900;font-size:15px;margin:20px 0 8px;color:var(--green)}
+.dtext{font-size:14.5px;line-height:1.85;opacity:.92}
+.dactions{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:18px 0}
+.actbtn{border:1px solid var(--line);background:var(--surface-2);border-radius:14px;padding:14px;text-align:center;
+  font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;color:var(--ink)}
+.actbtn .ic{font-size:22px;display:block;margin-bottom:4px}
+.bigbtns{display:flex;gap:11px}
+.bigbtn{flex:1;border:none;border-radius:14px;padding:15px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.bigbtn.save{background:var(--green);color:#fff}
+.bigbtn.report{background:var(--surface-2);color:var(--gray);border:1px solid var(--line)}
+
+/* comparison */
+.cmphead{padding:24px 28px 6px;display:flex;align-items:center;gap:14px}
+.cmphead .l{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:28px;background:var(--surface-2);border:1px solid var(--line)}
+.cmphead .nm{font-size:22px;font-weight:900}
+.cmphead .sb{font-size:13px;color:var(--gray)}
+.cmpsave{margin:8px 28px 14px;background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green);
+  font-weight:900;padding:13px 16px;border-radius:14px;text-align:center;font-size:15px}
+.cmprow{display:flex;align-items:center;gap:13px;margin:0 28px 12px;padding:15px 17px;border:1px solid var(--line);
+  border-radius:16px;background:var(--surface)}
+.cmprow.best{border-color:var(--green);background:color-mix(in srgb,var(--green) 7%,transparent)}
+.cmprow .pdot{width:13px;height:13px;border-radius:50%;flex:none}
+.cmprow .pn{font-weight:900;font-size:15.5px;flex:1}
+.cmprow .pn small{display:block;color:var(--gray);font-weight:700;font-size:11.5px;margin-top:2px}
+.cmprow .pp{font-weight:900;font-size:19px}
+.besttag{background:var(--green);color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:50px}
+
+/* daily deals share */
+.dealcard{margin:0 24px;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border-radius:20px;padding:22px;margin-top:6px}
+.dealcard h3{font-size:20px;font-weight:900;margin-bottom:14px}
+.dealitem{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.18)}
+.dealitem:last-child{border:none}
+.dealrank{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:900;font-size:13px;flex:none}
+.dealitem .dn{flex:1;font-weight:800;font-size:14.5px}
+.dealitem .dp{font-weight:900;color:#FFD86B}
+.sharebtns{display:flex;gap:11px;padding:18px 24px 24px}
+
+footer{text-align:center;color:var(--gray);font-size:13px;padding:30px 16px;border-top:1px solid var(--line);line-height:1.9}
+footer b{color:var(--green)}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);
+  color:var(--surface);padding:14px 26px;border-radius:14px;font-weight:800;font-size:14px;opacity:0;
+  pointer-events:none;transition:.3s;z-index:80;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.imgA{background:linear-gradient(135deg,#FFE0B2,#FFB74D)}.imgB{background:linear-gradient(135deg,#C8E6C9,#66BB6A)}
+.imgC{background:linear-gradient(135deg,#D1C4E9,#9575CD)}.imgD{background:linear-gradient(135deg,#FFCCBC,#FF8A65)}
+.imgE{background:linear-gradient(135deg,#B3E5FC,#4FC3F7)}.imgF{background:linear-gradient(135deg,#F8BBD0,#F06292)}
+[data-theme="dark"] .img,[data-theme="dark"] .dhero{filter:brightness(.82) saturate(1.05)}
+@media(max-width:760px){.hsearch,nav a{font-size:13px}.hbtn span.t{display:none}}
+
+/* ===== LUXURY UPGRADES ===== */
+@keyframes sheen{to{background-position:-220% center}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 4px rgba(201,162,39,.5))}50%{filter:drop-shadow(0 0 15px rgba(232,199,102,.9))}}
+/* glowing header title */
+.logo .ttl{background:linear-gradient(95deg,var(--gold) 0%,var(--gold-2) 32%,#fff7da 50%,var(--gold-2) 68%,var(--gold) 100%);
+  background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:sheen 5s linear infinite, glow 2.8s ease-in-out infinite}
+.logo .dot{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:var(--green-d);
+  box-shadow:0 0 16px rgba(201,162,39,.5)}
+/* animated glowing Qatar flag */
+.qflag{width:50px;height:34px;border-radius:5px;overflow:hidden;flex:none;transform-origin:right center;
+  animation:wave 3.6s ease-in-out infinite, flagglow 2.8s ease-in-out infinite}
+.qflag svg{width:100%;height:100%;display:block}
+@keyframes wave{0%,100%{transform:perspective(180px) rotateY(0deg)}50%{transform:perspective(180px) rotateY(-16deg)}}
+@keyframes flagglow{0%,100%{box-shadow:0 0 8px rgba(138,21,56,.45)}50%{box-shadow:0 0 22px rgba(138,21,56,.9)}}
+.qflag-hero{width:84px;height:56px}
+/* luxury gold accents on cards & hero */
+.card{border:1px solid var(--line)}
+.card:hover{border-color:var(--gold)}
+.hero{border:1px solid color-mix(in srgb,var(--gold) 35%,transparent)}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 60%,rgba(232,199,102,.18));z-index:0}
+.kpi .n,.dprice .n{text-shadow:0 0 1px transparent}
+.badge2{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00}
+/* free delivery badge */
+.fdbadge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--green),var(--green-l));padding:3px 9px;border-radius:50px}
+/* offer-type (sections) filter bar */
+.typebar{display:flex;gap:9px;overflow-x:auto;padding:2px 0 16px;scrollbar-width:none}
+.typebar::-webkit-scrollbar{display:none}
+.typebar .chip.on{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00;border-color:transparent;box-shadow:0 6px 16px rgba(201,162,39,.35)}
+/* glowing animated signature */
+footer{padding-bottom:40px}
+.sign{font-family:"Aref Ruqaa",serif;font-size:34px;font-weight:700;margin-top:10px;display:inline-block;line-height:1.5;
+  background:linear-gradient(95deg,var(--gold) 0%,var(--gold-2) 35%,#fff7da 50%,var(--gold-2) 65%,var(--gold) 100%);
+  background-size:230% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:sheen 6s linear infinite, signfloat 3.6s ease-in-out infinite}
+@keyframes signfloat{0%,100%{transform:translateY(0);filter:drop-shadow(0 0 6px rgba(201,162,39,.55))}50%{transform:translateY(-4px);filter:drop-shadow(0 0 18px rgba(232,199,102,.95))}}
+.signsub{font-size:12px;color:var(--gray);margin-top:2px}
+/* dropdown filters */
+.filterbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 18px;position:relative;z-index:25}
+.filt{position:relative}
+.fbtn{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:13px;
+  padding:11px 16px;font-family:inherit;font-weight:800;font-size:14px;color:var(--ink);cursor:pointer;white-space:nowrap;box-shadow:0 4px 12px var(--shadow)}
+.fbtn b{color:var(--green);font-weight:900}
+.fbtn .chev{font-size:11px;color:var(--gray);transition:transform .2s}
+.fbtn.active{border-color:var(--gold);box-shadow:0 6px 18px rgba(201,162,39,.28)}
+.fbtn.active .chev{transform:rotate(180deg)}
+.fmenu{position:absolute;top:calc(100% + 8px);inset-inline-start:0;min-width:220px;max-height:300px;overflow-y:auto;
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 54px var(--shadow);
+  padding:7px;display:none;z-index:30;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
+.fmenu.show{display:block;animation:pop .18s ease}
+.fmenu::-webkit-scrollbar{width:9px}
+.fmenu::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold-2),var(--green));border-radius:50px;border:2px solid var(--surface)}
+.fmenu::-webkit-scrollbar-track{background:transparent}
+.fitem{display:flex;align-items:center;gap:8px;padding:11px 13px;border-radius:11px;font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap}
+.fitem:hover{background:var(--surface-2)}
+.fitem.on{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}
+.fitem.on::after{content:"✓";margin-inline-start:auto;font-weight:900}
+/* consumer push notification */
+.pushbar{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-24px);z-index:75;
+  background:linear-gradient(135deg,var(--green-d),var(--green) 70%,var(--maroon));color:#fff;border:1px solid var(--gold);
+  border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px;max-width:460px;width:calc(100% - 28px);
+  box-shadow:0 18px 44px rgba(60,10,28,.4);opacity:0;pointer-events:none;transition:.4s cubic-bezier(.4,0,.2,1)}
+.pushbar.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.pushbar .pi{font-size:24px;flex:none}
+.pushbar .pt{flex:1;font-weight:900;font-size:13.5px;line-height:1.45}
+.pushbar .pt small{display:block;opacity:.9;font-weight:700;font-size:12px;margin-top:2px}
+.pushbar .pgo{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00;border:none;border-radius:11px;
+  padding:9px 13px;font-weight:900;font-size:12.5px;cursor:pointer;white-space:nowrap;font-family:inherit;flex:none}
+.pushbar .px{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.85;flex:none}
+/* offer management rows */
+.mrow{display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:none}
+.mlogo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--surface-2);border:1px solid var(--line);flex:none}
+.minfo{flex:1;min-width:0}
+.mname{font-weight:900;font-size:15px}
+.msub{font-size:12.5px;color:var(--gray);margin-top:2px}
+.micon{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:17px;flex:none}
+.micon.mdel{background:color-mix(in srgb,#B42318 14%,transparent);border-color:color-mix(in srgb,#B42318 30%,transparent)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="logo"><span class="dot">ع</span><span class="ttl">عروض قطر</span></div>
+    <div class="qflag" title="دولة قطر"><svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#fff"/><path d="M28 0 L11 0 L9 2 L11 4 L9 6 L11 8 L9 10 L11 12 L9 14 L11 16 L9 18 L28 18 Z" fill="#8A1538"/></svg></div>
+    <nav id="nav">
+      <a data-view="home" class="on">الرئيسية</a>
+      <a data-view="compare">قارن الأصناف</a>
+      <a data-view="insights">تحليلات السوق</a>
+      <a data-view="favs">المفضلة</a>
+      <a data-view="biz">للتجار</a>
+    </nav>
+    <div class="hsearch"><span>🔍</span><input id="hsearch" placeholder="ابحث..."></div>
+    <div class="spacer"></div>
+    <button class="hbtn" id="behaviorBtn" style="border-color:var(--gold);color:var(--gold)">📈 <span class="t">تحليل فوري</span></button>
+    <button class="hbtn orange" id="dailyBtn">🔥 <span class="t">عروض اليوم</span></button>
+    <button class="hbtn green" id="installBtn" style="display:none">⬇️ <span class="t">تثبيت</span></button>
+    <button class="hbtn icobtn" id="themeBtn">🌙</button>
+  </div>
+</header>
+
+<div class="page" id="page"></div>
+<footer><b>عروض قطر</b> — Qatar Deals · نسخة عرض (Prototype) قابلة للتثبيت كتطبيق · البيانات تجريبية<br><div class="sign">بلال الأنصاري</div><div class="signsub">تصميم وتطوير</div></footer>
+
+<div class="modal" id="modal"><div class="backdrop" id="backdrop"></div><div class="sheet" id="sheet"></div></div>
+<div class="pushbar" id="push"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PLAT={
+  talabat:{n:"طلبات",c:"#FF5A00",url:"https://www.talabat.com/qatar"},
+  snoonu:{n:"سنونو",c:"#D6006E",url:"https://snoonu.com"},
+  rafeeq:{n:"رفيق",c:"#1FA463",url:"https://rafeeq.qa"},
+  keeta:{n:"كيتا",c:"#2B2B2B",url:"https://www.keeta.com"}
+};
+const ITEM={"ماكدونالدز":"بيج ماك ميل","كنتاكي":"باكت العائلة الكبير"};
+const CATS=[["all","الكل","✨"],["resto","مطاعم","🍔"],["coffee","قهوة","☕"],["market","سوبر ماركت","🛒"],
+  ["electronics","إلكترونيات","📱"],["fashion","أزياء","👗"],["pharmacy","صيدلية","💊"],["beauty","تجميل","💄"]];
+const CATNAME=Object.fromEntries(CATS.map(c=>[c[0],c[1]]));
+
+let OFFERS=[
+  {id:1,biz:"كارفور",logo:"🛒",cat:"market",plat:"talabat",pct:50,oldP:50,newP:25,cmp:25,area:"كل المناطق",img:"imgB",emoji:"🛒",feat:false,flash:false,hours:72,vh:3,desc:"خصم 50% على منتجات مختارة من البقالة مع توصيل مجاني للطلبات فوق 50 ريال",terms:"العرض على منتجات محددة فقط · لا يشمل الإلكترونيات",phone:"+97444001234",wa:"97455500011"},
+  {id:2,biz:"مطعم بلبن",logo:"🥞",cat:"resto",plat:"talabat",pct:45,oldP:40,newP:22,cmp:22,area:"كل الفروع",img:"imgD",emoji:"🧁",feat:true,flash:false,hours:120,vh:6,desc:"خصم على كل قائمة الحلويات والمشروبات الباردة والساخنة طوال الأسبوع",terms:"غير ساري مع عروض أخرى",phone:"+97444112233",wa:"97455511122"},
+  {id:3,biz:"بيتزا هت",logo:"🍕",cat:"resto",plat:"rafeeq",pct:40,oldP:65,newP:39,cmp:39,area:"الدوحة، الوكرة",img:"imgC",emoji:"🍕",feat:false,flash:false,hours:48,vh:10,desc:"اشترِ بيتزا وسط أو كبير واحصل على الثانية مجانًا من نفس الحجم",terms:"للاستلام والتوصيل · الأرخص مجانًا",phone:"+97444223344",wa:"97455522233"},
+  {id:4,biz:"دونات تايم",logo:"🍩",cat:"resto",plat:"talabat",pct:40,oldP:48,newP:29,cmp:29,area:"الغرافة",img:"imgA",emoji:"🍩",feat:false,flash:true,hours:4,vh:2,desc:"دستة دونات كاملة بسعر نصف دستة لفترة محدودة اليوم فقط",terms:"حتى نفاد الكمية",phone:"+97444334455",wa:"97455533344"},
+  {id:5,biz:"حلويات سعيد",logo:"🍮",cat:"resto",plat:"snoonu",pct:40,oldP:60,newP:36,cmp:36,area:"الدوحة",img:"imgD",emoji:"🍰",feat:false,flash:false,hours:96,vh:30,desc:"خصم على الكنافة والبقلاوة والحلويات الشرقية الطازجة يوميًا",terms:"الطلب المسبق مطلوب للكميات",phone:"+97444445566",wa:"97455544455"},
+  {id:6,biz:"اللولو هايبر",logo:"🏬",cat:"market",plat:"snoonu",pct:35,oldP:0,newP:0,cmp:0,area:"الدوحة",img:"imgB",emoji:"🥦",feat:false,flash:false,hours:60,vh:14,desc:"عروض نهاية الأسبوع على البقالة والمنتجات المنزلية",terms:"الجمعة والسبت فقط",phone:"+97444556677",wa:"97455555566"},
+  {id:7,biz:"كيك بوكس",logo:"🎂",cat:"resto",plat:"snoonu",pct:33,oldP:90,newP:60,cmp:60,area:"الدوحة",img:"imgC",emoji:"🍰",feat:false,flash:true,hours:24,vh:5,desc:"خصم على كيكات المناسبات وأعياد الميلاد بتصاميم مخصصة",terms:"طلب قبل 24 ساعة",phone:"+97444667788",wa:"97455566677"},
+  {id:8,biz:"كافيه أرابيكا",logo:"☕",cat:"coffee",plat:"snoonu",pct:30,oldP:0,newP:0,cmp:0,area:"الدوحة",img:"imgE",emoji:"☕",feat:false,flash:false,hours:80,vh:20,desc:"خصم 30% على القهوة المختصة والمشروبات الموسمية",terms:"داخل الفرع والتوصيل",phone:"+97444778899",wa:"97455577788"},
+  {id:10,biz:"عصير فريش",logo:"🥤",cat:"coffee",plat:"rafeeq",pct:28,oldP:25,newP:18,cmp:18,area:"الوكرة",img:"imgB",emoji:"🥤",feat:false,flash:true,hours:6,vh:1,desc:"خصم على العصائر الطبيعية الطازجة 100%",terms:"اليوم فقط",phone:"+97444990011",wa:"97455599900"},
+  {id:11,biz:"إكسترا",logo:"📺",cat:"electronics",plat:"snoonu",pct:25,oldP:1200,newP:900,cmp:900,area:"الدوحة",img:"imgE",emoji:"📱",feat:false,flash:false,hours:150,vh:40,desc:"خصومات على الهواتف والأجهزة المنزلية والإكسسوارات",terms:"حسب توفر المخزون",phone:"+97444010101",wa:"97455510101"},
+  {id:12,biz:"صيدلية الكواري",logo:"💊",cat:"pharmacy",plat:"rafeeq",pct:25,oldP:0,newP:0,cmp:0,area:"الدوحة",img:"imgB",emoji:"💊",feat:false,flash:false,hours:90,vh:18,desc:"خصم على مستحضرات العناية والفيتامينات والمكملات",terms:"لا يشمل الأدوية الموصوفة",phone:"+97444020202",wa:"97455520202"},
+  {id:13,biz:"محل الورد",logo:"💐",cat:"beauty",plat:"snoonu",pct:30,oldP:150,newP:105,cmp:105,area:"الدوحة",img:"imgF",emoji:"💐",feat:false,flash:false,hours:50,vh:9,desc:"باقات ورد بخصم لمناسبات الأسبوع والإهداء",terms:"التوصيل داخل الدوحة",phone:"+97444030303",wa:"97455530303"},
+  {id:14,biz:"بوتيك لمسة",logo:"👗",cat:"fashion",plat:"snoonu",pct:35,oldP:300,newP:195,cmp:195,area:"الدوحة",img:"imgF",emoji:"👗",feat:false,flash:false,hours:130,vh:26,desc:"تخفيضات نهاية الموسم على الملابس والإكسسوارات",terms:"على القطع المختارة",phone:"+97444040404",wa:"97455540404"},
+  {id:15,biz:"شاورما زعتر وزيت",logo:"🌯",cat:"resto",plat:"rafeeq",pct:35,oldP:30,newP:19,cmp:19,area:"الغرافة",img:"imgA",emoji:"🌯",feat:false,flash:false,hours:36,vh:4,desc:"عرض الغداء من 12 ظهرًا حتى 4 عصرًا على وجبات الشاورما",terms:"وقت محدد يوميًا",phone:"+97444050505",wa:"97455550505"},
+  // ===== multi-platform (comparison) brands =====
+  {id:20,biz:"ماكدونالدز",logo:"🍔",cat:"resto",plat:"talabat",pct:24,oldP:50,newP:38,cmp:38,area:"كل الفروع",img:"imgD",emoji:"🍔",feat:false,flash:false,hours:96,vh:2,desc:"وجبة بيج ماك كومبو مع خصم على الطلب",terms:"يشمل وجبات مختارة",phone:"+97444060606",wa:"97455560606"},
+  {id:21,biz:"ماكدونالدز",logo:"🍔",cat:"resto",plat:"snoonu",pct:32,oldP:50,newP:34,cmp:34,area:"كل الفروع",img:"imgD",emoji:"🍔",feat:false,flash:false,hours:96,vh:2,desc:"نفس وجبة بيج ماك كومبو بخصم أعلى على سنونو",terms:"يشمل وجبات مختارة",phone:"+97444060606",wa:"97455560606"},
+  {id:22,biz:"ماكدونالدز",logo:"🍔",cat:"resto",plat:"rafeeq",pct:18,oldP:50,newP:41,cmp:41,area:"كل الفروع",img:"imgD",emoji:"🍔",feat:false,flash:false,hours:96,vh:3,desc:"وجبة بيج ماك كومبو على رفيق",terms:"يشمل وجبات مختارة",phone:"+97444060606",wa:"97455560606"},
+  {id:30,biz:"كنتاكي",logo:"🍗",cat:"resto",plat:"talabat",pct:20,oldP:69,newP:55,cmp:55,area:"الدوحة",img:"imgA",emoji:"🍗",feat:false,flash:false,hours:80,vh:5,desc:"باكت دجاج العائلة بخصم",terms:"يشمل الباكت الكبير",phone:"+97444070707",wa:"97455570707"},
+  {id:31,biz:"كنتاكي",logo:"🍗",cat:"resto",plat:"keeta",pct:28,oldP:69,newP:49,cmp:49,area:"الدوحة",img:"imgA",emoji:"🍗",feat:false,flash:false,hours:80,vh:4,desc:"باكت دجاج العائلة بأرخص سعر على كيتا",terms:"يشمل الباكت الكبير",phone:"+97444070707",wa:"97455570707"},
+  {id:32,biz:"كنتاكي",logo:"🍗",cat:"resto",plat:"snoonu",pct:22,oldP:69,newP:52,cmp:52,area:"الدوحة",img:"imgA",emoji:"🍗",feat:false,flash:false,hours:80,vh:6,desc:"باكت دجاج العائلة على سنونو",terms:"يشمل الباكت الكبير",phone:"+97444070707",wa:"97455570707"},
+  {id:23,biz:"ماكدونالدز",logo:"🍔",cat:"resto",plat:"keeta",pct:36,oldP:50,newP:32,cmp:32,area:"كل الفروع",img:"imgD",emoji:"🍔",feat:false,flash:false,hours:96,vh:1,desc:"نفس وجبة بيج ماك كومبو بأرخص سعر على كيتا + توصيل مجاني",terms:"يشمل وجبات مختارة",phone:"+97444060606",wa:"97455560606"},
+  {id:40,biz:"جوليبي",logo:"🐝",cat:"resto",plat:"keeta",pct:30,oldP:45,newP:31,cmp:31,area:"الدوحة",img:"imgA",emoji:"🍗",feat:false,flash:true,hours:8,vh:2,desc:"خصم على وجبات الدجاج المقرمش على كيتا للمستخدمين الجدد",terms:"للطلب الأول",phone:"+97444080808",wa:"97455580808"},
+  // ===== عرض مباشر من المطعم (مش عبر شركة دليفري) =====
+  {id:50,biz:"مطعم بيت دمشق",logo:"🍽️",cat:"resto",plat:"direct",pct:30,oldP:80,newP:56,cmp:56,area:"الدوحة - الغرافة",img:"imgD",emoji:"🍱",feat:true,flash:false,hours:140,vh:1,direct:true,menuUrl:"https://example-restaurant-menu.qa",desc:"خصم 30% عند الطلب مباشرة من المطعم عبر منصة عروض قطر (بدون رسوم تطبيقات التوصيل)",terms:"الطلب المباشر فقط · توصيل المطعم الخاص",phone:"+97444090909",wa:"97455590909"},
+];
+let nextId=200;
+// المنصة المباشرة (المطعم نفسه)
+PLAT.direct={n:"مباشر من المطعم",c:"#0E8F6E",url:""};
+// تحديد رابط "اطلب الآن" + خاصية التوصيل المجاني لكل عرض
+const FD=new Set([1,2,4,6,9,10,20,21,23,30,40,50]);
+OFFERS.forEach(o=>{o.orderUrl=o.direct?(o.menuUrl||""):(PLAT[o.plat]?.url||"");o.fd=FD.has(o.id);o.orders=Math.round(120+o.pct*8+Math.random()*420);});
+
+const store={get:(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let view="home", cat="all", q="", sort="discount", offerType="all";
+const TYPES=[["all","كل العروض","🏷️"],["d50","خصم 50%","🔥"],["d40","خصم 40%","💥"],["d30","خصم 30%","✅"],["d20","خصم 20%","🟢"],["free","توصيل مجاني","🚚"],["freedeal","عرض + توصيل مجاني","🎁"]];
+let platSel="all", openMenu=null;
+let favs=new Set(store.get("qd_favs",[]));
+let cdTimer=null, deferredPrompt=null;
+const $=id=>document.getElementById(id);
+function timeLabel(h){return h>=24?`باقي ${Math.floor(h/24)} يوم`:`باقي ${h} ساعة`}
+function vClass(h){return h<=24?'v-fresh':h<=72?'v-ok':'v-old'}
+function vLabel(h){return h<24?`✔ تم التحقق قبل ${h} ساعة`:`✔ تم التحقق قبل ${Math.floor(h/24)} يوم`}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),2600)}
+function sortList(l){if(sort==="discount")return[...l].sort((a,b)=>b.pct-a.pct);if(sort==="expiring")return[...l].sort((a,b)=>a.hours-b.hours);if(sort==="newest")return[...l].sort((a,b)=>b.id-a.id);if(sort==="priceAsc")return[...l].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9));return l;}
+function brandGroup(biz){return OFFERS.filter(o=>o.biz===biz)}
+
+function offerCard(o){
+  return `<div class="card" data-open="${o.id}">
+    <div class="img ${o.img}">${o.emoji}<span class="badge">${o.pct}%-</span>${o.feat?'<span class="feat">⭐ مميز</span>':''}</div>
+    <div class="body">
+      <div class="row1"><div class="blogo">${o.logo}</div><div class="bname">${o.biz} · ${PLAT[o.plat].n}</div>
+        <button class="heart" data-fav="${o.id}">${favs.has(o.id)?'❤️':'🤍'}</button></div>
+      <div class="title">${o.desc.slice(0,68)}</div>
+      <div class="pricerow">${o.newP?`<span class="new">${o.newP} ر.ق</span>`:`<span class="new">خصم ${o.pct}%</span>`}${o.oldP?`<span class="old">${o.oldP} ر.ق</span>`:''}<span class="time">⏱️ ${timeLabel(o.hours)}</span></div>
+      <div class="foot"><span class="verify ${vClass(o.vh)}">${vLabel(o.vh)}</span>${o.fd?'<span class="fdbadge">🚚 توصيل مجاني</span>':`<span>📍 ${o.area}</span>`}</div>
+    </div>
+  </div>`;
+}
+function compareCard(group){
+  const best=[...group].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9))[0];
+  const bestPct=Math.max(...group.map(o=>o.pct));
+  return `<div class="card" data-cmp="${best.biz}">
+    <div class="img ${best.img}">${best.emoji}<span class="badge">${bestPct}%-</span>
+      <span class="cmpflag">🔀 متوفر على ${group.length} تطبيقات</span></div>
+    <div class="body">
+      <div class="row1"><div class="blogo">${best.logo}</div><div class="bname">${best.biz}</div></div>
+      <div class="title">${best.desc.slice(0,64)}</div>
+      <div class="pricerow"><span class="new">من ${best.cmp} ر.ق</span><span class="time" style="color:var(--green)">⇄ قارن ووفّر</span></div>
+      <div class="foot"><span class="verify v-fresh">قارن السعر قبل ما تطلب</span></div>
+    </div>
+  </div>`;
+}
+function renderGrid(list){
+  const seen=new Set(); const out=[];
+  for(const o of list){
+    if(seen.has(o.biz))continue;
+    const g=brandGroup(o.biz);
+    if(g.length>1){seen.add(o.biz);out.push(compareCard(g));}
+    else out.push(offerCard(o));
+  }
+  return out.length?out.join(""):'<div class="empty">مفيش عروض مطابقة 🔎<br>غيّر القسم أو فعّل تطبيقات أكتر.</div>';
+}
+function filteredOffers(){
+  let l=OFFERS.filter(o=>(cat==="all"||o.cat===cat)&&(platSel==="all"||o.plat===platSel)&&(q===""||o.biz.includes(q)||o.desc.includes(q)));
+  if(offerType==="d50")l=l.filter(o=>o.pct>=50);
+  else if(offerType==="d40")l=l.filter(o=>o.pct>=40);
+  else if(offerType==="d30")l=l.filter(o=>o.pct>=30);
+  else if(offerType==="d20")l=l.filter(o=>o.pct>=20);
+  else if(offerType==="free")l=l.filter(o=>o.fd);
+  else if(offerType==="freedeal")l=l.filter(o=>o.fd&&o.pct>=30);
+  return sortList(l);
+}
+
+function viewHome(){
+  const l=filteredOffers();
+  const sorts=[["discount","الأعلى خصمًا"],["priceAsc","الأرخص سعرًا"],["expiring","ينتهي قريبًا"],["newest","الأحدث"]];
+  const catCur=cat==="all"?"الكل":CATNAME[cat];
+  const typeCur=TYPES.find(t=>t[0]===offerType)[1];
+  const platCur=platSel==="all"?"كل التطبيقات":PLAT[platSel].n;
+  const sortCur=sorts.find(s=>s[0]===sort)[1];
+  const dd=(key,label,cur,opts)=>`<div class="filt">
+    <button class="fbtn ${openMenu===key?'active':''}" data-menu="${key}">${label}: <b>${cur}</b> <span class="chev">▾</span></button>
+    <div class="fmenu ${openMenu===key?'show':''}">${opts.map(o=>`<div class="fitem ${o[2]?'on':''}" data-set="${key}" data-val="${o[0]}">${o[1]}</div>`).join("")}</div></div>`;
+  const catOpts=CATS.map(c=>[c[0],`${c[2]} ${c[1]}`,c[0]===cat]);
+  const typeOpts=TYPES.map(t=>[t[0],`${t[2]} ${t[1]}`,t[0]===offerType]);
+  const platOpts=[["all","✨ كل التطبيقات",platSel==="all"]].concat(Object.entries(PLAT).map(([k,p])=>[k,p.n,platSel===k]));
+  const sortOpts=sorts.map(s=>[s[0],s[1],s[0]===sort]);
+  return `
+  <div class="hero">
+    <h1>كل عروض التوصيل في قطر… ومقارنة الأسعار في مكان واحد</h1>
+    <p>نجمع خصومات المطاعم والمتاجر من كل التطبيقات، ونرتّبها من الأعلى خصمًا — ونوريك أرخص تطبيق لنفس المطعم.</p>
+    <div class="herostats">
+      <div class="hstat"><div class="n">${OFFERS.length}</div><div class="l">عرض متاح</div></div>
+      <div class="hstat"><div class="n">4</div><div class="l">تطبيقات متابَعة</div></div>
+      <div class="hstat"><div class="n">${avgDiscount()}%</div><div class="l">متوسط الخصم</div></div>
+    </div>
+  </div>
+  <div class="filterbar">
+    ${dd("cat","القسم",catCur,catOpts)}
+    ${dd("type","نوع العرض",typeCur,typeOpts)}
+    ${dd("plat","التطبيق",platCur,platOpts)}
+    ${dd("sort","الترتيب",sortCur,sortOpts)}
+  </div>
+  <div class="toolbar">
+    <h2>${cat==="all"?"كل العروض":CATNAME[cat]}${offerType!=="all"?" · "+typeCur:""} <span>(${l.length})</span></h2>
+  </div>
+  <div class="grid">${renderGrid(l)}</div>`;
+}
+function viewFavs(){
+  const l=OFFERS.filter(o=>favs.has(o.id));
+  return `<div class="toolbar" style="margin-top:28px"><h2>المفضلة <span>(${l.length})</span></h2></div>
+  <div class="grid">${l.length?l.map(offerCard).join(""):'<div class="empty">لسه ما حفظتش أي عرض ❤️<br>اضغط على القلب في أي عرض علشان يتحفظ هنا.</div>'}</div>`;
+}
+
+/* ===== COMPARE ITEMS across delivery apps ===== */
+function viewCompare(){
+  const seen=new Set(),groups=[];
+  OFFERS.forEach(o=>{if(seen.has(o.biz))return;const g=brandGroup(o.biz);if(g.length>1){seen.add(o.biz);groups.push(g);}});
+  const cards=groups.map(g=>{
+    const sorted=[...g].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9));
+    const min=sorted[0].cmp,max=Math.max(...g.map(o=>o.cmp)),save=max-min;
+    const item=g[0].item||ITEM[g[0].biz]||"نفس الطلب";
+    return `<div class="card" data-cmp="${g[0].biz}">
+      <div class="img ${g[0].img}">${g[0].emoji}<span class="cmpflag" style="position:static;display:inline-flex">🔀 ${g.length} تطبيقات</span></div>
+      <div class="body">
+        <div class="row1"><div class="blogo">${g[0].logo}</div><div class="bname">${g[0].biz}</div></div>
+        <div class="title">الصنف: ${item}</div>
+        <div class="pricerow"><span class="new">من ${min} ر.ق</span><span class="old">حتى ${max} ر.ق</span></div>
+        <div class="foot"><span class="verify v-fresh">💰 وفّر حتى ${save} ر.ق</span><span style="color:var(--green);font-weight:800">قارن ⇄</span></div>
+      </div></div>`;
+  }).join("");
+  return `
+  <div class="hero" style="background:linear-gradient(120deg,#0A6B53,#0E8F6E 60%,#16b58a)">
+    <h1>قارن الأصناف عبر تطبيقات التوصيل</h1>
+    <p>نفس الصنف بسعر مختلف على كل تطبيق — اعرف الأرخص قبل ما تطلب ووفّر فلوسك.</p>
+  </div>
+  <div class="toolbar"><h2>أصناف قابلة للمقارنة <span>(${groups.length})</span></h2></div>
+  <div class="grid">${groups.length?cards:'<div class="empty">لا توجد أصناف متعددة المنصات حاليًا.</div>'}</div>
+  <div class="insnote" style="margin-top:8px">💡 المقارنة بتشتغل لما يكون نفس المتجر/الصنف متاح على أكتر من تطبيق توصيل. كل ما زادت المتاجر المشتركة، زادت قوة المقارنة — وهي الميزة اللي بتميّز عروض قطر.</div>`;
+}
+
+/* ===== INSIGHTS (market intelligence) ===== */
+function avgDiscount(){return Math.round(OFFERS.reduce((s,o)=>s+o.pct,0)/OFFERS.length)}
+function viewInsights(){
+  // avg discount by category
+  const byCat={};
+  OFFERS.forEach(o=>{(byCat[o.cat]=byCat[o.cat]||[]).push(o.pct)});
+  const catRows=Object.entries(byCat).map(([c,a])=>[CATNAME[c],Math.round(a.reduce((x,y)=>x+y,0)/a.length)])
+    .sort((a,b)=>b[1]-a[1]);
+  // count by platform
+  const byPlat={};Object.keys(PLAT).forEach(k=>byPlat[k]=0);
+  OFFERS.forEach(o=>byPlat[o.plat]++);
+  const maxPlat=Math.max(...Object.values(byPlat));
+  // top brands by discount (unique)
+  const seen=new Set(),top=[];
+  [...OFFERS].sort((a,b)=>b.pct-a.pct).forEach(o=>{if(!seen.has(o.biz)){seen.add(o.biz);top.push(o)}});
+  const topBrands=top.slice(0,5);
+  return `
+  <div class="toolbar" style="margin-top:28px"><h2>تحليلات السوق <span>· ذكاء التسعير</span></h2></div>
+  <div class="kpis">
+    <div class="kpi"><div class="n">${avgDiscount()}%</div><div class="l">متوسط الخصم في السوق</div></div>
+    <div class="kpi"><div class="n">${OFFERS.length}</div><div class="l">إجمالي العروض المتتبَّعة</div></div>
+    <div class="kpi"><div class="n">${Math.max(...OFFERS.map(o=>o.pct))}%</div><div class="l">أعلى خصم حالي</div></div>
+    <div class="kpi"><div class="n">${catRows.length}</div><div class="l">أقسام نشطة</div></div>
+  </div>
+  <div class="charts">
+    <div class="chartcard"><h3>📊 متوسط الخصم حسب القسم</h3>
+      ${catRows.map(r=>`<div class="brow"><div class="lab">${r[0]}</div><div class="btrack"><div class="bfill" style="width:${r[1]}%"></div></div><div class="val">${r[1]}%</div></div>`).join("")}
+    </div>
+    <div class="chartcard"><h3>📲 توزيع العروض حسب التطبيق</h3>
+      ${Object.entries(byPlat).map(([k,n])=>`<div class="brow"><div class="lab">${PLAT[k].n}</div><div class="btrack"><div class="bfill" style="width:${Math.round(n/maxPlat*100)}%;background:${PLAT[k].c}"></div></div><div class="val" style="color:${PLAT[k].c}">${n}</div></div>`).join("")}
+    </div>
+    <div class="chartcard"><h3>🏆 أعلى المتاجر خصمًا</h3>
+      ${topBrands.map((o,i)=>`<div class="brow"><div class="lab">${i+1}. ${o.biz}</div><div class="btrack"><div class="bfill" style="width:${o.pct}%"></div></div><div class="val">${o.pct}%</div></div>`).join("")}
+    </div>
+    <div class="chartcard"><h3>💡 رؤى السوق</h3>
+      <div class="insnote">قسم <b>${catRows[0][0]}</b> هو الأعلى خصمًا بمتوسط ${catRows[0][1]}%. التطبيق الأكثر نشاطًا في العروض هو <b>${PLAT[Object.entries(byPlat).sort((a,b)=>b[1]-a[1])[0][0]].n}</b>. هذه البيانات قابلة للبيع كتقارير ذكاء سوق لعلامات F&B — ميزة تحقيق دخل B2B.</div>
+    </div>
+  </div>`;
+}
+
+/* ===== CONSUMER BEHAVIOR (instant analysis) ===== */
+function viewBehavior(){
+  const total=OFFERS.reduce((s,o)=>s+o.orders,0);
+  const best=[...OFFERS].sort((a,b)=>b.orders-a.orders).slice(0,5);
+  const maxBest=best[0].orders;
+  const plat={};Object.keys(PLAT).forEach(k=>{if(k!=="direct")plat[k]=0;});
+  OFFERS.forEach(o=>{if(plat[o.plat]!==undefined)plat[o.plat]+=o.orders;});
+  const platSorted=Object.entries(plat).sort((a,b)=>b[1]-a[1]);
+  const maxPlat=platSorted[0][1], topPlat=platSorted[0];
+  const topPlatPct=Math.round(topPlat[1]/total*100);
+  const catO={};OFFERS.forEach(o=>catO[o.cat]=(catO[o.cat]||0)+o.orders);
+  const catSorted=Object.entries(catO).sort((a,b)=>b[1]-a[1]);
+  const maxCat=catSorted[0][1];
+  const vals=OFFERS.map(o=>o.newP||Math.round((o.oldP||60)*(1-o.pct/100))||45);
+  const avgVal=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+  const fdShare=Math.round(OFFERS.filter(o=>o.fd).length/OFFERS.length*100);
+  const hours=[["1-3 ظهرًا",70],["4-6 عصرًا",48],["6-8 مساءً",86],["8-11 مساءً",100],["11م-1ص",58]];
+  return `
+  <div class="hero" style="background:linear-gradient(120deg,var(--green-d),var(--green) 60%,var(--green-l))">
+    <h1>تحليل فوري لسلوك المستهلك</h1>
+    <p>نظرة لحظية على مشتريات المستهلكين، الأكثر مبيعًا، وأقوى شركات التوصيل طلبًا في قطر.</p>
+  </div>
+  <div class="toolbar"><h2>لوحة سلوك المستهلك <span>· مباشر</span></h2><button class="hbtn green" data-action="refresh">🔄 تحديث فوري</button></div>
+  <div class="kpis">
+    <div class="kpi"><div class="n">${total.toLocaleString("ar-EG")}</div><div class="l">إجمالي الطلبات (تقديري)</div></div>
+    <div class="kpi"><div class="n">${avgVal} ر.ق</div><div class="l">متوسط قيمة الطلب</div></div>
+    <div class="kpi"><div class="n">${PLAT[topPlat[0]].n}</div><div class="l">أقوى شركة توصيل طلبًا</div></div>
+    <div class="kpi"><div class="n">${fdShare}%</div><div class="l">طلبات بتوصيل مجاني</div></div>
+  </div>
+  <div class="charts">
+    <div class="chartcard"><h3>🏆 الأكثر مبيعًا</h3>
+      ${best.map((o,i)=>`<div class="brow"><div class="lab">${i+1}. ${o.biz}</div><div class="btrack"><div class="bfill" style="width:${Math.round(o.orders/maxBest*100)}%"></div></div><div class="val">${o.orders}</div></div>`).join("")}
+    </div>
+    <div class="chartcard"><h3>🚚 شركات التوصيل الأكثر طلبًا</h3>
+      ${platSorted.map(([k,n])=>`<div class="brow"><div class="lab">${PLAT[k].n}</div><div class="btrack"><div class="bfill" style="width:${Math.round(n/maxPlat*100)}%;background:${PLAT[k].c}"></div></div><div class="val" style="color:${PLAT[k].c}">${n}</div></div>`).join("")}
+    </div>
+    <div class="chartcard"><h3>🛍️ مشتريات المستهلك حسب القسم</h3>
+      ${catSorted.map(([c,n])=>`<div class="brow"><div class="lab">${CATNAME[c]}</div><div class="btrack"><div class="bfill" style="width:${Math.round(n/maxCat*100)}%"></div></div><div class="val">${n}</div></div>`).join("")}
+    </div>
+    <div class="chartcard"><h3>⏰ أوقات ذروة الطلب</h3>
+      ${hours.map(h=>`<div class="brow"><div class="lab">${h[0]}</div><div class="btrack"><div class="bfill" style="width:${h[1]}%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></div></div><div class="val" style="color:var(--gold)">${h[1]}%</div></div>`).join("")}
+    </div>
+  </div>
+  <div class="insnote" style="margin-top:18px">📊 <b>شركة التوصيل الأقوى والأكثر طلبًا حاليًا: ${PLAT[topPlat[0]].n}</b> باستحواذها على ${topPlatPct}% من إجمالي الطلبات. القسم الأكثر شراءً هو <b>${CATNAME[catSorted[0][0]]}</b>، وذروة الطلب بين 8–11 مساءً. هذه المؤشرات تتحدّث فوريًا وتُستخدم لتوجيه قرارات التجار والعروض.</div>`;
+}
+
+function viewBiz(){
+  return `<div class="bizwrap">
+    <div class="panel">
+      <h2>عندك متجر؟ <span>اعرض عرضك على آلاف العملاء</span></h2>
+      <p class="sub">سجّل عرض متجرك في "عروض قطر" ووصّل خصوماتك للباحثين عن أفضل الصفقات يوميًا. (تجريبي — العرض هيظهر في الرئيسية فورًا)</p>
+      <div class="field"><label>اسم المتجر / المطعم</label><input id="b_biz" placeholder="مثال: مطعم بلبن"></div>
+      <div class="field two">
+        <div><label>القسم</label><select id="b_cat">${CATS.filter(c=>c[0]!=="all").map(c=>`<option value="${c[0]}">${c[1]}</option>`).join("")}</select></div>
+        <div><label>التطبيق</label><select id="b_plat">${Object.entries(PLAT).map(([k,p])=>`<option value="${k}">${p.n}</option>`).join("")}</select></div>
+      </div>
+      <div class="field two">
+        <div><label>نسبة الخصم %</label><input id="b_pct" type="number" min="1" max="100" placeholder="30"></div>
+        <div><label>المنطقة</label><input id="b_area" placeholder="الدوحة"></div>
+      </div>
+      <div class="field"><label>تفاصيل العرض</label><textarea id="b_desc" placeholder="مثال: خصم على كل الطلبات فوق 50 ريال"></textarea></div>
+      <button class="subbtn" id="b_submit">أضف العرض للتطبيق</button>
+    </div>
+    <div>
+      <div class="toolbar" style="margin-top:0"><h2 style="font-size:21px">باقات الاشتراك</h2></div>
+      <div class="tiers">
+        <div class="tier"><div style="flex:1"><div class="nm">مجاني</div><div class="ds">عرض واحد · إحصائيات أساسية</div></div><div class="pr">0 ر.ق</div></div>
+        <div class="tier"><div style="flex:1"><div class="nm">أساسي</div><div class="ds">5 عروض · إحصائيات قياسية</div></div><div class="pr">99 ر.ق/شهر</div></div>
+        <div class="tier best"><div style="flex:1"><div class="nm">احترافي <span class="badge2">الأكثر طلبًا</span></div><div class="ds">20 عرض · خانة "مميز" · إشعار شهري</div></div><div class="pr">299 ر.ق/شهر</div></div>
+        <div class="tier"><div style="flex:1"><div class="nm">بريميوم</div><div class="ds">عروض لا محدودة · 3 خانات مميزة · تصدير</div></div><div class="pr">599 ر.ق/شهر</div></div>
+        <div class="tier"><div style="flex:1"><div class="nm">مؤسسات</div><div class="ds">API · تقارير ذكاء السوق · أولوية</div></div><div class="pr">مخصص</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar" style="margin-top:30px"><h2>إدارة العروض <span>(${OFFERS.length})</span></h2></div>
+  <div class="panel" style="padding:10px 14px">
+    ${OFFERS.map(o=>`<div class="mrow">
+      <div class="mlogo">${o.logo}</div>
+      <div class="minfo"><div class="mname">${o.biz} <span style="color:var(--orange);font-weight:900">${o.pct}%-</span></div>
+        <div class="msub">${CATNAME[o.cat]} · ${PLAT[o.plat].n}${o.fd?' · 🚚 مجاني':''}</div></div>
+      <button class="micon" data-medit="${o.id}" title="تعديل">✏️</button>
+      <button class="micon mdel" data-mdel="${o.id}" title="حذف">🗑️</button>
+    </div>`).join("")}
+  </div>`;
+}
+
+function render(){
+  const p=$("page");
+  if(view==="home")p.innerHTML=viewHome();
+  else if(view==="compare")p.innerHTML=viewCompare();
+  else if(view==="favs")p.innerHTML=viewFavs();
+  else if(view==="insights")p.innerHTML=viewInsights();
+  else if(view==="behavior")p.innerHTML=viewBehavior();
+  else if(view==="biz")p.innerHTML=viewBiz();
+  [...$("nav").children].forEach(a=>a.classList.toggle("on",a.dataset.view===view));
+  bind();
+}
+function bind(){
+  const p=$("page");
+  p.querySelectorAll("[data-menu]").forEach(b=>b.onclick=ev=>{ev.stopPropagation();const k=b.dataset.menu;openMenu=openMenu===k?null:k;render();});
+  p.querySelectorAll("[data-set]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();applyFilter(e.dataset.set,e.dataset.val);});
+  p.querySelectorAll("[data-open]").forEach(e=>e.onclick=ev=>{if(ev.target.closest("[data-fav]"))return;openDetails(+e.dataset.open);});
+  p.querySelectorAll("[data-cmp]").forEach(e=>e.onclick=()=>openCompare(e.dataset.cmp));
+  p.querySelectorAll("[data-fav]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();toggleFav(+e.dataset.fav);});
+  const bs=$("b_submit");if(bs)bs.onclick=submitBiz;
+  const rf=$("page").querySelector("[data-action='refresh']");if(rf)rf.onclick=()=>{OFFERS.forEach(o=>o.orders=Math.round(120+o.pct*8+Math.random()*420));render();toast("🔄 تم تحديث التحليل لحظيًا");};
+  p.querySelectorAll("[data-medit]").forEach(e=>e.onclick=()=>openEdit(+e.dataset.medit));
+  p.querySelectorAll("[data-mdel]").forEach(e=>e.onclick=()=>confirmAction("متأكد من حذف هذا العرض؟",()=>deleteOffer(+e.dataset.mdel)));
+}
+function applyFilter(key,val){
+  if(key==="cat")cat=val;
+  else if(key==="type")offerType=val;
+  else if(key==="plat")platSel=val;
+  else if(key==="sort")sort=val;
+  openMenu=null;render();
+}
+function toggleFav(id){
+  if(favs.has(id))favs.delete(id);else{favs.add(id);toast("تم الحفظ في المفضلة ❤️");}
+  store.set("qd_favs",[...favs]);render();
+  document.querySelectorAll("#sheet [data-fav]").forEach(b=>{if(+b.dataset.fav===id)b.innerHTML=favs.has(id)?'❤️ محفوظ':'🤍 حفظ العرض';});
+}
+
+function openModal(html){$("sheet").innerHTML=html;$("modal").classList.add("show");}
+function closeModal(){$("modal").classList.remove("show");clearInterval(cdTimer);}
+$("backdrop").onclick=closeModal;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+function openDetails(id){
+  const o=OFFERS.find(x=>x.id===id);if(!o)return;
+  const group=brandGroup(o.biz);
+  let secs=o.hours*3600;
+  openModal(`
+    <button class="close" id="close">✕</button>
+    <div class="dhero ${o.img}">${o.emoji}<span class="dbadge">${o.pct}%-</span></div>
+    <div class="dbody">
+      <div class="dbiz"><div class="l">${o.logo}</div><div><div class="nm">${o.biz}</div><div class="pl">متوفر على ${PLAT[o.plat].n} · 📍 ${o.area}</div></div></div>
+      <div style="margin-top:10px"><span class="verify ${vClass(o.vh)}">${vLabel(o.vh)}</span>${o.fd?' <span class="fdbadge">🚚 توصيل مجاني</span>':''}</div>
+      <div class="dtitle">${o.desc}</div>
+      <div class="dprice">${o.newP?`<span class="n">${o.newP} ر.ق</span>`:`<span class="n">خصم ${o.pct}%</span>`}${o.oldP?`<span class="o">${o.oldP} ر.ق</span>`:''}</div>
+      <div class="countdown" id="cd">⏱️ —</div>
+      <button class="bigbtn save" data-order="${o.id}" style="width:100%;margin-bottom:8px;font-size:16px;padding:16px">${o.direct?'🍽️ اطلب من المطعم مباشرة':'🛒 اطلب الآن على '+PLAT[o.plat].n}</button>
+      ${group.length>1?`<button class="bigbtn save" data-cmp="${o.biz}" style="width:100%;margin-bottom:6px">⇄ قارن سعره على ${group.length} تطبيقات ووفّر</button>`:''}
+      <div class="dlabel">الوصف</div><div class="dtext">${o.desc}.</div>
+      <div class="dlabel">الشروط والأحكام</div><div class="dtext">${o.terms}</div>
+      <div class="dactions">
+        <a class="actbtn" href="tel:${o.phone}"><span class="ic">📞</span>اتصال</a>
+        <a class="actbtn" href="https://wa.me/${o.wa}" target="_blank" rel="noopener"><span class="ic">💬</span>واتساب</a>
+        <div class="actbtn" data-share="1"><span class="ic">↗️</span>مشاركة</div>
+      </div>
+      <div class="bigbtns">
+        <button class="bigbtn save" data-fav="${o.id}">${favs.has(o.id)?'❤️ محفوظ':'🤍 حفظ العرض'}</button>
+        <button class="bigbtn report" data-report="1">🚩 إبلاغ عن عرض منتهي</button>
+      </div>
+      <div class="bigbtns" style="margin-top:10px">
+        <button class="bigbtn" data-edit="${o.id}" style="background:var(--surface-2);border:1px solid var(--line);color:var(--ink)">✏️ تعديل العرض</button>
+        <button class="bigbtn" data-del="${o.id}" style="background:#B42318;color:#fff">🗑️ حذف العرض</button>
+      </div>
+    </div>`);
+  $("close").onclick=closeModal;
+  const sh=$("sheet");
+  sh.querySelectorAll("[data-fav]").forEach(e=>e.onclick=()=>toggleFav(+e.dataset.fav));
+  sh.querySelectorAll("[data-cmp]").forEach(e=>e.onclick=()=>openCompare(e.dataset.cmp));
+  const ob=sh.querySelector("[data-order]");if(ob)ob.onclick=()=>openOrder(o);
+  const eb=sh.querySelector("[data-edit]");if(eb)eb.onclick=()=>openEdit(+eb.dataset.edit);
+  const db=sh.querySelector("[data-del]");if(db)db.onclick=()=>confirmAction("متأكد من حذف هذا العرض؟",()=>deleteOffer(+db.dataset.del));
+  const shb=sh.querySelector("[data-share]");if(shb)shb.onclick=()=>shareOffer(o);
+  const rp=sh.querySelector("[data-report]");if(rp)rp.onclick=()=>toast("🚩 تم استلام بلاغك — هنتحقق من العرض، شكرًا");
+  clearInterval(cdTimer);const cd=$("cd");
+  const tick=()=>{if(secs<=0){cd.textContent="انتهى العرض";clearInterval(cdTimer);return;}
+    const d=Math.floor(secs/86400),h=Math.floor(secs%86400/3600),m=Math.floor(secs%3600/60),s=secs%60;
+    cd.textContent=`⏱️ ينتهي خلال ${d>0?d+" يوم ":""}${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;secs--;};
+  tick();cdTimer=setInterval(tick,1000);
+}
+
+function openCompare(biz){
+  clearInterval(cdTimer);
+  const group=[...brandGroup(biz)].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9));
+  const min=group[0].cmp, max=Math.max(...group.map(o=>o.cmp));
+  const save=max-min;
+  const item=group[0].item||ITEM[biz]||"نفس الطلب";
+  openModal(`
+    <button class="close" id="close">✕</button>
+    <div class="cmphead"><div class="l">${group[0].logo}</div><div><div class="nm">${biz}</div><div class="sb">مقارنة سعر «${item}» عبر ${group.length} تطبيقات</div></div></div>
+    ${save>0?`<div class="cmpsave">💰 توفّر حتى ${save} ر.ق لو طلبت من الأرخص</div>`:''}
+    ${group.map((o,i)=>`<div class="cmprow ${i===0?'best':''}">
+      <span class="pdot" style="background:${PLAT[o.plat].c}"></span>
+      <div class="pn">${PLAT[o.plat].n}<small>خصم ${o.pct}% · ${vLabel(o.vh)}</small></div>
+      ${i===0?'<span class="besttag">الأرخص</span>':''}
+      <div class="pp" style="color:${i===0?'var(--green)':'var(--ink)'}">${o.cmp} ر.ق</div>
+      <button class="actbtn" data-orderurl="${o.orderUrl}" data-platn="${PLAT[o.plat].n}" style="padding:8px 12px;font-size:12px;width:auto">اطلب</button>
+    </div>`).join("")}
+    <div style="padding:6px 28px 26px"><button class="bigbtn save" data-orderurl="${group[0].orderUrl}" data-platn="${PLAT[group[0].plat].n}" style="width:100%">🛒 اطلب من الأرخص (${PLAT[group[0].plat].n})</button></div>`);
+  $("close").onclick=closeModal;
+  $("sheet").querySelectorAll("[data-orderurl]").forEach(b=>b.onclick=()=>{const u=b.dataset.orderurl;if(u){window.open(u,"_blank","noopener");toast(`فتح ${b.dataset.platn}…`);}else toast("الرابط غير متاح");});
+}
+
+function topDeals(){
+  const seen=new Set(),out=[];
+  [...OFFERS].sort((a,b)=>b.pct-a.pct).forEach(o=>{if(!seen.has(o.biz)){seen.add(o.biz);out.push(o)}});
+  return out.slice(0,5);
+}
+function dailyText(){
+  const d=topDeals();
+  let t="🔥 أقوى عروض قطر اليوم:\n\n";
+  d.forEach((o,i)=>{t+=`${i+1}. ${o.biz} — خصم ${o.pct}% (${PLAT[o.plat].n})\n`;});
+  t+="\n📲 حمّل تطبيق عروض قطر وقارن أسعار التوصيل قبل ما تطلب!";
+  return t;
+}
+function openDaily(){
+  clearInterval(cdTimer);
+  const d=topDeals();
+  openModal(`
+    <button class="close" id="close">✕</button>
+    <div style="padding:24px 24px 0"><div class="dlabel" style="margin:0;font-size:18px">🔥 عروض اليوم — جاهزة للمشاركة</div></div>
+    <div class="dealcard"><h3>أقوى 5 عروض في قطر اليوم</h3>
+      ${d.map((o,i)=>`<div class="dealitem"><div class="dealrank">${i+1}</div><div class="dn">${o.biz} <span style="opacity:.8;font-weight:700">· ${PLAT[o.plat].n}</span></div><div class="dp">${o.pct}%-</div></div>`).join("")}
+    </div>
+    <div class="sharebtns">
+      <button class="bigbtn save" id="waShare" style="background:#25D366">💬 شارك على واتساب</button>
+      <button class="bigbtn report" id="copyShare">📋 نسخ النص</button>
+    </div>`);
+  $("close").onclick=closeModal;
+  $("waShare").onclick=()=>window.open("https://wa.me/?text="+encodeURIComponent(dailyText()),"_blank");
+  $("copyShare").onclick=()=>{(navigator.clipboard?.writeText(dailyText()));toast("📋 تم نسخ نص العروض");};
+}
+function shareOffer(o){
+  const txt=`🔥 ${o.biz}: خصم ${o.pct}% على ${PLAT[o.plat].n}!\nعبر تطبيق عروض قطر.`;
+  if(navigator.share)navigator.share({title:"عروض قطر",text:txt}).catch(()=>{});
+  else window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank");
+}
+function openOrder(o){
+  const url=o.orderUrl||(o.direct?o.menuUrl:PLAT[o.plat]?.url);
+  if(url){window.open(url,"_blank","noopener");toast(o.direct?`فتح منيو ${o.biz} مباشرة…`:`فتح ${PLAT[o.plat].n}…`);}
+  else toast("الرابط غير متاح لهذا العرض");
+}
+/* ===== تعديل / حذف العرض ===== */
+function confirmAction(msg,onYes){
+  openModal(`<button class="close" id="close">✕</button>
+    <div style="padding:42px 28px 28px;text-align:center">
+      <div style="font-size:42px;margin-bottom:10px">🗑️</div>
+      <div style="font-weight:900;font-size:18px;margin-bottom:8px">${msg}</div>
+      <div style="color:var(--gray);font-size:13px;margin-bottom:22px">لا يمكن التراجع بعد الحذف.</div>
+      <div class="bigbtns"><button class="bigbtn" id="cYes" style="background:#B42318;color:#fff">نعم، احذف</button><button class="bigbtn report" id="cNo">إلغاء</button></div>
+    </div>`);
+  $("close").onclick=closeModal;$("cNo").onclick=closeModal;
+  $("cYes").onclick=()=>{closeModal();onYes();};
+}
+function deleteOffer(id){
+  const i=OFFERS.findIndex(o=>o.id===id);
+  if(i>-1)OFFERS.splice(i,1);
+  favs.delete(id);store.set("qd_favs",[...favs]);
+  render();toast("🗑️ تم حذف العرض");
+}
+function openEdit(id){
+  const o=OFFERS.find(x=>x.id===id);if(!o)return;
+  openModal(`<button class="close" id="close">✕</button>
+    <div style="padding:24px 24px 4px"><div class="dlabel" style="margin:0;font-size:18px">✏️ تعديل العرض</div></div>
+    <div style="padding:10px 6px 6px">
+      <div class="field"><label>اسم المتجر / المطعم</label><input id="e_biz" value="${o.biz}"></div>
+      <div class="field two">
+        <div><label>القسم</label><select id="e_cat">${CATS.filter(c=>c[0]!=="all").map(c=>`<option value="${c[0]}" ${c[0]===o.cat?"selected":""}>${c[1]}</option>`).join("")}</select></div>
+        <div><label>التطبيق</label><select id="e_plat">${Object.entries(PLAT).map(([k,p])=>`<option value="${k}" ${k===o.plat?"selected":""}>${p.n}</option>`).join("")}</select></div>
+      </div>
+      <div class="field two">
+        <div><label>نسبة الخصم %</label><input id="e_pct" type="number" min="1" max="100" value="${o.pct}"></div>
+        <div><label>المنطقة</label><input id="e_area" value="${o.area}"></div>
+      </div>
+      <div class="field"><label>تفاصيل العرض</label><textarea id="e_desc">${o.desc}</textarea></div>
+      <label style="display:flex;align-items:center;gap:9px;margin:0 18px 14px;font-weight:800;font-size:14px;cursor:pointer"><input type="checkbox" id="e_fd" ${o.fd?"checked":""}> 🚚 توصيل مجاني</label>
+      <button class="submit" id="e_save">💾 حفظ التعديلات</button>
+    </div>`);
+  $("close").onclick=closeModal;
+  $("e_save").onclick=()=>{
+    const biz=$("e_biz").value.trim(),pct=parseInt($("e_pct").value),desc=$("e_desc").value.trim();
+    if(!biz||!pct||!desc){toast("اكمل الاسم والخصم والتفاصيل");return;}
+    o.biz=biz;o.cat=$("e_cat").value;o.plat=$("e_plat").value;o.pct=Math.min(100,Math.max(1,pct));
+    o.area=$("e_area").value.trim()||o.area;o.desc=desc;o.fd=$("e_fd").checked;
+    o.orderUrl=o.direct?(o.menuUrl||""):(PLAT[o.plat]?.url||"");
+    closeModal();render();toast("✅ تم حفظ تعديلات العرض");
+  };
+}
+
+function submitBiz(){
+  const biz=$("b_biz").value.trim(),pct=parseInt($("b_pct").value),desc=$("b_desc").value.trim();
+  if(!biz||!pct||!desc){toast("اكمل الاسم والخصم والتفاصيل");return;}
+  const emap={resto:"🍔",coffee:"☕",market:"🛒",electronics:"📱",fashion:"👗",pharmacy:"💊",beauty:"💄"};
+  const c=$("b_cat").value;
+  const newOffer={id:nextId++,biz,logo:"🏪",cat:c,plat:$("b_plat").value,pct:Math.min(100,Math.max(1,pct)),
+    oldP:0,newP:0,cmp:0,area:$("b_area").value.trim()||"مُضاف حديثًا",img:"imgB",emoji:emap[c]||"🏷️",feat:false,flash:false,hours:72,vh:0,orderUrl:(PLAT[$("b_plat").value]?.url||""),fd:false,orders:Math.round(60+pct*5),desc,terms:"عرض جديد مُضاف من المتجر",phone:"+974",wa:"974"};
+  OFFERS.unshift(newOffer);
+  cat="all";view="home";render();window.scrollTo({top:0,behavior:"smooth"});toast("✅ تم إضافة عرضك — شوفه في الأعلى");
+  showPush(newOffer,true);
+}
+
+/* header buttons */
+$("dailyBtn").onclick=openDaily;
+$("behaviorBtn").onclick=()=>{view="behavior";render();window.scrollTo({top:0,behavior:"smooth"});};
+$("nav").addEventListener("click",e=>{const a=e.target.closest("[data-view]");if(a){view=a.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
+$("hsearch").oninput=e=>{q=e.target.value.trim();if(view!=="home")view="home";render();};
+function toggleTheme(){const d=document.documentElement.dataset.theme==="dark";document.documentElement.dataset.theme=d?"light":"dark";$("themeBtn").textContent=d?"🌙":"☀️";document.querySelector('meta[name=theme-color]').setAttribute("content",d?"#0E8F6E":"#0E8F6E");store.set("qd_theme",d?"light":"dark");}
+$("themeBtn").onclick=toggleTheme;
+document.documentElement.dataset.theme=store.get("qd_theme","light");
+$("themeBtn").textContent=document.documentElement.dataset.theme==="dark"?"☀️":"🌙";
+
+/* PWA install */
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").style.display="flex";});
+$("installBtn").onclick=async()=>{if(!deferredPrompt){toast("لإضافته على الآيفون: زر المشاركة ← إضافة إلى الشاشة الرئيسية");return;}deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$("installBtn").style.display="none";};
+window.addEventListener("appinstalled",()=>{$("installBtn").style.display="none";toast("✅ تم تثبيت التطبيق");});
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});}
+
+document.addEventListener("click",e=>{if(openMenu&&!e.target.closest(".filt")){openMenu=null;render();}});
+
+/* ===== إشعارات المستهلك: عند العروض الجديدة والقوية (عند اللزوم) ===== */
+let notified=new Set();
+function showPush(o,isNew){
+  const el=$("push");
+  el.innerHTML=`<span class="pi">${isNew?'🆕':'🔥'}</span>
+    <div class="pt">${isNew?'عرض جديد أُضيف الآن!':'عرض قوي متاح الآن!'}<small>${o.biz} — خصم ${o.pct}% على ${PLAT[o.plat].n}${o.fd?' · 🚚 توصيل مجاني':''}</small></div>
+    <button class="pgo" id="pushGo">شوف العرض</button><button class="px" id="pushX">✕</button>`;
+  el.classList.add("show");
+  $("pushGo").onclick=()=>{el.classList.remove("show");openDetails(o.id);};
+  $("pushX").onclick=()=>el.classList.remove("show");
+  clearTimeout(showPush._t);showPush._t=setTimeout(()=>el.classList.remove("show"),8000);
+}
+function notifyStrong(){
+  // عند اللزوم فقط: العروض القوية (خصم 40%+) اللي ما اتبلّغ عنها بعد
+  const strong=[...OFFERS].filter(o=>o.pct>=40&&!notified.has(o.id)).sort((a,b)=>b.pct-a.pct);
+  if(!strong.length){notified.clear();return;}
+  const o=strong[0];notified.add(o.id);showPush(o,false);
+}
+setTimeout(notifyStrong,2200);
+setInterval(notifyStrong,38000);
+
+render();
+</script>
+</body>
+</html>
