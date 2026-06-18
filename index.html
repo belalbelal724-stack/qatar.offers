@@ -144,8 +144,10 @@ nav a.on{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transp
 .modal.show{display:flex}
 .backdrop{position:absolute;inset:0;background:rgba(5,12,9,.55);backdrop-filter:blur(3px)}
 .sheet{position:relative;background:var(--surface);border-radius:26px;max-width:600px;width:100%;max-height:90vh;
-  overflow-y:auto;scrollbar-width:none;box-shadow:0 40px 90px rgba(0,0,0,.4);animation:pop .25s ease}
-.sheet::-webkit-scrollbar{display:none}
+  overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;box-shadow:0 40px 90px rgba(0,0,0,.4);animation:pop .25s ease}
+.sheet::-webkit-scrollbar{width:9px}
+.sheet::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold-2),var(--green));border-radius:50px;border:2px solid var(--surface)}
+.sheet::-webkit-scrollbar-track{background:transparent}
 @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
 .close{position:absolute;top:16px;left:16px;z-index:3;width:40px;height:40px;border-radius:50%;border:none;
   background:rgba(0,0,0,.4);color:#fff;font-size:20px;cursor:pointer;backdrop-filter:blur(4px)}
@@ -281,6 +283,18 @@ footer{padding-bottom:40px}
 .pushbar .pgo{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00;border:none;border-radius:11px;
   padding:9px 13px;font-weight:900;font-size:12.5px;cursor:pointer;white-space:nowrap;font-family:inherit;flex:none}
 .pushbar .px{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.85;flex:none}
+/* install banner */
+.installbanner{position:fixed;top:78px;left:50%;transform:translateX(-50%) translateY(-24px);z-index:78;
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00;border:1px solid rgba(255,255,255,.5);
+  border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px;max-width:460px;width:calc(100% - 28px);
+  box-shadow:0 18px 44px rgba(60,10,28,.4);opacity:0;pointer-events:none;transition:.4s cubic-bezier(.4,0,.2,1)}
+.installbanner.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.installbanner .pi{font-size:24px;flex:none}
+.installbanner .pt{flex:1;font-weight:900;font-size:13.5px;line-height:1.45}
+.installbanner .pt small{display:block;opacity:.8;font-weight:700;font-size:12px;margin-top:2px}
+.installbanner .pgo{background:var(--green);color:#fff;border:none;border-radius:11px;padding:9px 15px;font-weight:900;font-size:13px;cursor:pointer;font-family:inherit;flex:none}
+.installbanner .px{background:none;border:none;color:#3a2c00;font-size:18px;cursor:pointer;flex:none}
+@media(max-width:600px){.installbanner{top:auto;bottom:86px;width:calc(100% - 22px)}}
 /* offer management rows */
 .mrow{display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid var(--line)}
 .mrow:last-child{border-bottom:none}
@@ -310,6 +324,65 @@ footer{padding-bottom:40px}
 .mi-float{animation:mifloat 6s ease-in-out infinite}
 @keyframes mifloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
 .herodeco{position:absolute;z-index:0;opacity:.22;pointer-events:none}
+/* uploaded images */
+.cardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dheroimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.logoimg{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.imgprev{margin-top:8px}
+.imgprev img{width:100%;max-height:120px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+/* discount seals strip */
+.sectitle{font-size:17px;font-weight:900;margin:22px 0 12px}
+/* promo banner carousel (paid, motion graphics) */
+.promo{position:relative;height:210px;border-radius:24px;overflow:hidden;margin-top:20px;
+  box-shadow:0 16px 38px var(--shadow);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
+.promo .slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;cursor:pointer}
+.promo .slide.active{opacity:1}
+.promo-bg{position:absolute;inset:0;background-size:cover;background-position:center;will-change:transform}
+.promo .slide.active .promo-bg{animation:kenburns 9s ease-in-out infinite alternate}
+@keyframes kenburns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.14) translate(2%,-2%)}}
+.promo-shine{position:absolute;top:0;bottom:0;width:45%;left:-60%;z-index:2;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-12deg)}
+.promo .slide.active .promo-shine{animation:promoshine 4.5s ease-in-out infinite}
+@keyframes promoshine{0%{left:-60%}55%,100%{left:140%}}
+.promo-ov{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:22px 24px;background:linear-gradient(0deg,rgba(20,4,8,.72),rgba(20,4,8,.15) 55%,transparent);color:#fff}
+.promo-badge{align-self:flex-start;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00;
+  font-weight:900;font-size:11.5px;padding:5px 12px;border-radius:50px}
+.promo .slide.active .promo-title{animation:promoup .7s ease both}
+.promo .slide.active .promo-sub{animation:promoup .7s .1s ease both}
+.promo-title{font-size:25px;font-weight:900;margin-top:9px;line-height:1.25;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.promo-sub{font-size:14px;opacity:.95;margin-top:3px}
+.promo-cta{align-self:flex-start;margin-top:11px;background:#fff;color:var(--green-d);font-weight:900;font-size:13px;padding:8px 16px;border-radius:50px}
+@keyframes promoup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.promo-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:4}
+.pdotc{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer;transition:.2s}
+.pdotc.on{background:var(--gold-2);width:22px;border-radius:50px}
+@media(max-width:600px){.promo{height:178px}.promo-title{font-size:21px}}
+.dealstrip{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:none}
+.dealstrip::-webkit-scrollbar{display:none}
+.dealseal{flex:none;text-align:center;cursor:pointer;width:86px}
+.dealseal .sealwrap{filter:drop-shadow(0 8px 16px var(--shadow));transition:transform .2s}
+.dealseal:hover .sealwrap{transform:translateY(-4px) scale(1.05)}
+.dealseal.on .sealwrap{transform:scale(1.08)}
+.dealseal .sealab{font-size:12px;font-weight:800;margin-top:7px;color:var(--ink)}
+.dealseal.on .sealab{color:var(--green)}
+/* role switch */
+.roleswitch{display:inline-flex;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:3px;vertical-align:middle}
+.roleswitch button{border:none;background:none;font-family:inherit;font-weight:800;font-size:13px;color:var(--gray);padding:7px 14px;border-radius:8px;cursor:pointer}
+.roleswitch button.on{background:var(--green);color:#fff}
+/* قائمة العروض عمودية (تحت بعض) */
+.grid.list{grid-template-columns:1fr;max-width:780px;margin-inline:auto;gap:14px}
+.grid.list .card{display:flex;align-items:stretch}
+.grid.list .card .img{width:152px;flex:none;height:auto;min-height:150px;border-radius:0}
+.grid.list .card .body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.grid.list .card .title{min-height:0;margin:8px 0}
+@media(max-width:600px){
+  .grid.list{max-width:100%}
+  .grid.list .card .img{width:118px;min-height:138px}
+  .grid.list .card .title{font-size:15px}
+}
+.field input[type=file]{padding:9px 12px;font-size:13px;background:var(--surface-2);cursor:pointer}
+.field input[type=file]::file-selector-button{font-family:inherit;font-weight:800;border:none;background:var(--green);color:#fff;padding:7px 12px;border-radius:9px;margin-inline-end:10px;cursor:pointer}
 .fico{display:inline-flex;vertical-align:middle;margin-inline-end:6px}
 /* ===== MOBILE APP LAYOUT ===== */
 .botnav{display:none}
@@ -375,6 +448,13 @@ footer{padding-bottom:40px}
 <footer><b>عروض قطر</b> — Qatar Deals · نسخة عرض (Prototype) قابلة للتثبيت كتطبيق · البيانات تجريبية<br><div class="sign">بلال الأنصاري</div><div class="signsub">تصميم وتطوير</div></footer>
 
 <div class="modal" id="modal"><div class="backdrop" id="backdrop"></div><div class="sheet" id="sheet"></div></div>
+<div class="installbanner" id="installBanner">
+  <span class="pi">⬇️</span>
+  <div class="pt" id="ibText">ثبّت تطبيق عروض قطر<small>افتحه من شاشتك الرئيسية كأي تطبيق</small></div>
+  <button class="pgo" id="ibInstall">تثبيت</button>
+  <button class="px" id="ibX">✕</button>
+</div>
+
 <nav class="botnav" id="botnav">
   <button class="bn on" data-view="home"><span class="i">🏠</span>الرئيسية</button>
   <button class="bn" data-view="compare"><span class="i">🔀</span>قارن</button>
@@ -418,6 +498,21 @@ function MI(key,size){const s=size||84;const sc=key==="scooter";const vb=sc?"0 0
 function iconFor(o,size){return MI(o.ic||"tag",size);}
 const CATIC={resto:"burger",coffee:"coffee",market:"cart",electronics:"phone",fashion:"fashion",pharmacy:"pharma",beauty:"flower",all:"tag"};
 const EMOJI2IC={"🍔":"burger","🍗":"burger","🌯":"burger","🐝":"burger","🍱":"burger","🍕":"pizza","🧁":"cake","🍰":"cake","🍮":"cake","🍩":"cake","🛒":"cart","🥦":"cart","🏬":"cart","☕":"coffee","🥤":"coffee","📱":"phone","📺":"phone","💊":"pharma","💐":"flower","👗":"fashion"};
+/* أختام الخصم المصمّمة (شارات لافتة) */
+function dealBadge(type){
+  const C={d50:{t:"50%",c1:"#A8123F",c2:"#5C0E25",fs:30},d40:{t:"40%",c1:"#A83258",c2:"#6E1430",fs:30},
+    d30:{t:"30%",c1:"#8A1538",c2:"#4C0C1E",fs:30},d20:{t:"20%",c1:"#9B2A4C",c2:"#5C0E25",fs:30},
+    free:{t:"🚚",c1:"#0E8F6E",c2:"#0A6B53",fs:30},freedeal:{t:"🎁",c1:"#C9A227",c2:"#9c7d12",fs:30}};
+  const x=C[type]||C.d50, id="sg_"+type;
+  return `<svg viewBox="0 0 100 100" width="74" height="74" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="${id}" cx="50%" cy="36%" r="70%"><stop offset="0%" stop-color="${x.c1}"/><stop offset="100%" stop-color="${x.c2}"/></radialGradient></defs>
+    <circle cx="50" cy="50" r="47" fill="none" stroke="#C9A227" stroke-width="3.5" stroke-dasharray="5 7" stroke-linecap="round" class="mi-spin" style="transform-origin:50px 50px"/>
+    <circle cx="50" cy="50" r="40" fill="url(#${id})"/>
+    <circle cx="50" cy="50" r="40" fill="none" stroke="#EBCD6E" stroke-width="1.6" opacity=".65"/>
+    <path class="mi-twinkle" style="transform-box:fill-box;transform-origin:center" d="M76 28 l2.4 6 6 2.4 -6 2.4 -2.4 6 -2.4 -6 -6 -2.4 6 -2.4 Z" fill="#EBCD6E"/>
+    <text x="50" y="59" text-anchor="middle" font-size="${x.fs}" font-weight="900" fill="#fff" font-family="Cairo,sans-serif">${x.t}</text>
+  </svg>`;
+}
 
 let OFFERS=[
   {id:1,biz:"كارفور",logo:"🛒",cat:"market",plat:"talabat",pct:50,oldP:50,newP:25,cmp:25,area:"كل المناطق",img:"imgB",emoji:"🛒",feat:false,flash:false,hours:72,vh:3,desc:"خصم 50% على منتجات مختارة من البقالة مع توصيل مجاني للطلبات فوق 50 ريال",terms:"العرض على منتجات محددة فقط · لا يشمل الإلكترونيات",phone:"+97444001234",wa:"97455500011"},
@@ -451,14 +546,26 @@ let nextId=200;
 PLAT.direct={n:"مباشر من المطعم",c:"#0E8F6E",url:""};
 // تحديد رابط "اطلب الآن" + خاصية التوصيل المجاني لكل عرض
 const FD=new Set([1,2,4,6,9,10,20,21,23,30,40,50]);
-OFFERS.forEach(o=>{o.orderUrl=o.direct?(o.menuUrl||""):(PLAT[o.plat]?.url||"");o.fd=FD.has(o.id);o.orders=Math.round(120+o.pct*8+Math.random()*420);o.ic=EMOJI2IC[o.emoji]||CATIC[o.cat]||"tag";});
+OFFERS.forEach(o=>{o.orderUrl=o.direct?(o.menuUrl||""):(PLAT[o.plat]?.url||"");o.fd=FD.has(o.id);o.orders=Math.round(120+o.pct*8+Math.random()*420);o.ic=EMOJI2IC[o.emoji]||CATIC[o.cat]||"tag";o.owner=o.biz;});
+/* البانرات الإعلانية المميزة (مدفوعة من المطاعم) */
+let BANNERS=[
+  {id:1,title:"مطعم بلبن — خصم 45%",subtitle:"كل الحلويات والمشروبات طوال الأسبوع",offerId:2,owner:"مطعم بلبن",imgData:null,bg:"linear-gradient(120deg,#5C0E25,#8A1538 55%,#A83258)"},
+  {id:2,title:"ماكدونالدز — وفّر مع كيتا",subtitle:"بيج ماك ميل بأرخص سعر · قارن قبل ما تطلب",offerId:23,owner:"ماكدونالدز",imgData:null,bg:"linear-gradient(120deg,#0A6B53,#0E8F6E 60%,#16b58a)"},
+];
+let nextBanner=20;
 
 const store={get:(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 let view="home", cat="all", q="", sort="discount", offerType="all";
 const TYPES=[["all","كل العروض","🏷️"],["d50","خصم 50%","🔥"],["d40","خصم 40%","💥"],["d30","خصم 30%","✅"],["d20","خصم 20%","🟢"],["free","توصيل مجاني","🚚"],["freedeal","عرض + توصيل مجاني","🎁"]];
 let platSel="all", openMenu=null;
+let role=store.get("qd_role","customer");
+let merchantName=store.get("qd_merchant","");
+const ADMIN_PASS="Qatar@2026"; // كلمة مرور الأدمن (غيّرها من الكود)
+function canEdit(o){return role==="admin"||(role==="business"&&!!merchantName&&o.owner===merchantName);}
+let formImg=null, formLogo=null, editImg=null, editLogo=null, bannerImg=null;
+function readImg(file,cb){if(!file)return;const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file);}
 let favs=new Set(store.get("qd_favs",[]));
-let cdTimer=null, deferredPrompt=null;
+let cdTimer=null, deferredPrompt=null, bannerTimer=null;
 const $=id=>document.getElementById(id);
 function timeLabel(h){return h>=24?`باقي ${Math.floor(h/24)} يوم`:`باقي ${h} ساعة`}
 function vClass(h){return h<=24?'v-fresh':h<=72?'v-ok':'v-old'}
@@ -469,9 +576,9 @@ function brandGroup(biz){return OFFERS.filter(o=>o.biz===biz)}
 
 function offerCard(o){
   return `<div class="card" data-open="${o.id}">
-    <div class="img ${o.img}">${iconFor(o,88)}<span class="badge">${o.pct}%-</span>${o.feat?'<span class="feat">⭐ مميز</span>':''}</div>
+    <div class="img ${o.img}">${o.imgData?`<img class="cardimg" src="${o.imgData}" alt="">`:iconFor(o,88)}<span class="badge">${o.pct}%-</span>${o.feat?'<span class="feat">⭐ مميز</span>':''}</div>
     <div class="body">
-      <div class="row1"><div class="blogo">${o.logo}</div><div class="bname">${o.biz} · ${PLAT[o.plat].n}</div>
+      <div class="row1"><div class="blogo">${o.logoData?`<img class="logoimg" src="${o.logoData}" alt="">`:o.logo}</div><div class="bname">${o.biz} · ${PLAT[o.plat].n}</div>
         <button class="heart" data-fav="${o.id}">${favs.has(o.id)?'❤️':'🤍'}</button></div>
       <div class="title">${o.desc.slice(0,68)}</div>
       <div class="pricerow">${o.newP?`<span class="new">${o.newP} ر.ق</span>`:`<span class="new">خصم ${o.pct}%</span>`}${o.oldP?`<span class="old">${o.oldP} ر.ق</span>`:''}<span class="time">⏱️ ${timeLabel(o.hours)}</span></div>
@@ -483,10 +590,10 @@ function compareCard(group){
   const best=[...group].sort((a,b)=>(a.cmp||9e9)-(b.cmp||9e9))[0];
   const bestPct=Math.max(...group.map(o=>o.pct));
   return `<div class="card" data-cmp="${best.biz}">
-    <div class="img ${best.img}">${iconFor(best,88)}<span class="badge">${bestPct}%-</span>
+    <div class="img ${best.img}">${best.imgData?`<img class="cardimg" src="${best.imgData}" alt="">`:iconFor(best,88)}<span class="badge">${bestPct}%-</span>
       <span class="cmpflag">🔀 متوفر على ${group.length} تطبيقات</span></div>
     <div class="body">
-      <div class="row1"><div class="blogo">${best.logo}</div><div class="bname">${best.biz}</div></div>
+      <div class="row1"><div class="blogo">${best.logoData?`<img class="logoimg" src="${best.logoData}" alt="">`:best.logo}</div><div class="bname">${best.biz}</div></div>
       <div class="title">${best.desc.slice(0,64)}</div>
       <div class="pricerow"><span class="new">من ${best.cmp} ر.ق</span><span class="time" style="color:var(--green)">⇄ قارن ووفّر</span></div>
       <div class="foot"><span class="verify v-fresh">قارن السعر قبل ما تطلب</span></div>
@@ -514,6 +621,62 @@ function filteredOffers(){
   return sortList(l);
 }
 
+function bannerSlide(b,i){
+  const linked=b.offerId?OFFERS.find(o=>o.id===b.offerId):null;
+  const img=b.imgData||(linked&&linked.imgData)||null;
+  const bg=img?`background-image:url('${img}')`:`background:${b.bg||"linear-gradient(120deg,#5C0E25,#8A1538)"}`;
+  return `<div class="slide ${i===0?"active":""}" data-bopen="${b.offerId||""}">
+    <div class="promo-bg" style="${bg}"></div>
+    <div class="promo-shine"></div>
+    <div class="promo-ov">
+      <span class="promo-badge">⭐ عرض مميز · إعلان</span>
+      <div class="promo-title">${b.title}</div>
+      <div class="promo-sub">${b.subtitle||""}</div>
+      ${b.offerId?'<span class="promo-cta">شوف العرض ←</span>':""}
+    </div></div>`;
+}
+function promoHtml(){
+  if(!BANNERS.length)return "";
+  return `<div class="promo" id="promo">${BANNERS.map(bannerSlide).join("")}${BANNERS.length>1?`<div class="promo-dots">${BANNERS.map((_,i)=>`<span class="pdotc ${i===0?"on":""}" data-bi="${i}"></span>`).join("")}</div>`:""}</div>`;
+}
+function setupCarousel(){
+  clearInterval(bannerTimer);
+  const promo=document.getElementById("promo");if(!promo)return;
+  const slides=[...promo.querySelectorAll(".slide")];
+  const dots=[...promo.querySelectorAll(".pdotc")];
+  let i=0;
+  const go=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle("active",k===i));dots.forEach((d,k)=>d.classList.toggle("on",k===i));};
+  dots.forEach((d,k)=>d.onclick=ev=>{ev.stopPropagation();go(k);});
+  if(slides.length>1)bannerTimer=setInterval(()=>go(i+1),5000);
+}
+function bannerAdminHtml(){
+  const my=role==="admin"?OFFERS:OFFERS.filter(o=>o.owner===merchantName);
+  const myBanners=role==="admin"?BANNERS:BANNERS.filter(b=>b.owner===merchantName);
+  return `<div class="toolbar" style="margin-top:30px"><h2>بانر إعلاني مميز <span>· مدفوع</span></h2></div>
+  <div class="panel">
+    <p class="sub" style="margin-bottom:16px">اعرض عرضك في بانر متحرك أعلى الرئيسية (ضمن باقة Premium المدفوعة). الصورة بتظهر بحركة موشن جرافيك.</p>
+    <div class="field"><label>عنوان البانر</label><input id="bn_title" placeholder="مثال: مطعم بلبن — خصم 45%"></div>
+    <div class="field"><label>وصف قصير</label><input id="bn_sub" placeholder="مثال: كل الحلويات طوال الأسبوع"></div>
+    <div class="field"><label>📷 صورة البانر (موشن جرافيك)</label><input id="bn_img" type="file" accept="image/*"><div id="bn_imgPrev" class="imgprev"></div></div>
+    <div class="field"><label>اربط بعرض (اختياري)</label><select id="bn_offer"><option value="">— بدون —</option>${my.map(o=>`<option value="${o.id}">${o.biz} - ${o.pct}%</option>`).join("")}</select></div>
+    <button class="subbtn" id="bn_add">➕ أضف البانر للرئيسية</button>
+  </div>
+  ${myBanners.length?`<div class="panel" style="padding:10px 14px;margin-top:14px">${myBanners.map(b=>{const lk=b.offerId?OFFERS.find(o=>o.id===b.offerId):null;const im=b.imgData||(lk&&lk.imgData)||null;return `<div class="mrow">
+    <div class="mlogo" style="width:70px;border-radius:10px;overflow:hidden;${im?`background-image:url('${im}');background-size:cover;background-position:center`:`background:${b.bg}`}"></div>
+    <div class="minfo"><div class="mname">${b.title}</div><div class="msub">${b.subtitle||""}</div></div>
+    <button class="micon mdel" data-bdel="${b.id}" title="حذف">🗑️</button>
+  </div>`;}).join("")}</div>`:""}`;
+}
+function addBanner(){
+  const t=$("bn_title").value.trim();if(!t){toast("اكتب عنوان البانر");return;}
+  const off=$("bn_offer").value;
+  BANNERS.push({id:nextBanner++,title:t,subtitle:$("bn_sub").value.trim(),offerId:off?+off:null,
+    owner:role==="business"?merchantName:"system",imgData:bannerImg,bg:"linear-gradient(120deg,#5C0E25,#8A1538 60%,#A83258)"});
+  bannerImg=null;toast("✅ تم إضافة البانر — شوفه أعلى الرئيسية");
+  view="home";render();window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteBanner(id){const i=BANNERS.findIndex(b=>b.id===id);if(i>-1)BANNERS.splice(i,1);render();toast("🗑️ تم حذف البانر");}
+
 function viewHome(){
   const l=filteredOffers();
   const sorts=[["discount","الأعلى خصمًا"],["priceAsc","الأرخص سعرًا"],["expiring","ينتهي قريبًا"],["newest","الأحدث"]];
@@ -529,6 +692,7 @@ function viewHome(){
   const platOpts=[["all","✨ كل التطبيقات",platSel==="all"]].concat(Object.entries(PLAT).map(([k,p])=>[k,p.n,platSel===k]));
   const sortOpts=sorts.map(s=>[s[0],s[1],s[0]===sort]);
   return `
+  ${promoHtml()}
   <div class="hero">
     <div class="herodeco mi-float" style="top:18px;left:26px">${MI("scooter",66)}</div>
     <div class="herodeco mi-float" style="bottom:22px;left:140px;animation-delay:1.2s">${MI("tag",42)}</div>
@@ -542,6 +706,10 @@ function viewHome(){
       <div class="hstat"><div class="n">${avgDiscount()}%</div><div class="l">متوسط الخصم</div></div>
     </div>
   </div>
+  <div class="sectitle">⚡ عروض حسب النسبة</div>
+  <div class="dealstrip">
+    ${[["d50","خصم 50%"],["d40","خصم 40%"],["d30","خصم 30%"],["d20","خصم 20%"],["free","توصيل مجاني"],["freedeal","عرض + توصيل"]].map(d=>`<div class="dealseal ${offerType===d[0]?'on':''}" data-type="${d[0]}"><div class="sealwrap">${dealBadge(d[0])}</div><div class="sealab">${d[1]}</div></div>`).join("")}
+  </div>
   <div class="filterbar">
     ${dd("cat","القسم",catCur,catOpts)}
     ${dd("type","نوع العرض",typeCur,typeOpts)}
@@ -551,12 +719,12 @@ function viewHome(){
   <div class="toolbar">
     <h2>${cat==="all"?"كل العروض":CATNAME[cat]}${offerType!=="all"?" · "+typeCur:""} <span>(${l.length})</span></h2>
   </div>
-  <div class="grid">${renderGrid(l)}</div>`;
+  <div class="grid list">${renderGrid(l)}</div>`;
 }
 function viewFavs(){
   const l=OFFERS.filter(o=>favs.has(o.id));
   return `<div class="toolbar" style="margin-top:28px"><h2>المفضلة <span>(${l.length})</span></h2></div>
-  <div class="grid">${l.length?l.map(offerCard).join(""):'<div class="empty">لسه ما حفظتش أي عرض ❤️<br>اضغط على القلب في أي عرض علشان يتحفظ هنا.</div>'}</div>`;
+  <div class="grid list">${l.length?l.map(offerCard).join(""):'<div class="empty">لسه ما حفظتش أي عرض ❤️<br>اضغط على القلب في أي عرض علشان يتحفظ هنا.</div>'}</div>`;
 }
 
 /* ===== COMPARE ITEMS across delivery apps ===== */
@@ -582,7 +750,7 @@ function viewCompare(){
     <p>نفس الصنف بسعر مختلف على كل تطبيق — اعرف الأرخص قبل ما تطلب ووفّر فلوسك.</p>
   </div>
   <div class="toolbar"><h2>أصناف قابلة للمقارنة <span>(${groups.length})</span></h2></div>
-  <div class="grid">${groups.length?cards:'<div class="empty">لا توجد أصناف متعددة المنصات حاليًا.</div>'}</div>
+  <div class="grid list">${groups.length?cards:'<div class="empty">لا توجد أصناف متعددة المنصات حاليًا.</div>'}</div>
   <div class="insnote" style="margin-top:8px">💡 المقارنة بتشتغل لما يكون نفس المتجر/الصنف متاح على أكتر من تطبيق توصيل. كل ما زادت المتاجر المشتركة، زادت قوة المقارنة — وهي الميزة اللي بتميّز عروض قطر.</div>`;
 }
 
@@ -687,6 +855,10 @@ function viewBiz(){
         <div><label>المنطقة</label><input id="b_area" placeholder="الدوحة"></div>
       </div>
       <div class="field"><label>تفاصيل العرض</label><textarea id="b_desc" placeholder="مثال: خصم على كل الطلبات فوق 50 ريال"></textarea></div>
+      <div class="field two">
+        <div><label>📷 صورة العرض (اختياري)</label><input id="b_img" type="file" accept="image/*"><div id="b_imgPrev" class="imgprev"></div></div>
+        <div><label>🏪 شعار المتجر (اختياري)</label><input id="b_logo" type="file" accept="image/*"><div id="b_logoPrev" class="imgprev"></div></div>
+      </div>
       <button class="subbtn" id="b_submit">أضف العرض للتطبيق</button>
     </div>
     <div>
@@ -700,16 +872,28 @@ function viewBiz(){
       </div>
     </div>
   </div>
-  <div class="toolbar" style="margin-top:30px"><h2>إدارة العروض <span>(${OFFERS.length})</span></h2></div>
-  <div class="panel" style="padding:10px 14px">
-    ${OFFERS.map(o=>`<div class="mrow">
-      <div class="mlogo">${o.logo}</div>
+  <div class="toolbar" style="margin-top:30px"><h2>إدارة العروض</h2></div>
+  <div style="margin-bottom:12px;color:var(--gray);font-size:13px;font-weight:700">تتصفح حاليًا كـ:
+    <span class="roleswitch">
+      <button data-role="customer" class="${role==='customer'?'on':''}">عميل</button>
+      <button data-role="business" class="${role==='business'?'on':''}">تاجر</button>
+      <button data-role="admin" class="${role==='admin'?'on':''}">🔐 أدمن</button>
+    </span>
+    ${role==='business'&&merchantName?`<span style="color:var(--green);font-weight:900;margin-inline-start:8px">🏪 ${merchantName}</span>`:''}
+    ${role==='admin'?`<span style="color:var(--green);font-weight:900;margin-inline-start:8px">🔓 أدمن (كل العروض)</span>`:''}
+  </div>
+  ${role==="customer"?`<div class="panel empty" style="padding:40px 20px">🔒 إدارة العروض (تعديل/حذف) متاحة <b>للتجار والأدمن</b> فقط.<br>بدّل الدور من الأعلى للتجربة.</div>`:(()=>{
+    const my=role==="admin"?OFFERS:OFFERS.filter(o=>o.owner===merchantName);
+    if(!my.length)return `<div class="panel empty" style="padding:40px 20px">لا توجد عروض ${role==="business"?`باسم متجرك «${merchantName}»`:""} بعد.<br>أضف عرضًا من الأعلى ☝️</div>`;
+    return `<div class="panel" style="padding:10px 14px">${my.map(o=>`<div class="mrow">
+      <div class="mlogo">${o.logoData?`<img class="logoimg" src="${o.logoData}">`:o.logo}</div>
       <div class="minfo"><div class="mname">${o.biz} <span style="color:var(--orange);font-weight:900">${o.pct}%-</span></div>
         <div class="msub">${CATNAME[o.cat]} · ${PLAT[o.plat].n}${o.fd?' · 🚚 مجاني':''}</div></div>
       <button class="micon" data-medit="${o.id}" title="تعديل">✏️</button>
       <button class="micon mdel" data-mdel="${o.id}" title="حذف">🗑️</button>
-    </div>`).join("")}
-  </div>`;
+    </div>`).join("")}</div>`;
+  })()}
+  ${role!=="customer"?bannerAdminHtml():""}`;
 }
 
 function render(){
@@ -723,19 +907,28 @@ function render(){
   [...$("nav").children].forEach(a=>a.classList.toggle("on",a.dataset.view===view));
   const bn=document.getElementById("botnav");if(bn)[...bn.children].forEach(b=>b.classList.toggle("on",b.dataset.view===view));
   bind();
+  setupCarousel();
 }
 function bind(){
   const p=$("page");
   p.querySelectorAll("[data-menu]").forEach(b=>b.onclick=ev=>{ev.stopPropagation();const k=b.dataset.menu;openMenu=openMenu===k?null:k;render();});
   p.querySelectorAll("[data-set]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();applyFilter(e.dataset.set,e.dataset.val);});
+  p.querySelectorAll("[data-type]").forEach(e=>e.onclick=()=>{offerType=(e.dataset.type===offerType)?"all":e.dataset.type;render();});
+  p.querySelectorAll("[data-role]").forEach(e=>e.onclick=()=>setRole(e.dataset.role));
   p.querySelectorAll("[data-open]").forEach(e=>e.onclick=ev=>{if(ev.target.closest("[data-fav]"))return;openDetails(+e.dataset.open);});
   p.querySelectorAll("[data-cmp]").forEach(e=>e.onclick=()=>openCompare(e.dataset.cmp));
   p.querySelectorAll("[data-fav]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();toggleFav(+e.dataset.fav);});
   const bs=$("b_submit");if(bs)bs.onclick=submitBiz;
+  const bi=$("b_img");if(bi)bi.onchange=()=>readImg(bi.files[0],d=>{formImg=d;$("b_imgPrev").innerHTML=`<img src="${d}">`;});
+  const bl=$("b_logo");if(bl)bl.onchange=()=>readImg(bl.files[0],d=>{formLogo=d;$("b_logoPrev").innerHTML=`<img src="${d}">`;});
   const rf=$("page").querySelector("[data-action='refresh']");if(rf)rf.onclick=()=>{OFFERS.forEach(o=>o.orders=Math.round(120+o.pct*8+Math.random()*420));render();toast("🔄 تم تحديث التحليل لحظيًا");};
   p.querySelectorAll("[data-medit]").forEach(e=>e.onclick=()=>openEdit(+e.dataset.medit));
   p.querySelectorAll("[data-mdel]").forEach(e=>e.onclick=()=>confirmAction("متأكد من حذف هذا العرض؟",()=>deleteOffer(+e.dataset.mdel)));
   p.querySelectorAll("[data-goview]").forEach(e=>e.onclick=()=>{view=e.dataset.goview;render();window.scrollTo({top:0,behavior:"smooth"});});
+  p.querySelectorAll("[data-bopen]").forEach(e=>e.onclick=()=>{const v=e.dataset.bopen;if(v)openDetails(+v);});
+  const ba=$("bn_add");if(ba)ba.onclick=addBanner;
+  const bimg=$("bn_img");if(bimg)bimg.onchange=()=>readImg(bimg.files[0],d=>{bannerImg=d;$("bn_imgPrev").innerHTML=`<img src="${d}">`;});
+  p.querySelectorAll("[data-bdel]").forEach(e=>e.onclick=()=>confirmAction("متأكد من حذف هذا البانر؟",()=>deleteBanner(+e.dataset.bdel)));
 }
 function applyFilter(key,val){
   if(key==="cat")cat=val;
@@ -761,9 +954,9 @@ function openDetails(id){
   let secs=o.hours*3600;
   openModal(`
     <button class="close" id="close">✕</button>
-    <div class="dhero ${o.img}">${iconFor(o,150)}<span class="dbadge">${o.pct}%-</span></div>
+    <div class="dhero ${o.img}">${o.imgData?`<img class="dheroimg" src="${o.imgData}" alt="">`:iconFor(o,150)}<span class="dbadge">${o.pct}%-</span></div>
     <div class="dbody">
-      <div class="dbiz"><div class="l">${o.logo}</div><div><div class="nm">${o.biz}</div><div class="pl">متوفر على ${PLAT[o.plat].n} · 📍 ${o.area}</div></div></div>
+      <div class="dbiz"><div class="l">${o.logoData?`<img class="logoimg" src="${o.logoData}" alt="">`:o.logo}</div><div><div class="nm">${o.biz}</div><div class="pl">متوفر على ${PLAT[o.plat].n} · 📍 ${o.area}</div></div></div>
       <div style="margin-top:10px"><span class="verify ${vClass(o.vh)}">${vLabel(o.vh)}</span>${o.fd?' <span class="fdbadge">🚚 توصيل مجاني</span>':''}</div>
       <div class="dtitle">${o.desc}</div>
       <div class="dprice">${o.newP?`<span class="n">${o.newP} ر.ق</span>`:`<span class="n">خصم ${o.pct}%</span>`}${o.oldP?`<span class="o">${o.oldP} ر.ق</span>`:''}</div>
@@ -781,10 +974,10 @@ function openDetails(id){
         <button class="bigbtn save" data-fav="${o.id}">${favs.has(o.id)?'❤️ محفوظ':'🤍 حفظ العرض'}</button>
         <button class="bigbtn report" data-report="1">🚩 إبلاغ عن عرض منتهي</button>
       </div>
-      <div class="bigbtns" style="margin-top:10px">
+      ${canEdit(o)?`<div class="bigbtns" style="margin-top:10px">
         <button class="bigbtn" data-edit="${o.id}" style="background:var(--surface-2);border:1px solid var(--line);color:var(--ink)">✏️ تعديل العرض</button>
         <button class="bigbtn" data-del="${o.id}" style="background:#B42318;color:#fff">🗑️ حذف العرض</button>
-      </div>
+      </div>`:''}
     </div>`);
   $("close").onclick=closeModal;
   const sh=$("sheet");
@@ -863,6 +1056,41 @@ function openOrder(o){
   if(url){window.open(url,"_blank","noopener");toast(o.direct?`فتح منيو ${o.biz} مباشرة…`:`فتح ${PLAT[o.plat].n}…`);}
   else toast("الرابط غير متاح لهذا العرض");
 }
+/* ===== الأدوار والصلاحيات ===== */
+function setRole(r){
+  if(r===role&&r!=="business"){return;}
+  if(r==="admin"){openAdminLogin();return;}
+  if(r==="business"){openMerchantLogin();return;}
+  role="customer";store.set("qd_role","customer");render();
+}
+function openMerchantLogin(){
+  openModal(`<button class="close" id="close">✕</button>
+   <div style="padding:34px 26px 26px">
+     <div style="font-size:40px;text-align:center">🏪</div>
+     <div class="dlabel" style="text-align:center;font-size:18px;margin:8px 0 4px">تسجيل دخول التاجر</div>
+     <div style="color:var(--gray);font-size:13px;text-align:center;margin-bottom:16px">اكتب اسم متجرك — هتقدر تعدّل/تحذف عروض متجرك فقط.</div>
+     <div class="field"><label>اسم المتجر</label><input id="m_name" placeholder="مثال: مطعم بلبن" value="${merchantName||""}"></div>
+     <button class="submit" id="m_go" style="width:calc(100% - 36px)">دخول كتاجر</button>
+   </div>`);
+  $("close").onclick=closeModal;
+  $("m_go").onclick=()=>{const n=$("m_name").value.trim();if(!n){toast("اكتب اسم متجرك");return;}
+    merchantName=n;role="business";store.set("qd_merchant",n);store.set("qd_role","business");closeModal();render();toast("✅ دخلت كتاجر: "+n);};
+}
+function openAdminLogin(){
+  openModal(`<button class="close" id="close">✕</button>
+   <div style="padding:34px 26px 26px">
+     <div style="font-size:40px;text-align:center">🔐</div>
+     <div class="dlabel" style="text-align:center;font-size:18px;margin:8px 0 4px">دخول الأدمن</div>
+     <div style="color:var(--gray);font-size:13px;text-align:center;margin-bottom:16px">كلمة المرور مطلوبة لمنع أي متصفح من التعديل.</div>
+     <div class="field"><label>كلمة المرور</label><input id="a_pass" type="password" placeholder="••••••••"></div>
+     <button class="submit" id="a_go" style="width:calc(100% - 36px)">دخول</button>
+   </div>`);
+  $("close").onclick=closeModal;
+  const go=()=>{if($("a_pass").value===ADMIN_PASS){role="admin";store.set("qd_role","admin");closeModal();render();toast("✅ دخلت كأدمن");}else toast("❌ كلمة المرور غير صحيحة");};
+  $("a_go").onclick=go;
+  $("a_pass").addEventListener("keydown",e=>{if(e.key==="Enter")go();});
+}
+
 /* ===== تعديل / حذف العرض ===== */
 function confirmAction(msg,onYes){
   openModal(`<button class="close" id="close">✕</button>
@@ -876,13 +1104,16 @@ function confirmAction(msg,onYes){
   $("cYes").onclick=()=>{closeModal();onYes();};
 }
 function deleteOffer(id){
-  const i=OFFERS.findIndex(o=>o.id===id);
+  const o=OFFERS.find(x=>x.id===id);
+  if(o&&!canEdit(o)){toast("🔒 غير مصرّح بحذف هذا العرض");return;}
+  const i=OFFERS.findIndex(x=>x.id===id);
   if(i>-1)OFFERS.splice(i,1);
   favs.delete(id);store.set("qd_favs",[...favs]);
   render();toast("🗑️ تم حذف العرض");
 }
 function openEdit(id){
   const o=OFFERS.find(x=>x.id===id);if(!o)return;
+  if(!canEdit(o)){toast("🔒 غير مصرّح — تقدر تعدّل عروض متجرك فقط");return;}
   openModal(`<button class="close" id="close">✕</button>
     <div style="padding:24px 24px 4px"><div class="dlabel" style="margin:0;font-size:18px">✏️ تعديل العرض</div></div>
     <div style="padding:10px 6px 6px">
@@ -896,28 +1127,39 @@ function openEdit(id){
         <div><label>المنطقة</label><input id="e_area" value="${o.area}"></div>
       </div>
       <div class="field"><label>تفاصيل العرض</label><textarea id="e_desc">${o.desc}</textarea></div>
+      <div class="field two">
+        <div><label>📷 صورة العرض</label><input id="e_img" type="file" accept="image/*"><div id="e_imgPrev" class="imgprev">${o.imgData?`<img src="${o.imgData}">`:''}</div></div>
+        <div><label>🏪 شعار المتجر</label><input id="e_logo" type="file" accept="image/*"><div id="e_logoPrev" class="imgprev">${o.logoData?`<img src="${o.logoData}">`:''}</div></div>
+      </div>
       <label style="display:flex;align-items:center;gap:9px;margin:0 18px 14px;font-weight:800;font-size:14px;cursor:pointer"><input type="checkbox" id="e_fd" ${o.fd?"checked":""}> 🚚 توصيل مجاني</label>
       <button class="submit" id="e_save">💾 حفظ التعديلات</button>
     </div>`);
   $("close").onclick=closeModal;
+  editImg=o.imgData||null;editLogo=o.logoData||null;
+  $("e_img").onchange=()=>readImg($("e_img").files[0],d=>{editImg=d;$("e_imgPrev").innerHTML=`<img src="${d}">`;});
+  $("e_logo").onchange=()=>readImg($("e_logo").files[0],d=>{editLogo=d;$("e_logoPrev").innerHTML=`<img src="${d}">`;});
   $("e_save").onclick=()=>{
     const biz=$("e_biz").value.trim(),pct=parseInt($("e_pct").value),desc=$("e_desc").value.trim();
     if(!biz||!pct||!desc){toast("اكمل الاسم والخصم والتفاصيل");return;}
     o.biz=biz;o.cat=$("e_cat").value;o.plat=$("e_plat").value;o.pct=Math.min(100,Math.max(1,pct));
     o.area=$("e_area").value.trim()||o.area;o.desc=desc;o.fd=$("e_fd").checked;
+    o.imgData=editImg;o.logoData=editLogo;
     o.orderUrl=o.direct?(o.menuUrl||""):(PLAT[o.plat]?.url||"");
     closeModal();render();toast("✅ تم حفظ تعديلات العرض");
   };
 }
 
 function submitBiz(){
+  if(role==="customer"){toast("بدّل دورك إلى تاجر أولًا لإضافة عرض");return;}
   const biz=$("b_biz").value.trim(),pct=parseInt($("b_pct").value),desc=$("b_desc").value.trim();
   if(!biz||!pct||!desc){toast("اكمل الاسم والخصم والتفاصيل");return;}
   const emap={resto:"🍔",coffee:"☕",market:"🛒",electronics:"📱",fashion:"👗",pharmacy:"💊",beauty:"💄"};
   const c=$("b_cat").value;
-  const newOffer={id:nextId++,biz,logo:"🏪",cat:c,plat:$("b_plat").value,pct:Math.min(100,Math.max(1,pct)),
-    oldP:0,newP:0,cmp:0,area:$("b_area").value.trim()||"مُضاف حديثًا",img:"imgB",emoji:emap[c]||"🏷️",feat:false,flash:false,hours:72,vh:0,orderUrl:(PLAT[$("b_plat").value]?.url||""),fd:false,orders:Math.round(60+pct*5),desc,terms:"عرض جديد مُضاف من المتجر",phone:"+974",wa:"974"};
+  const owner=role==="business"?merchantName:biz;
+  const newOffer={id:nextId++,biz,owner,logo:"🏪",cat:c,plat:$("b_plat").value,pct:Math.min(100,Math.max(1,pct)),
+    oldP:0,newP:0,cmp:0,area:$("b_area").value.trim()||"مُضاف حديثًا",img:"imgB",emoji:emap[c]||"🏷️",ic:CATIC[c]||"tag",feat:false,flash:false,hours:72,vh:0,orderUrl:(PLAT[$("b_plat").value]?.url||""),fd:false,orders:Math.round(60+pct*5),imgData:formImg,logoData:formLogo,desc,terms:"عرض جديد مُضاف من المتجر",phone:"+974",wa:"974"};
   OFFERS.unshift(newOffer);
+  formImg=null;formLogo=null;
   cat="all";view="home";render();window.scrollTo({top:0,behavior:"smooth"});toast("✅ تم إضافة عرضك — شوفه في الأعلى");
   showPush(newOffer,true);
 }
@@ -933,10 +1175,29 @@ $("themeBtn").onclick=toggleTheme;
 document.documentElement.dataset.theme=store.get("qd_theme","light");
 $("themeBtn").textContent=document.documentElement.dataset.theme==="dark"?"☀️":"🌙";
 
-/* PWA install */
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").style.display="flex";});
-$("installBtn").onclick=async()=>{if(!deferredPrompt){toast("لإضافته على الآيفون: زر المشاركة ← إضافة إلى الشاشة الرئيسية");return;}deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$("installBtn").style.display="none";};
-window.addEventListener("appinstalled",()=>{$("installBtn").style.display="none";toast("✅ تم تثبيت التطبيق");});
+/* PWA install — يظهر العرض فور فتح اللينك */
+const isStandalone=()=>window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+function showInstall(ios){
+  const el=$("installBanner");
+  $("ibText").innerHTML=ios?'ثبّت تطبيق عروض قطر<small>زر المشاركة ⎙ ← إضافة إلى الشاشة الرئيسية</small>':'ثبّت تطبيق عروض قطر<small>افتحه من شاشتك الرئيسية كأي تطبيق</small>';
+  $("ibInstall").style.display=ios?"none":"block";
+  el.classList.add("show");
+}
+function hideInstall(){$("installBanner").classList.remove("show");$("installBtn").style.display="none";}
+function doInstall(){
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;hideInstall();});}
+  else toast("للتثبيت على آيفون: زر المشاركة ⎙ ← إضافة إلى الشاشة الرئيسية");
+}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").style.display="flex";showInstall(false);});
+window.addEventListener("appinstalled",()=>{hideInstall();toast("✅ تم تثبيت التطبيق");});
+$("installBtn").onclick=doInstall;
+$("ibInstall").onclick=doInstall;
+$("ibX").onclick=()=>$("installBanner").classList.remove("show");
+if(!isStandalone()){
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  if(isIOS)setTimeout(()=>showInstall(true),1300);
+  // أندرويد/كروم: البانر يظهر تلقائيًا عند توفّر إمكانية التثبيت (beforeinstallprompt)
+}
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});}
 
 document.addEventListener("click",e=>{if(openMenu&&!e.target.closest(".filt")){openMenu=null;render();}});
@@ -954,12 +1215,14 @@ function showPush(o,isNew){
   clearTimeout(showPush._t);showPush._t=setTimeout(()=>el.classList.remove("show"),8000);
 }
 function notifyStrong(){
+  // ما نزاحمش بانر التثبيت
+  if($("installBanner")&&$("installBanner").classList.contains("show"))return;
   // عند اللزوم فقط: العروض القوية (خصم 40%+) اللي ما اتبلّغ عنها بعد
   const strong=[...OFFERS].filter(o=>o.pct>=40&&!notified.has(o.id)).sort((a,b)=>b.pct-a.pct);
   if(!strong.length){notified.clear();return;}
   const o=strong[0];notified.add(o.id);showPush(o,false);
 }
-setTimeout(notifyStrong,2200);
+setTimeout(notifyStrong,6000);
 setInterval(notifyStrong,38000);
 
 render();
