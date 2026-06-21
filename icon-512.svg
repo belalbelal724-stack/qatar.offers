@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#8A1538"/>
+  <rect x="16" y="16" width="480" height="480" rx="68" fill="none" stroke="#C9A227" stroke-width="8" opacity="0.4"/>
+  <text x="256" y="210" font-size="140" text-anchor="middle" fill="#C9A227" font-family="Arial, sans-serif" font-weight="bold">بدّل</text>
+  <text x="256" y="348" font-size="96" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold">ها</text>
+  <path d="M 140 400 Q 256 372 372 400" stroke="#C9A227" stroke-width="6" fill="none" opacity="0.6"/>
+</svg>
