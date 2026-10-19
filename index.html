@@ -1444,15 +1444,27 @@ function applyCloud(d){
 async function cloudLoad(silent){
   if(!cloudOn)return false;
   try{
-    const {data,error}=await sb.from("qd_app").select("data,updated_at").eq("id","main").single();
-    if(error)throw error;
-    if(data&&data.data&&Object.keys(data.data).length){
-      applyCloud(data.data);
+    /* قراءة مباشرة بدون كاش — المكتبة بتترك المتصفح يخزّن النتيجة
+       فكان ممكن جهاز يشوف نسخة قديمة */
+    const r=await fetch(SB_URL+"/rest/v1/qd_app?id=eq.main&select=data&_="+Date.now(),{
+      headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const rows=await r.json();
+    const d=rows&&rows[0]&&rows[0].data;
+    if(d&&Object.keys(d).length){
+      applyCloud(d);
       if(!silent)toast("☁️ تم تحميل أحدث البيانات");
       return true;
     }
   }catch(e){ if(!silent)toast("⚠️ تعذّر الاتصال بالسحابة — بنعرض نسخة الجهاز"); }
   return false;
+}
+/* زرّ تحديث يدوي للعميل */
+async function cloudRefresh(){
+  toast("⏳ بنجيب آخر تحديث…");
+  const ok=await cloudLoad(true);
+  if(ok){render();toast("✅ اتحدّث لآخر نسخة");}
+  else toast("مفيش تحديثات جديدة");
 }
 async function cloudSave(){
   if(!cloudOn)return false;
@@ -3379,6 +3391,12 @@ $("dailyBtn").onclick=openDaily;
 $("behaviorBtn").onclick=()=>{view="behavior";render();window.scrollTo({top:0,behavior:"smooth"});};
 $("cartBtn").onclick=()=>{view="cart";render();window.scrollTo({top:0,behavior:"smooth"});};
 $("countryBtn").onclick=openCountry;
+$("cloudBadge").onclick=cloudRefresh;
+$("cloudBadge").style.cursor="pointer";
+/* نجيب آخر نسخة لما يرجع للتطبيق بعد ما كان مقفول */
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible"&&cloudOn&&!cloudUser)cloudLoad(true).then(ok=>{if(ok)render();});
+});
 function syncCountryBtn(){const f=$("cbFlag"),n=$("cbName");
   if(f)f.innerHTML=FLAGSVG[country]||FLAGSVG.qa;
   if(n)n.textContent=CO().n;}
