@@ -1,4 +1,4 @@
-const CACHE = "qatar-deals-v20";
+const CACHE = "qatar-deals-v21";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -12,14 +12,37 @@ self.addEventListener("activate", e => {
   );
 });
 
-// Cache-first for app shell, network fallback (works offline after first load).
+self.addEventListener("message", e => {
+  if (e.data === "skipWaiting") self.skipWaiting();
+});
+
+// الصفحة نفسها: الشبكة أولًا (عشان التحديثات توصل فورًا) مع رجوع للكاش لو مفيش نت.
+// باقي الملفات: الكاش أولًا (أسرع) مع تحديث في الخلفية.
 self.addEventListener("fetch", e => {
-  if (e.request.method !== "GET") return;
+  const req = e.request;
+  if (req.method !== "GET") return;
+
+  const isPage = req.mode === "navigate" ||
+    (req.headers.get("accept") || "").includes("text/html");
+
+  if (isPage) {
+    e.respondWith(
+      fetch(req)
+        .then(res => {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put("./index.html", copy)).catch(() => {});
+          return res;
+        })
+        .catch(() => caches.match(req).then(c => c || caches.match("./index.html")))
+    );
+    return;
+  }
+
   e.respondWith(
-    caches.match(e.request).then(cached =>
-      cached || fetch(e.request).then(res => {
+    caches.match(req).then(cached =>
+      cached || fetch(req).then(res => {
         const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
+        caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
         return res;
       }).catch(() => cached)
     )
