@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <!-- QD_APP_MARKER -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 /* تحميل الخط والألوان المحفوظة قبل أي رسم — عشان شاشة الترحيب تظهر بخط التطبيق نفسه */
 (function(){
@@ -676,6 +677,16 @@ footer{padding-bottom:40px}
 .fstat.sys{color:var(--gray);background:var(--surface-2);border:1px solid var(--line)}
 .passrow{display:flex;gap:8px;align-items:center}
 .passrow input{flex:1}
+/* ===== مؤشر السحابة ===== */
+.cloudbadge{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:15px;
+  border:1px solid var(--line);background:var(--surface-2);flex:none;cursor:default;transition:.2s}
+.cloudbadge.ok{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.cloudbadge.sv{background:color-mix(in srgb,var(--gold) 20%,transparent);border-color:var(--gold);animation:cbpulse 1.1s ease-in-out infinite}
+.cloudbadge.er{background:color-mix(in srgb,#B42318 16%,transparent);border-color:#B42318}
+.cloudbadge.of{opacity:.55}
+@keyframes cbpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.loginmsg{text-align:center;font-size:12.5px;font-weight:800;color:#B42318;margin-top:12px;min-height:18px;line-height:1.6}
+@media(max-width:600px){.cloudbadge{width:30px;height:30px;font-size:13px}}
 /* ===== مقياس مساحة التخزين ===== */
 .stormeter{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
 .storhd{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;
@@ -1086,6 +1097,7 @@ footer{padding-bottom:40px}
     <button class="hbtn" id="behaviorBtn" style="border-color:var(--gold);color:var(--gold)">📈 <span class="t">تحليل فوري</span></button>
     <button class="hbtn orange" id="dailyBtn">🔥 <span class="t">عروض اليوم</span></button>
     <button class="hbtn green" id="installBtn" style="display:none">⬇️ <span class="t">تثبيت</span></button>
+    <span class="cloudbadge of" id="cloudBadge" title="غير متصل">☁️</span>
     <button class="hbtn icobtn" id="cartBtn" style="position:relative">🛒<span class="cbadge" id="cartCount">0</span></button>
     <button class="hbtn icobtn" id="themeBtn">🌙</button>
   </div>
@@ -1300,7 +1312,8 @@ function readImg(file,cb){
 }
 function saveData(){
   try{localStorage.setItem("qd_offers",JSON.stringify(OFFERS));localStorage.setItem("qd_banners",JSON.stringify(BANNERS));}
-  catch(e){toast("⚠️ مساحة التخزين ممتلئة — جرّب صور أصغر");}
+  catch(e){}
+  cloudSaveSoon();
 }
 let favs=new Set(store.get("qd_favs",[]));
 let cart=new Set(store.get("qd_cart",[]));
@@ -1309,7 +1322,7 @@ let MERCHANTS=store.get("qd_merchants",[
   {name:"مطعم بلبن",pass:"1234",plan:"premium",active:true},
   {name:"ماكدونالدز",pass:"1234",plan:"basic",active:true}
 ]);
-function saveMerchants(){store.set("qd_merchants",MERCHANTS);}
+function saveMerchants(){store.set("qd_merchants",MERCHANTS);cloudSaveSoon();}
 /* ===== مكتبة الخطوط — مجمّعة حسب الطابع (sys:true = خط نظام لا يُحمَّل من الإنترنت) ===== */
 const FONTGROUPS_AR=[
   {g:"عصري وواجهات",f:["Cairo","Tajawal","Almarai","Alexandria","Readex Pro","IBM Plex Sans Arabic","Noto Sans Arabic","Rubik","Vazirmatn","Baloo Bhaijaan 2","Changa","El Messiri","Mada","Kufam","Harmattan","Zain","Cairo Play"]},
@@ -1355,7 +1368,7 @@ function injectFont(fam){
   l.href="https://fonts.googleapis.com/css2?family="+fam.replace(/ /g,"+")+":wght@400;700;900&display=swap";
   document.head.appendChild(l);
 }
-function applyFont(type,fam){injectFont(fam);document.documentElement.style.setProperty(type==="ar"?"--font-ar":"--font-en","'"+fam+"'");store.set(type==="ar"?"qd_font_ar":"qd_font_en",fam);}
+function applyFont(type,fam){injectFont(fam);document.documentElement.style.setProperty(type==="ar"?"--font-ar":"--font-en","'"+fam+"'");store.set(type==="ar"?"qd_font_ar":"qd_font_en",fam);cloudSaveSoon();}
 function shade(hex,pct){hex=(hex||"#000").replace("#","");if(hex.length===3)hex=hex.split("").map(c=>c+c).join("");const n=parseInt(hex,16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;const t=pct<0?0:255,p=Math.abs(pct)/100;r=Math.round((t-r)*p)+r;g=Math.round((t-g)*p)+g;b=Math.round((t-b)*p)+b;return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
 function applyColors(c){
   const r=document.documentElement.style;
@@ -1375,8 +1388,154 @@ function applyColors(c){
   // قوة الظل
   if(c.shadow!=null){const sv=+c.shadow;
     r.setProperty("--shadow","rgba(60,10,28,"+(0.12*sv).toFixed(3)+")");}
-  store.set("qd_colors",c);
+  store.set("qd_colors",c);cloudSaveSoon();
 }
+/* ===================================================================
+   السحابة (Supabase) — البيانات مشتركة بين كل الأجهزة
+=================================================================== */
+const SB_URL="https://sejqytdmjrtzbdepqdoa.supabase.co";
+const SB_KEY="sb_publishable_HYe8MD_-NXW8Az6NZXhyRw_MyFdMXIu";
+const SB_BUCKET="qd-images";
+let sb=null, cloudOn=false, cloudUser=null, cloudBusy=false, lastCloudStamp=0;
+
+function initCloud(){
+  try{
+    if(!window.supabase||!window.supabase.createClient)return false;
+    sb=window.supabase.createClient(SB_URL,SB_KEY);
+    cloudOn=true;
+    return true;
+  }catch(e){cloudOn=false;return false;}
+}
+/* كل بيانات التطبيق في كائن واحد */
+function cloudPayload(){
+  return {
+    offers:OFFERS, banners:BANNERS, merchants:MERCHANTS, reviews:REVIEWS,
+    platlogos:PLATLOGOS, brandlogos:BRANDLOGOS,
+    heroimg:HEROIMG, herodim:heroDim,
+    colors:store.get("qd_colors",null),
+    fontAr:store.get("qd_font_ar",null), fontEn:store.get("qd_font_en",null),
+    header:headerStyle, icon:iconShape, wa:store.get("qd_wa",null),
+    stamp:Date.now()
+  };
+}
+function applyCloud(d){
+  if(!d||typeof d!=="object")return false;
+  if(Array.isArray(d.offers)&&d.offers.length){OFFERS.length=0;d.offers.forEach(o=>OFFERS.push(o));}
+  if(Array.isArray(d.banners))BANNERS=d.banners;
+  if(Array.isArray(d.merchants))MERCHANTS=d.merchants;
+  if(d.reviews&&typeof d.reviews==="object")REVIEWS=d.reviews;
+  if(d.platlogos&&typeof d.platlogos==="object")PLATLOGOS=d.platlogos;
+  if(d.brandlogos&&typeof d.brandlogos==="object")BRANDLOGOS=d.brandlogos;
+  HEROIMG=d.heroimg||null;
+  if(typeof d.herodim==="number")heroDim=d.herodim;
+  if(d.colors)applyColors(d.colors);
+  if(d.fontAr)applyFont("ar",d.fontAr);
+  if(d.fontEn)applyFont("en",d.fontEn);
+  if(d.header)applyHeader(d.header);
+  if(d.icon)applyIconShape(d.icon);
+  if(d.wa)store.set("qd_wa",d.wa);
+  lastCloudStamp=d.stamp||0;
+  /* نسخة محلية للعمل بدون إنترنت */
+  try{store.set("qd_offers",OFFERS);store.set("qd_banners",BANNERS);
+      store.set("qd_merchants",MERCHANTS);store.set("qd_reviews",REVIEWS);
+      store.set("qd_platlogos",PLATLOGOS);store.set("qd_brandlogos",BRANDLOGOS);}catch(e){}
+  return true;
+}
+async function cloudLoad(silent){
+  if(!cloudOn)return false;
+  try{
+    const {data,error}=await sb.from("qd_app").select("data,updated_at").eq("id","main").single();
+    if(error)throw error;
+    if(data&&data.data&&Object.keys(data.data).length){
+      applyCloud(data.data);
+      if(!silent)toast("☁️ تم تحميل أحدث البيانات");
+      return true;
+    }
+  }catch(e){ if(!silent)toast("⚠️ تعذّر الاتصال بالسحابة — بنعرض نسخة الجهاز"); }
+  return false;
+}
+async function cloudSave(){
+  if(!cloudOn)return false;
+  if(!cloudUser){toast("🔒 سجّل دخول الأدمن عشان تحفظ على السحابة");return false;}
+  if(cloudBusy)return false;
+  cloudBusy=true;setCloudBadge("saving");
+  try{
+    const payload=cloudPayload();
+    const {error}=await sb.from("qd_app")
+      .update({data:payload,updated_at:new Date().toISOString()}).eq("id","main");
+    if(error)throw error;
+    lastCloudStamp=payload.stamp;
+    setCloudBadge("ok");
+    return true;
+  }catch(e){
+    setCloudBadge("err");
+    toast("⚠️ فشل الحفظ على السحابة: "+(e.message||"خطأ"));
+    return false;
+  }finally{cloudBusy=false;}
+}
+/* حفظ مؤجّل عشان ما نرهقش الشبكة */
+let cloudTimer=null;
+function cloudSaveSoon(){
+  if(!cloudOn||!cloudUser)return;
+  setCloudBadge("saving");
+  clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(cloudSave,1200);
+}
+function setCloudBadge(state){
+  const b=$("cloudBadge");if(!b)return;
+  const m={saving:["⏳","جاري الحفظ…","sv"],ok:["✅","محفوظ على السحابة","ok"],
+           err:["⚠️","لم يُحفظ","er"],off:["☁️","غير متصل","of"]};
+  const x=m[state]||m.off;
+  b.className="cloudbadge "+x[2];b.title=x[1];b.textContent=x[0];
+}
+/* تسجيل دخول الأدمن */
+async function cloudSignIn(email,pass){
+  if(!cloudOn)return {ok:false,msg:"السحابة غير متاحة"};
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email:email,password:pass});
+    if(error)throw error;
+    cloudUser=data.user;
+    return {ok:true};
+  }catch(e){
+    const m=(e.message||"").toLowerCase();
+    if(m.includes("invalid"))return {ok:false,msg:"الإيميل أو كلمة المرور غير صحيحة"};
+    return {ok:false,msg:e.message||"تعذّر تسجيل الدخول"};
+  }
+}
+async function cloudSignOut(){
+  try{ if(sb)await sb.auth.signOut(); }catch(e){}
+  cloudUser=null;
+}
+/* رفع صورة للسحابة وإرجاع رابطها */
+async function cloudUpload(dataUrl,prefix){
+  if(!cloudOn||!cloudUser)return dataUrl;   // بدون سحابة: نسيبها كما هي
+  try{
+    const res=await fetch(dataUrl);
+    const blob=await res.blob();
+    const name=(prefix||"img")+"-"+Date.now()+"-"+Math.random().toString(36).slice(2,8)+".jpg";
+    const {error}=await sb.storage.from(SB_BUCKET).upload(name,blob,{contentType:blob.type||"image/jpeg",upsert:true});
+    if(error)throw error;
+    const {data}=sb.storage.from(SB_BUCKET).getPublicUrl(name);
+    return (data&&data.publicUrl)?data.publicUrl:dataUrl;
+  }catch(e){
+    toast("⚠️ تعذّر رفع الصورة للسحابة — اتحفظت على الجهاز");
+    return dataUrl;
+  }
+}
+/* متابعة التغييرات من الأجهزة التانية */
+function cloudWatch(){
+  if(!cloudOn)return;
+  try{
+    sb.channel("qd_app_live")
+      .on("postgres_changes",{event:"UPDATE",schema:"public",table:"qd_app"},payload=>{
+        const d=payload&&payload.new&&payload.new.data;
+        if(!d||!d.stamp||d.stamp<=lastCloudStamp)return;
+        applyCloud(d);render();
+        toast("🔄 وصل تحديث جديد");
+      }).subscribe();
+  }catch(e){}
+}
+
 /* ===================================================================
    حجم التخزين + تصدير نسخة جاهزة للنشر (البيانات مدمجة في الملف)
 =================================================================== */
@@ -1453,11 +1612,11 @@ function randomPalette(){
 =================================================================== */
 let HEROIMG=store.get("qd_heroimg",null);
 let heroDim=store.get("qd_herodim",0.62);
-function saveHero(){try{store.set("qd_heroimg",HEROIMG);store.set("qd_herodim",heroDim);}catch(e){toast("المساحة ممتلئة — جرّب صورة أصغر");}}
+function saveHero(){try{store.set("qd_heroimg",HEROIMG);store.set("qd_herodim",heroDim);}catch(e){}cloudSaveSoon();}
 let PLATLOGOS=store.get("qd_platlogos",{});
 let BRANDLOGOS=store.get("qd_brandlogos",{});
-function savePlatLogos(){try{store.set("qd_platlogos",PLATLOGOS);}catch(e){toast("المساحة ممتلئة — احذف شعارًا قديمًا");}}
-function saveBrandLogos(){try{store.set("qd_brandlogos",BRANDLOGOS);}catch(e){toast("المساحة ممتلئة — احذف شعارًا قديمًا");}}
+function savePlatLogos(){try{store.set("qd_platlogos",PLATLOGOS);}catch(e){}cloudSaveSoon();}
+function saveBrandLogos(){try{store.set("qd_brandlogos",BRANDLOGOS);}catch(e){}cloudSaveSoon();}
 
 /* مونوجرام احترافي كبديل لحين رفع الشعار الرسمي */
 function monogram(name,size){
@@ -1507,7 +1666,7 @@ const HEADERS=[
   {id:"minimal",n:"بسيط",d:"بدون ظل ولا حدود"}
 ];
 let headerStyle=store.get("qd_header","classic");
-function applyHeader(id){headerStyle=id;document.documentElement.dataset.header=id;store.set("qd_header",id);}
+function applyHeader(id){headerStyle=id;document.documentElement.dataset.header=id;store.set("qd_header",id);cloudSaveSoon();}
 
 /* ===== شكل الأيقونات ===== */
 const ICONSHAPES=[
@@ -1537,7 +1696,7 @@ function loadCustomization(){
    1) نظام التقييمات (نجوم + تعليقات)
 =================================================================== */
 let REVIEWS=store.get("qd_reviews",{});
-function saveReviews(){store.set("qd_reviews",REVIEWS);}
+function saveReviews(){store.set("qd_reviews",REVIEWS);cloudSaveSoon();}
 function offerRating(id){const r=REVIEWS[id]||[];if(!r.length)return{avg:0,count:0};
   return{avg:Math.round(r.reduce((a,x)=>a+x.stars,0)/r.length*10)/10,count:r.length};}
 function brandRating(biz){let all=[];OFFERS.filter(o=>o.biz===biz).forEach(o=>{all=all.concat(REVIEWS[o.id]||[]);});
@@ -2758,8 +2917,8 @@ function bind(){
   p.querySelectorAll("[data-fav]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();toggleFav(+e.dataset.fav);});
   const cc=$("clearCart");if(cc)cc.onclick=()=>confirmAction("تفريغ السلة بالكامل؟",()=>{cart.clear();store.set("qd_cart",[]);updateCartBadge();render();toast("🛒 تم تفريغ السلة");});
   const bs=$("b_submit");if(bs)bs.onclick=submitBiz;
-  const bi=$("b_img");if(bi)bi.onchange=()=>readImg(bi.files[0],d=>{formImg=d;$("b_imgPrev").innerHTML=`<img src="${d}">`;});
-  const bl=$("b_logo");if(bl)bl.onchange=()=>readImg(bl.files[0],d=>{formLogo=d;$("b_logoPrev").innerHTML=`<img src="${d}">`;});
+  const bi=$("b_img");if(bi)bi.onchange=()=>readImg(bi.files[0],async d=>{$("b_imgPrev").innerHTML=`<img src="${d}">`;formImg=await cloudUpload(d,"offer");});
+  const bl=$("b_logo");if(bl)bl.onchange=()=>readImg(bl.files[0],async d=>{$("b_logoPrev").innerHTML=`<img src="${d}">`;formLogo=await cloudUpload(d,"logo");});
   const rf=$("page").querySelector("[data-action='refresh']");if(rf)rf.onclick=()=>{OFFERS.forEach(o=>o.orders=Math.round(120+o.pct*8+Math.random()*420));render();toast("🔄 تم تحديث التحليل لحظيًا");};
   p.querySelectorAll("[data-medit]").forEach(e=>e.onclick=()=>openEdit(+e.dataset.medit));
   p.querySelectorAll("[data-mdel]").forEach(e=>e.onclick=()=>confirmAction("متأكد من حذف هذا العرض؟",()=>deleteOffer(+e.dataset.mdel)));
@@ -2783,11 +2942,11 @@ function bind(){
       m.plan=order[(order.indexOf(m.plan)+1)%order.length];saveMerchants();render();toast("💎 الباقة الآن: "+nm[m.plan]);}});
   // -- الشعارات --
   p.querySelectorAll("[data-platup]").forEach(e=>e.onchange=()=>{const k=e.dataset.platup;
-    if(!e.files[0])return;readImg(e.files[0],d=>{PLATLOGOS[k]=d;savePlatLogos();render();toast("✅ تم رفع شعار "+PLAT[k].n);});});
+    if(!e.files[0])return;readImg(e.files[0],async d=>{toast("⏳ جاري الرفع…");PLATLOGOS[k]=await cloudUpload(d,"plat");savePlatLogos();render();toast("✅ تم رفع شعار "+PLAT[k].n);});});
   p.querySelectorAll("[data-platdel]").forEach(e=>e.onclick=()=>{const k=e.dataset.platdel;
     confirmAction(`حذف شعار ${PLAT[k].n}؟`,()=>{delete PLATLOGOS[k];savePlatLogos();render();toast("🗑️ تم حذف الشعار");});});
   p.querySelectorAll("[data-bizup]").forEach(e=>e.onchange=()=>{const b=e.dataset.bizup;
-    if(!e.files[0])return;readImg(e.files[0],d=>{BRANDLOGOS[b]=d;saveBrandLogos();render();toast("✅ تم رفع شعار "+b);});});
+    if(!e.files[0])return;readImg(e.files[0],async d=>{toast("⏳ جاري الرفع…");BRANDLOGOS[b]=await cloudUpload(d,"brand");saveBrandLogos();render();toast("✅ تم رفع شعار "+b);});});
   p.querySelectorAll("[data-bizdel]").forEach(e=>e.onclick=()=>{const b=e.dataset.bizdel;
     confirmAction(`حذف شعار «${b}»؟`,()=>{delete BRANDLOGOS[b];saveBrandLogos();render();toast("🗑️ تم حذف الشعار");});});
   // -- الألوان --
@@ -2826,7 +2985,7 @@ function bind(){
     render();toast("↩️ رجعت الألوان الافتراضية");});
   // -- صورة الهيرو --
   const hu=$("hero_up");if(hu)hu.onchange=()=>{if(!hu.files[0])return;
-    readImg(hu.files[0],d=>{HEROIMG=d;saveHero();render();toast("✅ تم رفع صورة الهيرو");});};
+    readImg(hu.files[0],async d=>{toast("⏳ جاري الرفع…");HEROIMG=await cloudUpload(d,"hero");saveHero();render();toast("✅ تم رفع صورة الهيرو");});};
   const hd=$("hero_del");if(hd)hd.onclick=()=>confirmAction("إزالة صورة الهيرو والرجوع للتدرّج المصمّم؟",()=>{
     HEROIMG=null;try{localStorage.removeItem("qd_heroimg")}catch(e){}render();toast("🗑️ تم الرجوع للتصميم الافتراضي");});
   const hdim=$("hero_dim");if(hdim){hdim.oninput=()=>{heroDim=(+hdim.value)/100;
@@ -2861,7 +3020,7 @@ function bind(){
     if(v.length<4){toast("كلمة المرور 4 أحرف على الأقل");return;}
     if(v!==v2){toast("❌ كلمتا المرور غير متطابقتين");return;}
     store.set("qd_admin_pass",v);render();toast("✅ تم حفظ كلمة مرور الأدمن");};
-  const admOut=$("adm_logout");if(admOut)admOut.onclick=()=>{role="customer";store.set("qd_role","customer");view="home";render();toast("تم تسجيل الخروج");};
+  const admOut=$("adm_logout");if(admOut)admOut.onclick=async()=>{await cloudSignOut();role="customer";store.set("qd_role","customer");view="home";setCloudBadge("off");render();toast("تم تسجيل الخروج");};
   const admWa=$("adm_wasave");if(admWa)admWa.onclick=()=>{const v=$("adm_wa").value.replace(/[^0-9]/g,"");
     if(v.length<8){toast("اكتب رقم واتساب صحيح");return;}store.set("qd_wa",v);toast("✅ تم حفظ الرقم — حدّث الصفحة لتطبيقه");};
   const admDep=$("adm_deploy");if(admDep)admDep.onclick=exportDeployable;
@@ -2883,7 +3042,7 @@ function bind(){
     confirmAction("حذف هذا التقييم؟",()=>{if(REVIEWS[id]){REVIEWS[id].splice(+i,1);if(!REVIEWS[id].length)delete REVIEWS[id];saveReviews();render();toast("🗑️ تم حذف التقييم");}});});
   p.querySelectorAll("[data-bopen]").forEach(e=>e.onclick=()=>{const v=e.dataset.bopen;if(v)openDetails(+v);});
   const ba=$("bn_add");if(ba)ba.onclick=addBanner;
-  const bimg=$("bn_img");if(bimg)bimg.onchange=()=>readImg(bimg.files[0],d=>{bannerImg=d;$("bn_imgPrev").innerHTML=`<img src="${d}">`;});
+  const bimg=$("bn_img");if(bimg)bimg.onchange=()=>readImg(bimg.files[0],async d=>{$("bn_imgPrev").innerHTML=`<img src="${d}">`;bannerImg=await cloudUpload(d,"banner");});
   p.querySelectorAll("[data-bdel]").forEach(e=>e.onclick=()=>confirmAction("متأكد من حذف هذا البانر؟",()=>deleteBanner(+e.dataset.bdel)));
   const cs=$("cmpSearch");if(cs){cs.oninput=()=>{cmpQ=cs.value;$("cmpResults").innerHTML=cmpResultsHtml();bindCmp();};}
   p.querySelectorAll("[data-ccat]").forEach(e=>e.onclick=()=>{cmpCat=e.dataset.ccat;render();});
@@ -3076,18 +3235,46 @@ function openMerchantLogin(){
     merchantName=n;role="business";store.set("qd_merchant",n);store.set("qd_role","business");closeModal();render();toast("✅ دخلت كتاجر: "+n);};
 }
 function openAdminLogin(){
+  const savedMail=store.get("qd_admin_mail","");
   openModal(`<button class="close" id="close">✕</button>
    <div style="padding:34px 26px 26px">
      <div style="font-size:40px;text-align:center">🔐</div>
      <div class="dlabel" style="text-align:center;font-size:18px;margin:8px 0 4px">دخول الأدمن</div>
-     <div style="color:var(--gray);font-size:13px;text-align:center;margin-bottom:16px">كلمة المرور مطلوبة لمنع أي متصفح من التعديل.</div>
-     <div class="field"><label>كلمة المرور</label><input id="a_pass" type="password" placeholder="••••••••"></div>
+     <div style="color:var(--gray);font-size:13px;text-align:center;margin-bottom:16px">
+       ${cloudOn?"سجّل دخولك عشان تعدّل، والتعديلات توصل لكل الأجهزة.":"السحابة غير متاحة — هتعدّل على الجهاز ده بس."}</div>
+     ${cloudOn?`
+       <div class="field"><label>الإيميل</label><input id="a_mail" type="email" inputmode="email" value="${savedMail}" placeholder="you@example.com"></div>
+       <div class="field"><label>كلمة المرور</label><input id="a_pass" type="password" placeholder="••••••••"></div>
+     `:`
+       <div class="field"><label>كلمة المرور</label><input id="a_pass" type="password" placeholder="••••••••"></div>
+     `}
      <button class="submit" id="a_go" style="width:calc(100% - 36px)">دخول</button>
+     <div id="a_msg" class="loginmsg"></div>
    </div>`);
   $("close").onclick=closeModal;
-  const go=()=>{if($("a_pass").value===(store.get("qd_admin_pass",null)||ADMIN_PASS)){role="admin";store.set("qd_role","admin");closeModal();render();toast("✅ دخلت كأدمن");}else toast("❌ كلمة المرور غير صحيحة");};
+  const msg=t=>{const m=$("a_msg");if(m)m.textContent=t||"";};
+  const go=async()=>{
+    const btn=$("a_go");
+    if(cloudOn){
+      const mail=($("a_mail").value||"").trim();
+      const pass=$("a_pass").value;
+      if(!mail||!pass){msg("اكتب الإيميل وكلمة المرور");return;}
+      btn.disabled=true;btn.textContent="جاري الدخول…";msg("");
+      const r=await cloudSignIn(mail,pass);
+      btn.disabled=false;btn.textContent="دخول";
+      if(!r.ok){msg("❌ "+r.msg);return;}
+      store.set("qd_admin_mail",mail);
+      role="admin";store.set("qd_role","admin");
+      setCloudBadge("ok");
+      closeModal();await cloudLoad(true);render();toast("✅ دخلت كأدمن — التعديلات هتتحفظ للكل");
+    }else{
+      if($("a_pass").value===(store.get("qd_admin_pass",null)||ADMIN_PASS)){
+        role="admin";store.set("qd_role","admin");closeModal();render();toast("✅ دخلت كأدمن (هذا الجهاز فقط)");
+      }else msg("❌ كلمة المرور غير صحيحة");
+    }
+  };
   $("a_go").onclick=go;
-  $("a_pass").addEventListener("keydown",e=>{if(e.key==="Enter")go();});
+  const ip=$("a_pass");if(ip)ip.addEventListener("keydown",e=>{if(e.key==="Enter")go();});
 }
 
 /* ===== تعديل / حذف العرض ===== */
@@ -3157,8 +3344,8 @@ function openEdit(id){
     </div>`);
   $("close").onclick=closeModal;
   editImg=o.imgData||null;editLogo=o.logoData||null;
-  $("e_img").onchange=()=>readImg($("e_img").files[0],d=>{editImg=d;$("e_imgPrev").innerHTML=`<img src="${d}">`;});
-  $("e_logo").onchange=()=>readImg($("e_logo").files[0],d=>{editLogo=d;$("e_logoPrev").innerHTML=`<img src="${d}">`;});
+  $("e_img").onchange=()=>readImg($("e_img").files[0],async d=>{$("e_imgPrev").innerHTML=`<img src="${d}">`;editImg=await cloudUpload(d,"offer");});
+  $("e_logo").onchange=()=>readImg($("e_logo").files[0],async d=>{$("e_logoPrev").innerHTML=`<img src="${d}">`;editLogo=await cloudUpload(d,"logo");});
   $("e_save").onclick=()=>{
     const biz=$("e_biz").value.trim(),pct=parseInt($("e_pct").value),desc=$("e_desc").value.trim();
     if(!biz||!pct||!desc){toast("اكمل الاسم والخصم والتفاصيل");return;}
@@ -3265,6 +3452,23 @@ setInterval(notifyStrong,60000);   // إشعار كل دقيقة
 
 loadCustomization();
 render();
+/* ===== تشغيل السحابة ===== */
+(async function startCloud(){
+  if(!initCloud()){setCloudBadge("off");return;}
+  setCloudBadge("off");
+  try{
+    const {data}=await sb.auth.getSession();
+    if(data&&data.session&&data.session.user){
+      cloudUser=data.session.user;
+      if(role==="admin")setCloudBadge("ok");
+    }
+  }catch(e){}
+  const got=await cloudLoad(true);
+  if(got)render();
+  cloudWatch();
+  /* لو الأدمن داخل ومفيش بيانات على السحابة، نرفع نسخة الجهاز أول مرة */
+  if(cloudUser&&!got){await cloudSave();}
+})();
 // إخفاء شاشة الترحيب بعد التحميل
 setTimeout(()=>{const s=document.getElementById("splash");if(s){s.classList.add("hide");setTimeout(()=>{s.style.display="none";},650);}},3000);
 </script>
