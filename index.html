@@ -1631,6 +1631,43 @@ function mergeData(cloud,local){
     if(out[k]==null&&local[k]!=null)out[k]=local[k];});
   return out;
 }
+/* 🩺 فحص الاتصال: بيعمل كتابة تجريبية ويعرض الناتج الخام */
+async function openDiag(){
+  openModal(`<button class="close" id="close">✕</button>
+    <div style="padding:26px 20px 20px">
+      <div style="font-size:34px;text-align:center">🩺</div>
+      <div style="text-align:center;font-weight:900;font-size:17px;margin:6px 0 12px">فحص الاتصال بالسحابة</div>
+      <div id="dgBody" class="recbody" style="font-size:12.5px">⏳ بنفحص…</div>
+    </div>`);
+  $("close").onclick=closeModal;
+  const L=[];
+  const add=(k,v)=>L.push(`<div style="padding:7px 0;border-bottom:1px solid var(--line)"><b>${k}:</b> <span style="direction:ltr;unicode-bidi:plaintext;display:inline-block">${v}</span></div>`);
+  try{
+    add("الاتصال", cloudOn?"متاح":"غير متاح");
+    let sess=null;
+    try{const g=await sb.auth.getSession(); sess=g&&g.data&&g.data.session;}catch(e){add("getSession",e.message);}
+    add("مسجّل دخول", sess?"نعم":"لا");
+    if(sess){
+      add("الإيميل", (sess.user&&sess.user.email)||"—");
+      add("الدور", (sess.user&&sess.user.role)||"—");
+      const exp=sess.expires_at?new Date(sess.expires_at*1000):null;
+      add("التوكن ينتهي", exp?exp.toLocaleString():"—");
+      add("منتهي؟", exp?(exp<new Date()?"أيوه ❌":"لأ ✅"):"—");
+    }
+    /* كتابة تجريبية على عمود updated_at فقط */
+    const t0=Date.now();
+    const {data,error,status,statusText}=await sb.from("qd_app")
+      .update({updated_at:new Date().toISOString()}).eq("id","main").select("id");
+    add("حالة الكتابة", status+" "+(statusText||""));
+    add("صفوف اتعدّلت", data?data.length:0);
+    add("خطأ", error?((error.code||"")+" "+(error.message||"")):"مفيش");
+    add("الزمن", (Date.now()-t0)+"ms");
+    if(!error&&data&&data.length)add("النتيجة","✅ الكتابة شغالة");
+    else add("النتيجة","❌ الكتابة مرفوضة");
+  }catch(e){ add("استثناء", e.message||String(e)); }
+  const b=$("dgBody"); if(b)b.innerHTML=L.join("");
+}
+
 async function openMerge(){
   if(!cloudOn){toast("⚠️ مفيش اتصال بالسحابة");return;}
   if(!cloudUser){toast("🔒 سجّل دخول الأدمن الأول");return;}
@@ -3125,6 +3162,7 @@ function admSettings(){
         اضغط «📤 ارفع بيانات هذا الجهاز» عشان ترفع نسخة الجهاز دي للسحابة.
       </div>`:""}
       <div class="cloudinfo" id="cloudInfo">⏳ بنفحص السحابة…</div>
+      <button class="subbtn" id="adm_diag" style="margin-bottom:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">🩺 فحص الاتصال بالسحابة</button>
       <button class="subbtn bigsync" id="adm_merge" style="background:linear-gradient(135deg,#6D4AFF,#4A2FD0)">🔀 دمج الجهاز مع السحابة (الأأمن)</button>
       <button class="subbtn bigsync" id="adm_migrate" style="margin-top:10px">📤 ارفع بيانات هذا الجهاز للسحابة</button>
       <button class="subbtn" id="adm_recover" style="margin-top:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">🖼️ استعادة الصور المرفوعة على حسابك</button>
@@ -3382,6 +3420,7 @@ function bind(){
         +`<br><small>آخر تحديث للسحابة: ${row&&row.updated_at?timeAgo(new Date(row.updated_at).getTime()):"—"}</small>`;
     }catch(e){ci.className="cloudinfo bad";ci.textContent="⚠️ تعذّر فحص السحابة: "+(e.message||"").slice(0,60);}
   })();}
+  const admDg=$("adm_diag");if(admDg)admDg.onclick=openDiag;
   const admMrg=$("adm_merge");if(admMrg)admMrg.onclick=openMerge;
   const admMig=$("adm_migrate");if(admMig)admMig.onclick=openMigrate;
   const admRec=$("adm_recover");if(admRec)admRec.onclick=openRecover;
