@@ -693,6 +693,7 @@ footer{padding-bottom:40px}
 .migprog{text-align:center;font-size:13px;font-weight:800;color:var(--green);min-height:22px;margin-bottom:10px}
 .cloudinfo{margin-top:12px;padding:12px 14px;border-radius:13px;font-size:13px;font-weight:800;line-height:1.9;
   background:var(--surface-2);border:1px solid var(--line)}
+.pickbtn{margin-top:6px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);cursor:pointer}
 .recbody{font-size:13.5px;font-weight:800;line-height:1.9;color:var(--ink)}
 .rectotal{text-align:center;margin-bottom:12px}
 .recgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
@@ -1595,6 +1596,36 @@ async function listStorage(){
   return Array.isArray(j)?j.filter(f=>f.name&&f.name.indexOf(".")>-1):[];
 }
 function pubUrl(name){return SB_URL+"/storage/v1/object/public/"+SB_BUCKET+"/"+name;}
+/* منتقي من الصور المرفوعة: بيفتح شبكة صور وبيرجّع الرابط اللي اختاره */
+let _stCache=null;
+async function pickFromStorage(prefixes,cb){
+  openModal(`<button class="close" id="close">✕</button>
+    <div style="padding:26px 22px 22px">
+      <div style="text-align:center;font-weight:900;font-size:17px;margin-bottom:12px">اختر من صورك المرفوعة</div>
+      <div id="pkBody" class="recbody" style="text-align:center">⏳ بنحمّل الصور…</div>
+    </div>`);
+  $("close").onclick=closeModal;
+  try{
+    if(!_stCache)_stCache=await listStorage();
+    let files=_stCache.map(f=>f.name);
+    if(prefixes&&prefixes.length)
+      files=files.filter(n=>prefixes.indexOf(n.split("-")[0])>-1);
+    if(!files.length)files=_stCache.map(f=>f.name);
+    files.reverse();
+    const b=$("pkBody");
+    b.innerHTML=files.length
+      ?`<div class="hint" style="margin-top:0">اضغط على الصورة اللي عايزها</div>
+        <div class="recstrip" style="max-height:340px">${files.map(n=>`<img src="${pubUrl(n)}" loading="lazy" data-pick="${n}" style="cursor:pointer">`).join("")}</div>`
+      :`<div class="cloudinfo warn">مفيش صور مرفوعة على حسابك لسه.</div>`;
+    b.querySelectorAll("[data-pick]").forEach(im=>im.onclick=()=>{
+      closeModal(); cb(pubUrl(im.dataset.pick));
+    });
+  }catch(e){
+    const b=$("pkBody");
+    if(b)b.innerHTML=`<div class="cloudinfo bad">⚠️ تعذّر تحميل الصور: ${(e.message||"").slice(0,70)}</div>`;
+  }
+}
+
 async function openRecover(){
   clearInterval(cdTimer);
   openModal(`<button class="close" id="close">✕</button>
@@ -2747,6 +2778,7 @@ function admLogos(){
         <div class="logobox">${PLATLOGOS[k]?`<img src="${PLATLOGOS[k]}" alt="${PLAT[k].n}">`:`<span class="logoempty" style="background:${PLAT[k].c}">${firstChar(PLAT[k].n)}</span>`}</div>
         <div class="logonm">${PLAT[k].n}</div>
         <label class="logoup">⬆️ ${PLATLOGOS[k]?"تغيير":"رفع الشعار"}<input type="file" accept="image/*" data-platup="${k}" hidden></label>
+        <button class="logoup pickbtn" data-platpick="${k}">🖼️ من صوري المرفوعة</button>
         ${PLATLOGOS[k]?`<button class="logodel" data-platdel="${k}">🗑️ حذف</button>`:""}
       </div>`).join("")}
     </div></div>
@@ -2758,6 +2790,7 @@ function admLogos(){
         <div class="logobox">${BRANDLOGOS[b]?`<img src="${BRANDLOGOS[b]}" alt="${b}">`:monogram(b,58)}</div>
         <div class="logonm">${b}</div>
         <label class="logoup">⬆️ ${BRANDLOGOS[b]?"تغيير":"رفع الشعار"}<input type="file" accept="image/*" data-bizup="${b}" hidden></label>
+        <button class="logoup pickbtn" data-bizpick="${b}">🖼️ من صوري المرفوعة</button>
         ${BRANDLOGOS[b]?`<button class="logodel" data-bizdel="${b}">🗑️ حذف</button>`:""}
       </div>`).join("")}
     </div></div>
@@ -2833,6 +2866,7 @@ function admLook(){
         </div>
         <div class="heroadmside">
           <label class="logoup">⬆️ ${HEROIMG?"تغيير الصورة":"رفع صورة خلفية"}<input type="file" accept="image/*" id="hero_up" hidden></label>
+        <button class="logoup pickbtn" id="hero_pick">🖼️ من صوري المرفوعة</button>
           ${HEROIMG?`<button class="logodel" id="hero_del">🗑️ إزالة الصورة</button>`:""}
         </div>
       </div>
@@ -3151,6 +3185,10 @@ function bind(){
     else if(act==="plan"){const order=["basic","premium","enterprise"],nm={basic:"أساسي",premium:"بريميوم",enterprise:"مؤسسات"};
       m.plan=order[(order.indexOf(m.plan)+1)%order.length];saveMerchants();render();toast("💎 الباقة الآن: "+nm[m.plan]);}});
   // -- الشعارات --
+  p.querySelectorAll("[data-platpick]").forEach(e=>e.onclick=()=>{const k=e.dataset.platpick;
+    pickFromStorage(["plat","brand","logo"],u=>{PLATLOGOS[k]=u;savePlatLogos();render();toast("✅ تم ربط الشعار");});});
+  p.querySelectorAll("[data-bizpick]").forEach(e=>e.onclick=()=>{const b=e.dataset.bizpick;
+    pickFromStorage(["brand","logo","plat"],u=>{BRANDLOGOS[b]=u;saveBrandLogos();render();toast("✅ تم ربط الشعار");});});
   p.querySelectorAll("[data-platup]").forEach(e=>e.onchange=()=>{const k=e.dataset.platup;
     if(!e.files[0])return;readImg(e.files[0],async d=>{toast("⏳ جاري الرفع…");PLATLOGOS[k]=await cloudUpload(d,"plat");savePlatLogos();render();toast("✅ تم رفع شعار "+PLAT[k].n);});});
   p.querySelectorAll("[data-platdel]").forEach(e=>e.onclick=()=>{const k=e.dataset.platdel;
@@ -3194,6 +3232,7 @@ function bind(){
     try{localStorage.removeItem("qd_colors")}catch(e){}
     render();toast("↩️ رجعت الألوان الافتراضية");});
   // -- صورة الهيرو --
+  const hp=$("hero_pick");if(hp)hp.onclick=()=>pickFromStorage(["hero","banner"],u=>{HEROIMG=u;saveHero();render();toast("✅ تم ربط الصورة");});
   const hu=$("hero_up");if(hu)hu.onchange=()=>{if(!hu.files[0])return;
     readImg(hu.files[0],async d=>{toast("⏳ جاري الرفع…");HEROIMG=await cloudUpload(d,"hero");saveHero();render();toast("✅ تم رفع صورة الهيرو");});};
   const hd=$("hero_del");if(hd)hd.onclick=()=>confirmAction("إزالة صورة الهيرو والرجوع للتدرّج المصمّم؟",()=>{
