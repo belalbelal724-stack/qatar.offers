@@ -48,9 +48,13 @@
   /* العنابي القطري الرسمي كلون أساسي + ذهبي للفخامة */
   --green:#8A1538; --green-d:#5C0E25; --green-l:#A83258; --orange:#E0762C;
   --gold:#C9A227; --gold-2:#EBCD6E; --maroon:#8A1538;
-  --ink:#2A0E1A; --gray:#7A5662; --amber:#C9892A;
-  --bg:#F4EEE8; --surface:#FFFFFF; --surface-2:#F8F1EC; --line:rgba(138,21,56,.14);
-  --shadow:rgba(60,10,28,.12);
+  --amber:#C9892A;
+  /* ملاحظة: ألوان الأسطح بتتقرا من متغيّرات "‎-user" اللي لوحة الألوان بتكتبها.
+     كده المود الداكن يقدر يغلب عليها، قبل كده كانت بتتكتب مباشرة فما كانش بيتغيّر. */
+  --ink:var(--ink-user,#2A0E1A); --gray:var(--gray-user,#7A5662);
+  --bg:var(--bg-user,#F4EEE8); --surface:var(--surface-user,#FFFFFF);
+  --surface-2:var(--surface2-user,#F8F1EC); --line:var(--line-user,rgba(138,21,56,.14));
+  --shadow:var(--shadow-user,rgba(60,10,28,.12));
   --font-ar:"Cairo"; --font-en:"Cairo";
   --ico-r:12px;
   --r-card:22px; --r-panel:24px; --r-hero:28px;
@@ -72,7 +76,7 @@
 :root[data-header="gradient"] .hsearch input{color:#fff}
 :root[data-header="gradient"] .hsearch input::placeholder{color:rgba(255,255,255,.75)}
 :root[data-header="dark"] header{background:#15100C;border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
-:root[data-header="dark"] .logo .ttl{color:var(--gold-2)}
+:root[data-header="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 52%,#fff)}
 :root[data-header="dark"] nav a,:root[data-header="dark"] .hbtn{color:#EEE3D5}
 :root[data-header="dark"] nav a.on{background:var(--gold);color:#3a2c00}
 :root[data-header="dark"] nav a:hover{background:rgba(255,255,255,.08)}
@@ -100,9 +104,9 @@ nav a.on::after{content:"";position:absolute;bottom:2px;left:50%;transform:trans
 .logo .ttl{font-weight:900;font-size:1.05em;letter-spacing:-.5px;color:var(--green);
   -webkit-text-fill-color:currentColor;background:none;animation:none;
   text-shadow:0 1px 0 rgba(255,255,255,.4)}
-[data-theme="dark"] .logo .ttl{color:var(--gold-2);text-shadow:0 0 14px rgba(201,162,39,.35)}
+[data-theme="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 48%,#fff);text-shadow:none}
 :root[data-header="solid"] .logo .ttl,:root[data-header="gradient"] .logo .ttl{color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)}
-:root[data-header="dark"] .logo .ttl{color:var(--gold-2);text-shadow:0 0 16px rgba(201,162,39,.4)}
+:root[data-header="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 52%,#fff)}
 /* ===== زرّ الدولة ===== */
 .cbtn{display:flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);
   border-radius:50px;padding:6px 12px 6px 8px;cursor:pointer;font-family:inherit;font-weight:900;
@@ -130,9 +134,10 @@ nav a.on::after{content:"";position:absolute;bottom:2px;left:50%;transform:trans
 /* ===== أشكال الأيقونات ===== */
 .logo .dot,.card .blogo,.mlogo,.stlogo,.hbtn.icobtn,.brandlogo,.bherologo,.dbiz .l{border-radius:var(--ico-r)}
 :root[data-icon="square"] .logo .dot,:root[data-icon="square"] .card .blogo{border-radius:3px}
-[data-theme="dark"]{
-  --bg:#14060B; --surface:#1E0A12; --surface-2:#2A0F1A; --ink:#F7E9EC;
-  --gray:#C49AA6; --line:rgba(201,162,39,.20); --shadow:rgba(0,0,0,.6);
+/* المود الداكن بيغلب على لوحة ألوان المستخدم بالكامل */
+:root[data-theme="dark"]{
+  --bg:#140A0E; --surface:#1E1015; --surface-2:#2A161D; --ink:#F7E9EC;
+  --gray:#C09AA4; --line:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.6);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -385,9 +390,9 @@ footer b{color:var(--green)}
 /* عنوان الهيدر — بارز وعالي التباين */
 .logo .ttl{color:var(--green);-webkit-text-fill-color:currentColor;background:none;animation:none;
   font-weight:900;letter-spacing:-.6px;text-shadow:0 1px 0 rgba(255,255,255,.45)}
-[data-theme="dark"] .logo .ttl{color:var(--gold-2);text-shadow:0 0 16px rgba(201,162,39,.4)}
+[data-theme="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 48%,#fff);text-shadow:none}
 :root[data-header="solid"] .logo .ttl,:root[data-header="gradient"] .logo .ttl{color:#fff;text-shadow:0 2px 9px rgba(0,0,0,.35)}
-:root[data-header="dark"] .logo .ttl{color:var(--gold-2);text-shadow:0 0 18px rgba(201,162,39,.45)}
+:root[data-header="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 52%,#fff);text-shadow:none}
 .logo .dot{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;
   border:1.5px solid var(--gold);box-shadow:0 5px 16px -4px var(--shadow),inset 0 1px 0 rgba(255,255,255,.25)}
 :root[data-header="solid"] .logo .dot,:root[data-header="gradient"] .logo .dot,:root[data-header="dark"] .logo .dot{
@@ -540,36 +545,53 @@ footer{padding-bottom:40px}
 .sgchip.on{background:var(--green);color:#fff;border-color:transparent}
 /* splash screen */
 .splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow:hidden;
-  background:radial-gradient(120% 120% at 50% 0%, #9B1A42 0%, #5C0E25 52%, #1F060E 100%);
+  background:
+    radial-gradient(90% 60% at 50% -10%, color-mix(in srgb,var(--green) 85%,#fff) 0%, transparent 60%),
+    radial-gradient(120% 120% at 50% 100%, #1C070E 0%, #120409 100%);
   transition:opacity .6s ease, visibility .6s}
+/* شبكة ناعمة تدّي عمق للخلفية */
+.splash::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%);
+          mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%)}
 .splash.hide{opacity:0;visibility:hidden}
 .splash-halo{position:absolute;width:560px;height:560px;max-width:120vw;max-height:120vw;border-radius:50%;
-  background:radial-gradient(circle, rgba(235,205,110,.38), rgba(138,21,56,0) 62%);filter:blur(6px);
+  background:radial-gradient(circle, color-mix(in srgb,var(--green) 55%,transparent), transparent 62%);filter:blur(10px);
   animation:halopulse 2.6s ease-in-out infinite}
 @keyframes halopulse{0%,100%{transform:scale(.9);opacity:.65}50%{transform:scale(1.1);opacity:1}}
 .splash-in{position:relative;text-align:center;padding:0 24px;animation:splashpop .9s cubic-bezier(.2,.8,.2,1) both}
 @keyframes splashpop{from{opacity:0;transform:translateY(18px) scale(.95)}to{opacity:1;transform:none}}
-.splash-ring{width:128px;height:128px;margin:0 auto 24px;border-radius:50%;display:grid;place-items:center;position:relative}
-.splash-ring::before{content:"";position:absolute;inset:0;border-radius:50%;border:2.5px dashed var(--gold);
-  animation:mispin 9s linear infinite;box-shadow:0 0 26px rgba(201,162,39,.55), inset 0 0 18px rgba(201,162,39,.35)}
-.splash-ring::after{content:"";position:absolute;inset:10px;border-radius:50%;border:1px solid rgba(235,205,110,.45)}
+.splash-ring{width:122px;height:122px;margin:0 auto 26px;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.14),rgba(255,255,255,.03));
+  box-shadow:0 18px 50px -18px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.22)}
+.splash-ring::before{content:"";position:absolute;inset:-9px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.22);border-top-color:rgba(255,255,255,.75);
+  animation:mispin 2.6s linear infinite}
+.splash-ring::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.16)}
 .splash-title{font-family:var(--font-ar),var(--font-en),"Cairo",system-ui,sans-serif;
-  font-size:48px;font-weight:900;line-height:1.1;letter-spacing:.5px;
-  background:linear-gradient(95deg,var(--gold),var(--gold-2) 38%,#fff7da 50%,var(--gold-2) 62%,var(--gold));
-  background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  animation:sheen 3.5s linear infinite, glowstrong 2.4s ease-in-out infinite}
-@keyframes glowstrong{0%,100%{filter:drop-shadow(0 0 6px rgba(201,162,39,.6))}50%{filter:drop-shadow(0 0 22px rgba(235,205,110,1))}}
+  font-size:clamp(38px,11vw,52px);font-weight:900;line-height:1.1;letter-spacing:-.5px;
+  color:#fff;-webkit-text-fill-color:#fff;background:none;
+  text-shadow:0 10px 34px rgba(0,0,0,.55)}
+.splash-en{font-family:var(--font-en),"Cairo",system-ui,sans-serif;direction:ltr;unicode-bidi:plaintext;
+  margin-top:9px;font-size:13px;font-weight:800;letter-spacing:4.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.72);display:flex;align-items:center;justify-content:center;gap:12px}
+.splash-en::before,.splash-en::after{content:"";height:1px;width:34px;background:rgba(255,255,255,.3)}
 .splash-sub{font-family:var(--font-ar),var(--font-en),"Cairo",system-ui,sans-serif;
   color:#f6e2e7;font-size:14px;font-weight:700;margin-top:12px;opacity:.92;max-width:330px;margin-inline:auto}
-.splash-bar{width:180px;height:5px;border-radius:50px;background:rgba(255,255,255,.16);margin:28px auto 0;overflow:hidden}
-.splash-bar span{display:block;height:100%;width:38%;border-radius:50px;background:linear-gradient(90deg,var(--gold),#fff7da,var(--gold-2));animation:loadbar 1.3s ease-in-out infinite}
+.splash-bar{width:150px;height:4px;border-radius:50px;background:rgba(255,255,255,.14);margin:30px auto 0;overflow:hidden}
+.splash-bar span{display:block;height:100%;width:40%;border-radius:50px;
+  background:linear-gradient(90deg,transparent,#fff,transparent);animation:loadbar 1.4s ease-in-out infinite}
 @keyframes loadbar{0%{transform:translateX(-130%)}100%{transform:translateX(430%)}}
-.spk{position:absolute;z-index:1;color:var(--gold-2);font-size:22px;text-shadow:0 0 12px rgba(235,205,110,.9);animation:mitwinkle 1.8s ease-in-out infinite}
+.spk{position:absolute;z-index:1;color:rgba(255,255,255,.55);font-size:18px;animation:mitwinkle 2.4s ease-in-out infinite}
 .spk.s1{top:23%;left:20%}.spk.s2{top:28%;right:18%;font-size:28px;animation-delay:.5s}
 .spk.s3{bottom:30%;left:24%;font-size:17px;animation-delay:.9s}.spk.s4{bottom:25%;right:22%;font-size:24px;animation-delay:1.3s}
-.splash-sign{position:absolute;bottom:40px;left:0;right:0;text-align:center;font-family:"Aref Ruqaa",serif;font-size:28px;
-  background:linear-gradient(95deg,var(--gold),#fff7da 50%,var(--gold));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  opacity:.95;animation:sheen 4s linear infinite, signfloat 3.4s ease-in-out infinite}
+.splash-sign{position:absolute;bottom:34px;left:0;right:0;text-align:center;
+  font-family:var(--font-ar),"Cairo",system-ui,sans-serif;font-size:21px;font-weight:900;letter-spacing:-.3px;
+  color:#fff;-webkit-text-fill-color:#fff;background:none;opacity:.9}
+.splash-sign small{display:block;font-size:10.5px;font-weight:700;letter-spacing:3px;
+  color:rgba(255,255,255,.5);margin-top:5px;text-transform:uppercase}
 .cmpblock{max-width:780px;margin:0 auto 14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px var(--shadow)}
 .cmpb-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
 .cmpb-head .blogo{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;flex:none}
@@ -1096,11 +1118,12 @@ footer{padding-bottom:40px}
   <span class="spk s1">✦</span><span class="spk s2">✧</span><span class="spk s3">✦</span><span class="spk s4">✧</span>
   <div class="splash-in">
     <div class="splash-ring"><div class="qflag" style="width:76px;height:50px"><svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#fff"/><path d="M28 0 L11 0 L9 2 L11 4 L9 6 L11 8 L9 10 L11 12 L9 14 L11 16 L9 18 L28 18 Z" fill="#8A1538"/></svg></div></div>
-    <div class="splash-title">عروض قطر</div>
-    <div class="splash-sub">كل عروض التوصيل في قطر… ومقارنة الأسعار في مكان واحد</div>
+    <div class="splash-title" id="splashTtl">عروض قطر</div>
+    <div class="splash-en" id="splashEn">Qatar Deals</div>
+    <div class="splash-sub">كل عروض التوصيل ومقارنة الأسعار في مكان واحد</div>
     <div class="splash-bar"><span></span></div>
   </div>
-  <div class="splash-sign">بلال الأنصاري</div>
+  <div class="splash-sign">بلال الأنصاري<small>تصميم وتطوير</small></div>
 </div>
 <header>
   <div class="bar">
@@ -1399,9 +1422,10 @@ function applyColors(c){
     r.setProperty("--green-l",shade(c.primary,18));r.setProperty("--maroon",c.primary);}
   if(c.gold){r.setProperty("--gold",c.gold);r.setProperty("--gold-2",shade(c.gold,25));}
   if(c.accent)r.setProperty("--orange",c.accent);
-  if(c.bg)r.setProperty("--bg",c.bg);
-  if(c.surface){r.setProperty("--surface",c.surface);r.setProperty("--surface-2",shade(c.surface,-5));}
-  if(c.ink){r.setProperty("--ink",c.ink);r.setProperty("--gray",shade(c.ink,42));}
+  /* بنكتب على متغيّرات "‎-user" عشان المود الداكن يقدر يغلب عليها */
+  if(c.bg)r.setProperty("--bg-user",c.bg);
+  if(c.surface){r.setProperty("--surface-user",c.surface);r.setProperty("--surface2-user",shade(c.surface,-5));}
+  if(c.ink){r.setProperty("--ink-user",c.ink);r.setProperty("--gray-user",shade(c.ink,42));}
   if(c.ok)r.setProperty("--green2",c.ok);
   // شدّة الحواف المنحنية
   if(c.radius!=null){const m=+c.radius;
@@ -1410,7 +1434,7 @@ function applyColors(c){
     r.setProperty("--r-hero",(28*m).toFixed(1)+"px");}
   // قوة الظل
   if(c.shadow!=null){const sv=+c.shadow;
-    r.setProperty("--shadow","rgba(60,10,28,"+(0.12*sv).toFixed(3)+")");}
+    r.setProperty("--shadow-user","rgba(60,10,28,"+(0.12*sv).toFixed(3)+")");}
   store.set("qd_colors",c);cloudSaveSoon();
 }
 /* ===================================================================
@@ -2335,7 +2359,8 @@ function applyAppName(){
   const t=$("appTtl"); if(t)t.textContent=appName();
   const EN={qa:"Qatar",ae:"UAE",sa:"Saudi",kw:"Kuwait",bh:"Bahrain",om:"Oman"};
   try{document.title=appName()+" — "+(EN[country]||"Qatar")+" Deals";}catch(e){}
-  const sp=document.querySelector(".splash-title"); if(sp)sp.textContent=appName();
+  const sp=$("splashTtl"); if(sp)sp.textContent=appName();
+  const se=$("splashEn"); if(se)se.textContent=(EN[country]||"Qatar")+" Deals";
   const ib=$("ibText");
   if(ib&&ib.firstChild&&ib.firstChild.nodeType===3)ib.firstChild.nodeValue="ثبّت تطبيق "+appName();
   const fb=document.querySelector("footer b"); if(fb)fb.textContent=appName();
