@@ -1,4 +1,4 @@
-const CACHE = "qatar-deals-v30";
+const CACHE = "qatar-deals-v36";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -21,6 +21,14 @@ self.addEventListener("message", e => {
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
+
+  // ⚠️ مهم جدًا: أي طلب خارج موقعنا (قاعدة البيانات، الصور على التخزين،
+  // الخطوط) يروح للشبكة مباشرة من غير كاش.
+  // الباج القديم: الـ SW كان بيخزّن رد قاعدة البيانات ويقدّمه كل مرة،
+  // فكل جهاز كان بيشوف لقطة قديمة والتعديلات عمرها ما بتوصل.
+  let sameOrigin = false;
+  try { sameOrigin = new URL(req.url).origin === self.location.origin; } catch (err) {}
+  if (!sameOrigin) return;
 
   const isPage = req.mode === "navigate" ||
     (req.headers.get("accept") || "").includes("text/html");
