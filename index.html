@@ -3609,8 +3609,12 @@ function openEdit(id){
       </div>
       <div class="field"><label>تفاصيل العرض</label><textarea id="e_desc">${o.desc}</textarea></div>
       <div class="field two">
-        <div><label>📷 صورة العرض</label><input id="e_img" type="file" accept="image/*"><div id="e_imgPrev" class="imgprev">${o.imgData?`<img src="${o.imgData}">`:''}</div></div>
-        <div><label>🏪 شعار المتجر</label><input id="e_logo" type="file" accept="image/*"><div id="e_logoPrev" class="imgprev">${o.logoData?`<img src="${o.logoData}">`:''}</div></div>
+        <div><label>📷 صورة العرض</label><input id="e_img" type="file" accept="image/*">
+          <button class="logoup pickbtn" id="e_imgpick" style="width:100%;margin-top:6px">🖼️ من صوري المرفوعة</button>
+          <div id="e_imgPrev" class="imgprev">${o.imgData?`<img src="${o.imgData}">`:''}</div></div>
+        <div><label>🏪 شعار المتجر</label><input id="e_logo" type="file" accept="image/*">
+          <button class="logoup pickbtn" id="e_logopick" style="width:100%;margin-top:6px">🖼️ من صوري المرفوعة</button>
+          <div id="e_logoPrev" class="imgprev">${o.logoData?`<img src="${o.logoData}">`:''}</div></div>
       </div>
       <label style="display:flex;align-items:center;gap:9px;margin:0 18px 14px;font-weight:800;font-size:14px;cursor:pointer"><input type="checkbox" id="e_fd" ${o.fd?"checked":""}> 🚚 توصيل مجاني</label>
       <button class="submit" id="e_save">💾 حفظ التعديلات</button>
@@ -3619,6 +3623,11 @@ function openEdit(id){
   editImg=o.imgData||null;editLogo=o.logoData||null;
   $("e_img").onchange=()=>readImg($("e_img").files[0],async d=>{$("e_imgPrev").innerHTML=`<img src="${d}">`;editImg=await cloudUpload(d,"offer");});
   $("e_logo").onchange=()=>readImg($("e_logo").files[0],async d=>{$("e_logoPrev").innerHTML=`<img src="${d}">`;editLogo=await cloudUpload(d,"logo");});
+  /* اختيار من الصور المرفوعة: بنفضل في نفس شاشة التعديل بعد الاختيار */
+  $("e_imgpick").onclick=()=>pickFromStorage(["offer","banner","hero"],u=>{
+    o.imgData=u;saveData();openEdit(o.id);toast("✅ تم ربط صورة العرض");});
+  $("e_logopick").onclick=()=>pickFromStorage(["logo","brand","plat"],u=>{
+    o.logoData=u;saveData();openEdit(o.id);toast("✅ تم ربط الشعار");});
   $("e_save").onclick=()=>{
     const biz=$("e_biz").value.trim(),pct=parseInt($("e_pct").value),desc=$("e_desc").value.trim();
     if(!biz||!pct||!desc){toast("اكمل الاسم والخصم والتفاصيل");return;}
