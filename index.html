@@ -225,13 +225,18 @@ nav a.on{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transp
   .herotrust span{font-size:11px}
   .heroplats{margin-top:12px}
 }
-.catbar{position:sticky;top:71px;z-index:30;display:flex;gap:9px;overflow-x:auto;padding:18px 0 14px;
-  background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);scrollbar-width:none}
+.catbar{position:sticky;top:71px;z-index:30;display:flex;gap:8px;overflow-x:auto;padding:14px 0 12px;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to left,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);
+          mask-image:linear-gradient(to left,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%)}
 .catbar::-webkit-scrollbar{display:none}
-.chip{flex:none;display:flex;align-items:center;gap:7px;padding:10px 18px;border-radius:50px;font-size:14px;
-  font-weight:800;background:var(--surface);border:1px solid var(--line);white-space:nowrap;cursor:pointer;transition:.15s}
-.chip:hover{border-color:var(--green)}
-.chip.on{background:var(--green);color:#fff;border-color:transparent;box-shadow:0 6px 16px var(--shadow)}
+.chip{flex:none;display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:50px;font-size:13.5px;
+  font-weight:800;background:var(--surface);border:1px solid var(--line);white-space:nowrap;cursor:pointer;
+  transition:transform .16s,box-shadow .16s,background .16s,color .16s;position:relative}
+.chip:hover{border-color:color-mix(in srgb,var(--green) 45%,var(--line));transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;border-color:transparent;
+  box-shadow:0 8px 20px -8px var(--green);transform:translateY(-1px)}
+.chip.on::after{content:"";position:absolute;inset-inline:16px;bottom:-1px;height:2px;border-radius:2px;background:var(--gold-2);opacity:.9}
 .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:8px 0 18px}
 .toolbar h2{font-size:23px;font-weight:900;flex:1;min-width:160px}
 .toolbar h2 span{color:var(--green)}
@@ -431,13 +436,18 @@ footer{padding-bottom:40px}
 [data-theme="dark"] .sign{color:var(--gold-2)}
 .signsub{font-size:12px;color:var(--gray);margin-top:2px}
 /* dropdown filters */
-.filterbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 18px;position:relative;z-index:25}
+/* ===== شريط الفلاتر ===== */
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 16px;position:relative;z-index:25;
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:7px;
+  box-shadow:0 6px 18px -12px var(--shadow)}
 .filt{position:relative}
-.fbtn{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:13px;
-  padding:11px 16px;font-family:inherit;font-weight:800;font-size:14px;color:var(--ink);cursor:pointer;white-space:nowrap;box-shadow:0 4px 12px var(--shadow)}
+.fbtn{display:flex;align-items:center;gap:7px;background:transparent;border:1px solid transparent;border-radius:11px;
+  padding:9px 13px;font-family:inherit;font-weight:800;font-size:13.5px;color:var(--ink);cursor:pointer;white-space:nowrap;
+  transition:background .15s,border-color .15s}
+.fbtn:hover{background:var(--surface-2)}
 .fbtn b{color:var(--green);font-weight:900}
-.fbtn .chev{font-size:11px;color:var(--gray);transition:transform .2s}
-.fbtn.active{border-color:var(--gold);box-shadow:0 6px 18px rgba(201,162,39,.28)}
+.fbtn .chev{font-size:10px;color:var(--gray);transition:transform .2s;margin-inline-start:1px}
+.fbtn.active{background:color-mix(in srgb,var(--green) 10%,transparent);border-color:color-mix(in srgb,var(--green) 30%,transparent);box-shadow:none}
 .fbtn.active .chev{transform:rotate(180deg)}
 .fmenu{position:absolute;top:calc(100% + 8px);inset-inline-start:0;min-width:220px;max-height:300px;overflow-y:auto;
   background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 54px var(--shadow);
@@ -574,6 +584,8 @@ footer{padding-bottom:40px}
   border:1.5px solid rgba(255,255,255,.22);border-top-color:rgba(255,255,255,.75);
   animation:mispin 2.6s linear infinite}
 .splash-ring::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.16)}
+.splash-logo{width:96px;height:96px;object-fit:contain;position:relative;z-index:1;
+  filter:drop-shadow(0 8px 22px rgba(0,0,0,.55))}
 .splash-title{font-family:var(--font-ar),var(--font-en),"Cairo",system-ui,sans-serif;
   font-size:clamp(38px,11vw,52px);font-weight:900;line-height:1.1;letter-spacing:-.5px;
   color:#fff;-webkit-text-fill-color:#fff;background:none;
@@ -595,7 +607,7 @@ footer{padding-bottom:40px}
   font-family:var(--font-ar),"Cairo",system-ui,sans-serif;font-size:21px;font-weight:900;letter-spacing:-.3px;
   color:#fff;-webkit-text-fill-color:#fff;background:none;opacity:.9}
 .splash-sign small{display:block;font-size:10.5px;font-weight:700;letter-spacing:3px;
-  color:rgba(255,255,255,.5);margin-top:5px;text-transform:uppercase}
+  color:rgba(255,255,255,.5);margin-bottom:6px}
 .cmpblock{max-width:780px;margin:0 auto 14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px var(--shadow)}
 .cmpb-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
 .cmpb-head .blogo{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;flex:none}
@@ -899,21 +911,35 @@ footer{padding-bottom:40px}
   background:color-mix(in srgb,#B42318 10%,transparent);border-radius:8px;padding:5px 0;text-align:center;direction:ltr}
 .ucd.done{color:var(--gray);background:var(--surface-2)}
 /* ===== شريط النِّسب الاحترافي ===== */
-.dealstrip.pro{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:11px;overflow:visible;padding:2px}
-.dtile{position:relative;display:flex;align-items:center;gap:11px;background:var(--surface);
-  border:1px solid var(--line);border-radius:17px;padding:12px 14px;cursor:pointer;font-family:inherit;
-  color:var(--ink);text-align:start;transition:.17s;box-shadow:0 6px 18px -10px var(--shadow);overflow:hidden}
-.dtile::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:4px;background:var(--dc);opacity:.85}
-.dtile:hover{transform:translateY(-4px);border-color:var(--dc);box-shadow:0 14px 28px -12px var(--shadow)}
-.dtile.on{border:2px solid var(--dc);background:color-mix(in srgb,var(--dc) 8%,var(--surface))}
-.dtile.empty{opacity:.5}
-.dseal{flex:none;display:grid;place-items:center;width:52px;height:52px}
-.dseal svg{width:52px;height:52px}
-.dtxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
-.dtxt b{font-size:14px;font-weight:900;white-space:nowrap}
-.dtxt small{font-size:11px;color:var(--gray);font-weight:700}
-.dcount{flex:none;min-width:30px;height:30px;padding:0 9px;border-radius:50px;display:grid;place-items:center;
-  background:var(--dc);color:#fff;font-weight:900;font-size:13.5px;box-shadow:0 3px 9px -3px var(--dc)}
+/* ===== بلاطات قوة الخصم ===== */
+.dealstrip.pro{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;overflow:visible;padding:2px}
+.dtile{position:relative;display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1px solid var(--line);border-radius:16px;padding:11px 13px;cursor:pointer;font-family:inherit;
+  color:var(--ink);text-align:start;overflow:hidden;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+  box-shadow:0 4px 14px -10px var(--shadow)}
+/* توهّج خفيف بلون الفئة في الخلفية */
+.dtile::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--dc) 16%,transparent),transparent 62%);
+  opacity:.9}
+.dtile::after{content:"";position:absolute;inset-inline-start:0;top:12%;bottom:12%;width:3px;border-radius:0 3px 3px 0;
+  background:var(--dc)}
+.dtile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--dc) 55%,var(--line));
+  box-shadow:0 16px 30px -16px var(--dc)}
+.dtile.on{border-color:var(--dc);background:color-mix(in srgb,var(--dc) 10%,var(--surface));
+  box-shadow:0 12px 26px -14px var(--dc)}
+.dtile.on::after{inset-block:0;width:4px}
+.dtile.empty{opacity:.45}
+.dseal{flex:none;display:grid;place-items:center;width:44px;height:44px;position:relative;z-index:1}
+.dseal svg{width:44px;height:44px}
+.dtxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
+.dtxt b{font-size:13.5px;font-weight:900;white-space:nowrap;letter-spacing:-.2px}
+.dtxt small{font-size:10.5px;color:var(--gray);font-weight:800;letter-spacing:.2px}
+.dcount{flex:none;min-width:28px;height:26px;padding:0 9px;border-radius:50px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--dc) 14%,transparent);color:var(--dc);border:1px solid color-mix(in srgb,var(--dc) 32%,transparent);
+  font-weight:900;font-size:12.5px;position:relative;z-index:1;box-shadow:none}
+.dtile.on .dcount{background:var(--dc);color:#fff;border-color:transparent}
+[data-theme="dark"] .dcount{color:#fff;background:color-mix(in srgb,var(--dc) 45%,transparent)}
 /* ===== صورة خلفية الهيرو ===== */
 .heropro.withimg{background-size:cover;background-position:center;background-repeat:no-repeat}
 .heroveil{position:absolute;inset:0;pointer-events:none;
@@ -1124,13 +1150,13 @@ footer{padding-bottom:40px}
   <div class="splash-halo"></div>
   <span class="spk s1">✦</span><span class="spk s2">✧</span><span class="spk s3">✦</span><span class="spk s4">✧</span>
   <div class="splash-in">
-    <div class="splash-ring"><div class="qflag" style="width:76px;height:50px"><svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#fff"/><path d="M28 0 L11 0 L9 2 L11 4 L9 6 L11 8 L9 10 L11 12 L9 14 L11 16 L9 18 L28 18 Z" fill="#8A1538"/></svg></div></div>
-    <div class="splash-title" id="splashTtl">عروض قطر</div>
-    <div class="splash-en" id="splashEn">Qatar Deals</div>
+    <div class="splash-ring"><img class="splash-logo" src="./logo.png" alt="عروض"></div>
+    <div class="splash-title" id="splashTtl">عروض</div>
+    <div class="splash-en" id="splashEn">Offers</div>
     <div class="splash-sub">كل عروض التوصيل ومقارنة الأسعار في مكان واحد</div>
     <div class="splash-bar"><span></span></div>
   </div>
-  <div class="splash-sign">بلال الأنصاري<small>تصميم وتطوير</small></div>
+  <div class="splash-sign"><small>تصميم وتطوير</small>بلال الأنصاري</div>
 </div>
 <header>
   <div class="bar">
@@ -2366,8 +2392,7 @@ function applyAppName(){
   const t=$("appTtl"); if(t)t.textContent=appName();
   const EN={qa:"Qatar",ae:"UAE",sa:"Saudi",kw:"Kuwait",bh:"Bahrain",om:"Oman"};
   try{document.title=appName()+" — "+(EN[country]||"Qatar")+" Deals";}catch(e){}
-  const sp=$("splashTtl"); if(sp)sp.textContent=appName();
-  const se=$("splashEn"); if(se)se.textContent=(EN[country]||"Qatar")+" Deals";
+  /* الاسبلاش اسمه ثابت: عروض — Offers (مش بيتغيّر مع الدولة) */
   const ib=$("ibText");
   if(ib&&ib.firstChild&&ib.firstChild.nodeType===3)ib.firstChild.nodeValue="ثبّت تطبيق "+appName();
   const fb=document.querySelector("footer b"); if(fb)fb.textContent=appName();
