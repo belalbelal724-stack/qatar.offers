@@ -691,6 +691,13 @@ footer{padding-bottom:40px}
 .syncstat.half{color:var(--amber);background:color-mix(in srgb,var(--amber) 13%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)}
 .syncstat.off{color:#B42318;background:color-mix(in srgb,#B42318 10%,transparent);border:1px solid color-mix(in srgb,#B42318 25%,transparent)}
 .migprog{text-align:center;font-size:13px;font-weight:800;color:var(--green);min-height:22px;margin-bottom:10px}
+.cloudinfo{margin-top:12px;padding:12px 14px;border-radius:13px;font-size:13px;font-weight:800;line-height:1.9;
+  background:var(--surface-2);border:1px solid var(--line)}
+.cloudinfo small{font-weight:700;color:var(--gray);font-size:11.5px}
+.cloudinfo.good{background:color-mix(in srgb,var(--green) 10%,transparent);border-color:color-mix(in srgb,var(--green) 26%,transparent)}
+.cloudinfo.warn{background:color-mix(in srgb,var(--amber) 12%,transparent);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+.cloudinfo.bad{background:color-mix(in srgb,#B42318 10%,transparent);border-color:color-mix(in srgb,#B42318 26%,transparent);color:#B42318}
+.bigsync{margin-top:12px;background:linear-gradient(135deg,var(--green),var(--green-d));font-size:16px;padding:16px}
 @media(max-width:600px){.cloudbadge{width:30px;height:30px;font-size:13px}}
 /* ===== مقياس مساحة التخزين ===== */
 .stormeter{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
@@ -1451,9 +1458,12 @@ async function cloudLoad(silent){
   try{
     /* قراءة مباشرة بدون كاش — المكتبة بتترك المتصفح يخزّن النتيجة
        فكان ممكن جهاز يشوف نسخة قديمة */
-    const r=await fetch(SB_URL+"/rest/v1/qd_app?id=eq.main&select=data&_="+Date.now(),{
-      headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},cache:"no-store"});
-    if(!r.ok)throw new Error("HTTP "+r.status);
+    /* ملاحظة: ممنوع إضافة أي باراميتر زيادة للرابط (زي _=123) —
+       PostgREST بيفهمه كأنه اسم عمود ويرجّع خطأ 400 */
+    const r=await fetch(SB_URL+"/rest/v1/qd_app?id=eq.main&select=data",{
+      headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Cache-Control":"no-cache"},
+      cache:"no-store"});
+    if(!r.ok){const t=await r.text();throw new Error("HTTP "+r.status+" "+t.slice(0,120));}
     const rows=await r.json();
     const d=rows&&rows[0]&&rows[0].data;
     if(d&&Object.keys(d).length){
@@ -1461,9 +1471,14 @@ async function cloudLoad(silent){
       if(!silent)toast("☁️ تم تحميل أحدث البيانات");
       return true;
     }
-  }catch(e){ if(!silent)toast("⚠️ تعذّر الاتصال بالسحابة — بنعرض نسخة الجهاز"); }
+  }catch(e){
+    cloudLastError=e.message||String(e);
+    setCloudBadge("err");
+    if(!silent)toast("⚠️ تعذّر التحميل: "+cloudLastError.slice(0,70));
+  }
   return false;
 }
+let cloudLastError=null;
 /* ===== ترحيل بيانات الجهاز للسحابة (مرة واحدة) ===== */
 function isDataUrl(v){return typeof v==="string"&&v.indexOf("data:")===0;}
 function countLocalImages(){
@@ -2892,9 +2907,11 @@ function admSettings(){
       </div>
       ${(()=>{const n=countLocalImages();
         return n?`<div class="hint" style="margin-top:12px">📱 لقينا <b>${n} صورة</b> متخزّنة على هذا الجهاز فقط — ارفعها للسحابة عشان تظهر للكل.</div>`:"";})()}
-      <button class="subbtn" id="adm_migrate" style="margin-top:12px;background:linear-gradient(135deg,var(--green),var(--green-d))">📤 ارفع بيانات هذا الجهاز للسحابة</button>
+      <div class="cloudinfo" id="cloudInfo">⏳ بنفحص السحابة…</div>
+      <button class="subbtn bigsync" id="adm_migrate">📤 ارفع بيانات هذا الجهاز للسحابة</button>
       <button class="subbtn" id="adm_pull" style="margin-top:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">⬇️ اجلب آخر نسخة من السحابة</button>
-      <div class="hint">اعمل «ارفع» من الجهاز اللي فيه بياناتك الكاملة. بعد كده أي تعديل بيتزامن لوحده.</div>
+      <div class="hint"><b>ده الزرّ الصح للمزامنة</b> — مش «تصدير نسخة احتياطية» اللي تحت (ده بينزّل ملف على جهازك بس).<br>
+        اعمل «ارفع» من الجهاز اللي فيه بياناتك الكاملة. بعد كده أي تعديل بيتزامن لوحده.</div>
     </div></div>
 
   <div class="admsec"><h2>🚀 نشر نسخة للعملاء</h2>
@@ -3123,6 +3140,24 @@ function bind(){
   const admOut=$("adm_logout");if(admOut)admOut.onclick=async()=>{await cloudSignOut();role="customer";store.set("qd_role","customer");view="home";setCloudBadge("off");render();toast("تم تسجيل الخروج");};
   const admWa=$("adm_wasave");if(admWa)admWa.onclick=()=>{const v=$("adm_wa").value.replace(/[^0-9]/g,"");
     if(v.length<8){toast("اكتب رقم واتساب صحيح");return;}store.set("qd_wa",v);toast("✅ تم حفظ الرقم — حدّث الصفحة لتطبيقه");};
+  const ci=$("cloudInfo");
+  if(ci){(async()=>{
+    if(!cloudOn){ci.className="cloudinfo bad";ci.textContent="⚠️ مفيش اتصال بالسحابة";return;}
+    try{
+      const r=await fetch(SB_URL+"/rest/v1/qd_app?id=eq.main&select=data,updated_at",
+        {headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Cache-Control":"no-cache"},cache:"no-store"});
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      const row=(await r.json())[0]; const d=(row&&row.data)||{};
+      const imgs=(d.offers?d.offers.filter(o=>o.imgData||o.logoData).length:0)
+        +(d.brandlogos?Object.keys(d.brandlogos).length:0)
+        +(d.platlogos?Object.keys(d.platlogos).length:0)+(d.heroimg?1:0);
+      const localImgs=countLocalImages();
+      ci.className="cloudinfo "+(imgs>0?"good":"warn");
+      ci.innerHTML=`<b>على السحابة:</b> ${d.offers?d.offers.length:0} عرض · ${imgs} صورة`
+        +`<br><b>على هذا الجهاز:</b> ${OFFERS.length} عرض · ${localImgs} صورة محلية لسه ما اترفعتش`
+        +`<br><small>آخر تحديث للسحابة: ${row&&row.updated_at?timeAgo(new Date(row.updated_at).getTime()):"—"}</small>`;
+    }catch(e){ci.className="cloudinfo bad";ci.textContent="⚠️ تعذّر فحص السحابة: "+(e.message||"").slice(0,60);}
+  })();}
   const admMig=$("adm_migrate");if(admMig)admMig.onclick=openMigrate;
   const admPull=$("adm_pull");if(admPull)admPull.onclick=async()=>{
     toast("⏳ بنجيب آخر نسخة…");
