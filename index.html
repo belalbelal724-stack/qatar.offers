@@ -1596,6 +1596,84 @@ async function listStorage(){
   return Array.isArray(j)?j.filter(f=>f.name&&f.name.indexOf(".")>-1):[];
 }
 function pubUrl(name){return SB_URL+"/storage/v1/object/public/"+SB_BUCKET+"/"+name;}
+/* ===== دمج بيانات الجهاز مع السحابة =====
+   بياخد أكبر قائمة عروض من الاتنين، وبيملا الصور الناقصة من الطرف التاني.
+   مش بيحذف حاجة من أي ناحية. */
+function offKey(o){return (o&&o.id!=null)?("#"+o.id):((o&&o.biz||"")+"|"+(o&&o.desc||"").slice(0,40));}
+function mergeData(cloud,local){
+  const out=JSON.parse(JSON.stringify(cloud||{}));
+  const li={}; (local.offers||[]).forEach(o=>{li[offKey(o)]=o;});
+  const ci={}; (out.offers||[]).forEach(o=>{ci[offKey(o)]=o;});
+  /* 1) العروض: الأساس أكبر قائمة، وبنضيف اللي ناقص من التانية */
+  let base=(out.offers||[]).slice();
+  (local.offers||[]).forEach(o=>{ if(!ci[offKey(o)]) base.push(o); });
+  /* 2) الصور: لو عرض ناقصه صورة وموجودة عند الطرف التاني، ناخدها */
+  base.forEach(o=>{
+    const other=li[offKey(o)];
+    if(other){
+      if(!o.imgData&&other.imgData)o.imgData=other.imgData;
+      if(!o.logoData&&other.logoData)o.logoData=other.logoData;
+    }
+  });
+  out.offers=base;
+  /* 3) الشعارات: اتحاد الاتنين */
+  out.brandlogos=Object.assign({},local.brandlogos||{},out.brandlogos||{});
+  out.platlogos =Object.assign({},local.platlogos||{}, out.platlogos||{});
+  Object.keys(local.brandlogos||{}).forEach(k=>{if(!out.brandlogos[k])out.brandlogos[k]=local.brandlogos[k];});
+  Object.keys(local.platlogos ||{}).forEach(k=>{if(!out.platlogos[k]) out.platlogos[k] =local.platlogos[k];});
+  /* 4) البانرات: ناخد النسخة اللي فيها صور أكتر */
+  const cb=(out.banners||[]).filter(b=>b.imgData).length, lb=(local.banners||[]).filter(b=>b.imgData).length;
+  if(lb>cb)out.banners=local.banners;
+  if(!out.heroimg&&local.heroimg)out.heroimg=local.heroimg;
+  if(!out.merchants||!out.merchants.length)out.merchants=local.merchants;
+  if(!out.reviews||!Object.keys(out.reviews).length)out.reviews=local.reviews;
+  ["colors","fontAr","fontEn","header","icon","wa","herodim"].forEach(k=>{
+    if(out[k]==null&&local[k]!=null)out[k]=local[k];});
+  return out;
+}
+async function openMerge(){
+  if(!cloudOn){toast("⚠️ مفيش اتصال بالسحابة");return;}
+  if(!cloudUser){toast("🔒 سجّل دخول الأدمن الأول");return;}
+  openModal(`<button class="close" id="close">✕</button>
+    <div style="padding:28px 22px 22px">
+      <div style="font-size:36px;text-align:center">🔀</div>
+      <div style="text-align:center;font-weight:900;font-size:17px;margin:6px 0 12px">دمج الجهاز مع السحابة</div>
+      <div id="mgBody" class="recbody">⏳ بنقارن النسختين…</div>
+    </div>`);
+  $("close").onclick=closeModal;
+  try{
+    const r=await fetch(SB_URL+"/rest/v1/qd_app?id=eq.main&select=data",{
+      headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Cache-Control":"no-cache"},cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const rows=await r.json();
+    const cloud=(rows&&rows[0]&&rows[0].data)||{};
+    const local=cloudPayload();
+    const merged=mergeData(cloud,local);
+    const b=$("mgBody");
+    b.innerHTML=`<div class="recgrid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="reccell"><b>${(cloud.offers||[]).length}</b><span>عروض السحابة</span></div>
+        <div class="reccell"><b>${(local.offers||[]).length}</b><span>عروض الجهاز</span></div>
+        <div class="reccell"><b>${merged.offers.length}</b><span>بعد الدمج</span></div>
+        <div class="reccell"><b>${imgCountOf(cloud)}</b><span>صور السحابة</span></div>
+        <div class="reccell"><b>${imgCountOf(local)}</b><span>صور الجهاز</span></div>
+        <div class="reccell"><b>${imgCountOf(merged)}</b><span>بعد الدمج</span></div>
+      </div>
+      <div class="hint">الدمج <b>مش بيحذف</b> أي عرض أو صورة من الطرفين — بياخد الاتنين مع بعض.</div>
+      <button class="subbtn" id="mg_go" style="width:100%">🔀 نفّذ الدمج واحفظ للكل</button>`;
+    $("mg_go").onclick=async()=>{
+      $("mg_go").disabled=true;$("mg_go").textContent="جاري الدمج…";
+      applyCloud(merged,true);
+      const ok=await cloudSave();
+      closeModal();render();
+      toast(ok?`✅ تم الدمج — ${merged.offers.length} عرض · ${imgCountOf(merged)} صورة لكل الأجهزة`
+              :"⚠️ الدمج اتعمل محليًا بس — الحفظ على السحابة فشل");
+    };
+  }catch(e){
+    const b=$("mgBody");
+    if(b)b.innerHTML=`<div class="cloudinfo bad">⚠️ تعذّر المقارنة: ${(e.message||"").slice(0,80)}</div>`;
+  }
+}
+
 /* منتقي من الصور المرفوعة: بيفتح شبكة صور وبيرجّع الرابط اللي اختاره */
 let _stCache=null;
 async function pickFromStorage(prefixes,cb){
@@ -3034,7 +3112,8 @@ function admSettings(){
         اضغط «📤 ارفع بيانات هذا الجهاز» عشان ترفع نسخة الجهاز دي للسحابة.
       </div>`:""}
       <div class="cloudinfo" id="cloudInfo">⏳ بنفحص السحابة…</div>
-      <button class="subbtn bigsync" id="adm_migrate">📤 ارفع بيانات هذا الجهاز للسحابة</button>
+      <button class="subbtn bigsync" id="adm_merge" style="background:linear-gradient(135deg,#6D4AFF,#4A2FD0)">🔀 دمج الجهاز مع السحابة (الأأمن)</button>
+      <button class="subbtn bigsync" id="adm_migrate" style="margin-top:10px">📤 ارفع بيانات هذا الجهاز للسحابة</button>
       <button class="subbtn" id="adm_recover" style="margin-top:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">🖼️ استعادة الصور المرفوعة على حسابك</button>
       <button class="subbtn" id="adm_pull" style="margin-top:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">⬇️ اجلب آخر نسخة من السحابة</button>
       <div class="hint"><b>ده الزرّ الصح للمزامنة</b> — مش «تصدير نسخة احتياطية» اللي تحت (ده بينزّل ملف على جهازك بس).<br>
@@ -3290,6 +3369,7 @@ function bind(){
         +`<br><small>آخر تحديث للسحابة: ${row&&row.updated_at?timeAgo(new Date(row.updated_at).getTime()):"—"}</small>`;
     }catch(e){ci.className="cloudinfo bad";ci.textContent="⚠️ تعذّر فحص السحابة: "+(e.message||"").slice(0,60);}
   })();}
+  const admMrg=$("adm_merge");if(admMrg)admMrg.onclick=openMerge;
   const admMig=$("adm_migrate");if(admMig)admMig.onclick=openMigrate;
   const admRec=$("adm_recover");if(admRec)admRec.onclick=openRecover;
   const admPull=$("adm_pull");if(admPull)admPull.onclick=async()=>{
