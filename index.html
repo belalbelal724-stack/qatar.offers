@@ -34,8 +34,10 @@
     var c=JSON.parse(localStorage.getItem("qd_colors")||"null");
     if(c&&c.primary){r.style.setProperty("--green",c.primary);r.style.setProperty("--maroon",c.primary);}
     if(c&&c.gold)r.style.setProperty("--gold",c.gold);
+    /* المود بيتبع نظام الجهاز ما لم يختار المستخدم يدويًا */
     var th=JSON.parse(localStorage.getItem("qd_theme")||"null");
-    if(th==="dark")r.dataset.theme="dark";
+    var sysDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+    r.dataset.theme=(th==="dark"||th==="light")?th:(sysDark?"dark":"light");
     var hd=JSON.parse(localStorage.getItem("qd_header")||"null");
     if(hd)r.dataset.header=hd;
   }catch(e){}
@@ -413,11 +415,11 @@ footer b{color:var(--green)}
 .typebar .chip.on{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#3a2c00;border-color:transparent;box-shadow:0 6px 16px rgba(201,162,39,.35)}
 /* glowing animated signature */
 footer{padding-bottom:40px}
-.sign{font-family:"Aref Ruqaa",serif;font-size:34px;font-weight:700;margin-top:10px;display:inline-block;line-height:1.5;
-  background:linear-gradient(95deg,var(--gold) 0%,var(--gold-2) 35%,#fff7da 50%,var(--gold-2) 65%,var(--gold) 100%);
-  background-size:230% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  animation:sheen 6s linear infinite, signfloat 3.6s ease-in-out infinite}
-@keyframes signfloat{0%,100%{transform:translateY(0);filter:drop-shadow(0 0 6px rgba(201,162,39,.55))}50%{transform:translateY(-4px);filter:drop-shadow(0 0 18px rgba(232,199,102,.95))}}
+.sign{font-family:var(--font-ar);font-size:32px;font-weight:900;margin-top:10px;display:inline-block;line-height:1.5;
+  color:var(--green);-webkit-text-fill-color:currentColor;background:none;letter-spacing:-.5px;
+  animation:signfloat 3.6s ease-in-out infinite}
+@keyframes signfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+[data-theme="dark"] .sign{color:var(--gold-2)}
 .signsub{font-size:12px;color:var(--gray);margin-top:2px}
 /* dropdown filters */
 .filterbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 18px;position:relative;z-index:25}
@@ -1102,7 +1104,7 @@ footer{padding-bottom:40px}
 </div>
 <header>
   <div class="bar">
-    <div class="logo"><span class="dot">ع</span><span class="ttl">عروض قطر</span></div>
+    <div class="logo"><span class="dot">ع</span><span class="ttl" id="appTtl">عروض قطر</span></div>
     <button class="cbtn" id="countryBtn" title="اختر الدولة"><span id="cbFlag"></span><span class="cbn" id="cbName">قطر</span><span class="cbchev">▾</span></button>
     <nav id="nav">
       <a data-view="home" class="on">الرئيسية</a>
@@ -1304,7 +1306,7 @@ let nextBanner=20;
   nextBanner=Math.max(nextBanner,BANNERS.reduce((m,b)=>Math.max(m,b.id||0),19)+1);
 })();
 
-const store={get:(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const store={get:(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
 let view="home", cat="all", q="", sort="discount", offerType="all";
 const TYPES=[["all","كل العروض","🏷️"],["d50","خصم 50%","🔥"],["d40","خصم 40%","💥"],["d30","خصم 30%","✅"],["d20","خصم 20%","🟢"],["free","توصيل مجاني","🚚"],["freedeal","عرض + توصيل مجاني","🎁"]];
 let platSel="all", openMenu=null;
@@ -2327,9 +2329,21 @@ function flagHtml(code,cls){return `<span class="flagbox ${cls||""}">${FLAGSVG[c
 let country=store.get("qd_country","qa");
 function CO(){return COUNTRIES[country]||COUNTRIES.qa;}
 function CUR(){return CO().cur;}
+/* اسم التطبيق بيتغيّر مع الدولة: عروض قطر · عروض الإمارات … */
+function appName(){return "عروض "+((COUNTRIES[country]&&COUNTRIES[country].n)||"قطر");}
+function applyAppName(){
+  const t=$("appTtl"); if(t)t.textContent=appName();
+  const EN={qa:"Qatar",ae:"UAE",sa:"Saudi",kw:"Kuwait",bh:"Bahrain",om:"Oman"};
+  try{document.title=appName()+" — "+(EN[country]||"Qatar")+" Deals";}catch(e){}
+  const sp=document.querySelector(".splash-title"); if(sp)sp.textContent=appName();
+  const ib=$("ibText");
+  if(ib&&ib.firstChild&&ib.firstChild.nodeType===3)ib.firstChild.nodeValue="ثبّت تطبيق "+appName();
+  const fb=document.querySelector("footer b"); if(fb)fb.textContent=appName();
+}
 function setCountry(c){
   if(!COUNTRIES[c])return;
   country=c;store.set("qd_country",c);
+  applyAppName();
   areaSel="كل المناطق";store.set("qd_area",areaSel);
   platSel="all";
   view="home";render();window.scrollTo({top:0,behavior:"smooth"});
@@ -3805,10 +3819,31 @@ function syncCountryBtn(){const f=$("cbFlag"),n=$("cbName");
 $("nav").addEventListener("click",e=>{const a=e.target.closest("[data-view]");if(a){view=a.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
 $("botnav").addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(b){view=b.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
 $("hsearch").oninput=e=>{q=e.target.value.trim();if(view!=="home")view="home";render();};
-function toggleTheme(){const d=document.documentElement.dataset.theme==="dark";document.documentElement.dataset.theme=d?"light":"dark";$("themeBtn").textContent=d?"🌙":"☀️";document.querySelector("meta[name=theme-color]").setAttribute("content",d?"#14060B":"#8A1538");store.set("qd_theme",d?"light":"dark");}
+/* 🌙 ثلاث حالات: تلقائي (زي نظام الجهاز) ← فاتح ← داكن ← تلقائي */
+function sysDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;}
+function paintTheme(){
+  const pref=store.get("qd_theme",null);
+  const dark=(pref==="dark")||(pref!=="light"&&sysDark());
+  document.documentElement.dataset.theme=dark?"dark":"light";
+  const b=$("themeBtn");
+  if(b){b.textContent=pref?(dark?"☀️":"🌙"):"🌓";
+        b.title=pref?(dark?"داكن (يدوي)":"فاتح (يدوي)"):"تلقائي — زيّ نظام جهازك";}
+  const m=document.querySelector("meta[name=theme-color]");
+  if(m)m.setAttribute("content",dark?"#14060B":"#8A1538");
+}
+function toggleTheme(){
+  const pref=store.get("qd_theme",null);
+  const next=pref===null?"light":(pref==="light"?"dark":null);
+  if(next===null)store.del("qd_theme"); else store.set("qd_theme",next);
+  paintTheme();
+  toast(next===null?"🌓 المود بقى تلقائي — زيّ نظام جهازك":(next==="dark"?"🌙 مود داكن":"☀️ مود فاتح"));
+}
+/* لو غيّرت نظام جهازك وإحنا على تلقائي، التطبيق يتغيّر معاه */
+try{window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
+  if(store.get("qd_theme",null)===null)paintTheme();});}catch(e){}
 $("themeBtn").onclick=toggleTheme;
 document.documentElement.dataset.theme=store.get("qd_theme","light");
-$("themeBtn").textContent=document.documentElement.dataset.theme==="dark"?"☀️":"🌙";
+paintTheme();applyAppName();
 
 /* PWA install — يظهر العرض فور فتح اللينك */
 const isStandalone=()=>window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
