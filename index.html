@@ -34,7 +34,7 @@
     var c=JSON.parse(localStorage.getItem("qd_colors")||"null");
     if(c&&c.primary){r.style.setProperty("--green",c.primary);r.style.setProperty("--maroon",c.primary);}
     if(c&&c.gold)r.style.setProperty("--gold",c.gold);
-    /* المود بيتبع نظام الجهاز ما لم يختار المستخدم يدويًا */
+    /* أول مرة بنبدأ زي نظام الجهاز، وبعد كده اختيار المستخدم هو اللي بيحكم */
     var th=JSON.parse(localStorage.getItem("qd_theme")||"null");
     var sysDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
     r.dataset.theme=(th==="dark"||th==="light")?th:(sysDark?"dark":"light");
@@ -76,7 +76,7 @@
 :root[data-header="gradient"] .hsearch input{color:#fff}
 :root[data-header="gradient"] .hsearch input::placeholder{color:rgba(255,255,255,.75)}
 :root[data-header="dark"] header{background:#15100C;border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
-:root[data-header="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 52%,#fff)}
+:root[data-header="dark"] .logo .ttl{color:#fff}
 :root[data-header="dark"] nav a,:root[data-header="dark"] .hbtn{color:#EEE3D5}
 :root[data-header="dark"] nav a.on{background:var(--gold);color:#3a2c00}
 :root[data-header="dark"] nav a:hover{background:rgba(255,255,255,.08)}
@@ -104,9 +104,9 @@ nav a.on::after{content:"";position:absolute;bottom:2px;left:50%;transform:trans
 .logo .ttl{font-weight:900;font-size:1.05em;letter-spacing:-.5px;color:var(--green);
   -webkit-text-fill-color:currentColor;background:none;animation:none;
   text-shadow:0 1px 0 rgba(255,255,255,.4)}
-[data-theme="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 48%,#fff);text-shadow:none}
+[data-theme="dark"] .logo .ttl{color:#fff;text-shadow:none}
 :root[data-header="solid"] .logo .ttl,:root[data-header="gradient"] .logo .ttl{color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)}
-:root[data-header="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 52%,#fff)}
+:root[data-header="dark"] .logo .ttl{color:#fff}
 /* ===== زرّ الدولة ===== */
 .cbtn{display:flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);
   border-radius:50px;padding:6px 12px 6px 8px;cursor:pointer;font-family:inherit;font-weight:900;
@@ -173,7 +173,7 @@ nav a.on{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transp
 .hstat .n{font-size:25px;font-weight:900}
 .hstat .l{font-size:12.5px;opacity:.9}
 /* ===== هيرو احترافي ===== */
-.heropro{padding:clamp(30px,4.4vw,58px) clamp(22px,4vw,56px);
+.heropro{padding:clamp(22px,3.2vw,40px) clamp(18px,3vw,40px);
   background:linear-gradient(118deg,var(--green-d) 0%,var(--green) 46%,color-mix(in srgb,var(--gold) 72%,var(--green)) 100%)}
 .heroglow{position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse 70% 90% at 88% 8%,rgba(255,255,255,.26),transparent 62%),
@@ -195,14 +195,18 @@ nav a.on{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transp
 .herohl{background:linear-gradient(95deg,var(--gold-2),#fff7da 46%,var(--gold-2));
   background-size:200% auto;-webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;animation:sheen 4.5s linear infinite}
-.heropro p{opacity:.95;line-height:1.75;max-width:600px}
-.heroplats{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:20px;position:relative;z-index:2}
+.heropro p{opacity:.95;line-height:1.65;max-width:560px;font-size:clamp(13.5px,1.6vw,16px)}
+/* شريط المنصات: صف واحد منسّق، وبيتزحلق لو ضاقت الشاشة */
+.heroplats{display:flex;align-items:center;gap:7px;margin-top:16px;position:relative;z-index:2;
+  flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.heroplats::-webkit-scrollbar{display:none}
+.heroplats .plattag{flex:none}
 .hplabel{color:rgba(255,255,255,.82);font-weight:800;font-size:12.5px;margin-inline-end:2px}
-.heropro .herostats{gap:11px;margin-top:24px}
-.heropro .hstat{flex:1;min-width:112px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
-  border-radius:18px;padding:15px 16px;backdrop-filter:blur(10px);transition:transform .18s,background .18s}
+.heropro .herostats{gap:9px;margin-top:18px}
+.heropro .hstat{flex:1;min-width:98px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
+  border-radius:16px;padding:11px 13px;backdrop-filter:blur(10px);transition:transform .18s,background .18s}
 .heropro .hstat:hover{transform:translateY(-4px);background:rgba(255,255,255,.2)}
-.heropro .hstat .n{font-size:30px;font-weight:900;line-height:1;letter-spacing:-.5px}
+.heropro .hstat .n{font-size:25px;font-weight:900;line-height:1;letter-spacing:-.5px}
 .heropro .hstat .n small{font-size:16px;font-weight:800;opacity:.85}
 .heropro .hstat .l{font-size:11.5px;opacity:.88;margin-top:5px;font-weight:700}
 .herotrust{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px;position:relative;z-index:2;
@@ -219,7 +223,7 @@ nav a.on{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transp
   .heropro .herostats .hstat{flex:1 1 calc(50% - 4px)}
   .herotrust{gap:8px;margin-top:16px;padding-top:14px}
   .herotrust span{font-size:11px}
-  .heroplats{margin-top:14px}
+  .heroplats{margin-top:12px}
 }
 .catbar{position:sticky;top:71px;z-index:30;display:flex;gap:9px;overflow-x:auto;padding:18px 0 14px;
   background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);scrollbar-width:none}
@@ -390,7 +394,7 @@ footer b{color:var(--green)}
 /* عنوان الهيدر — بارز وعالي التباين */
 .logo .ttl{color:var(--green);-webkit-text-fill-color:currentColor;background:none;animation:none;
   font-weight:900;letter-spacing:-.6px;text-shadow:0 1px 0 rgba(255,255,255,.45)}
-[data-theme="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 48%,#fff);text-shadow:none}
+[data-theme="dark"] .logo .ttl{color:#fff;text-shadow:none}
 :root[data-header="solid"] .logo .ttl,:root[data-header="gradient"] .logo .ttl{color:#fff;text-shadow:0 2px 9px rgba(0,0,0,.35)}
 :root[data-header="dark"] .logo .ttl{color:color-mix(in srgb,var(--green) 52%,#fff);text-shadow:none}
 .logo .dot{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;
@@ -1070,8 +1074,11 @@ footer{padding-bottom:40px}
   #installBtn{order:12}
   /* ---- المحتوى ---- */
   .page{padding:0 14px 100px}
-  .hero{margin-top:16px;padding:20px 17px;border-radius:22px}
-  .hero h1{font-size:21px;line-height:1.45}.hero p{font-size:12.5px}
+  .hero{margin-top:14px;padding:16px 14px;border-radius:20px}
+  .hero h1{font-size:19px;line-height:1.4}.hero p{font-size:12px;line-height:1.6}
+  .heroplats{gap:6px;margin-top:12px}
+  .heroplats .plattag{font-size:11px;padding:5px 9px}
+  .heroplats .plattag img{width:15px;height:15px}
   .herodeco{display:none}
   .herostats{gap:8px;margin-top:18px;flex-wrap:nowrap}
   .hstat{flex:1 1 0;min-width:0;padding:11px 7px}
@@ -3844,28 +3851,24 @@ function syncCountryBtn(){const f=$("cbFlag"),n=$("cbName");
 $("nav").addEventListener("click",e=>{const a=e.target.closest("[data-view]");if(a){view=a.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
 $("botnav").addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(b){view=b.dataset.view;render();window.scrollTo({top:0,behavior:"smooth"});}});
 $("hsearch").oninput=e=>{q=e.target.value.trim();if(view!=="home")view="home";render();};
-/* 🌙 ثلاث حالات: تلقائي (زي نظام الجهاز) ← فاتح ← داكن ← تلقائي */
+/* 🌙 حالتين بس: فاتح ← داكن */
 function sysDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;}
 function paintTheme(){
-  const pref=store.get("qd_theme",null);
-  const dark=(pref==="dark")||(pref!=="light"&&sysDark());
+  let pref=store.get("qd_theme",null);
+  if(pref!=="dark"&&pref!=="light")pref=sysDark()?"dark":"light";   /* أول مرة بس */
+  const dark=pref==="dark";
   document.documentElement.dataset.theme=dark?"dark":"light";
   const b=$("themeBtn");
-  if(b){b.textContent=pref?(dark?"☀️":"🌙"):"🌓";
-        b.title=pref?(dark?"داكن (يدوي)":"فاتح (يدوي)"):"تلقائي — زيّ نظام جهازك";}
+  if(b){b.textContent=dark?"☀️":"🌙"; b.title=dark?"مود داكن — اضغط للفاتح":"مود فاتح — اضغط للداكن";}
   const m=document.querySelector("meta[name=theme-color]");
-  if(m)m.setAttribute("content",dark?"#14060B":"#8A1538");
+  if(m)m.setAttribute("content",dark?"#140A0E":"#8A1538");
 }
 function toggleTheme(){
-  const pref=store.get("qd_theme",null);
-  const next=pref===null?"light":(pref==="light"?"dark":null);
-  if(next===null)store.del("qd_theme"); else store.set("qd_theme",next);
+  const dark=document.documentElement.dataset.theme==="dark";
+  store.set("qd_theme",dark?"light":"dark");
   paintTheme();
-  toast(next===null?"🌓 المود بقى تلقائي — زيّ نظام جهازك":(next==="dark"?"🌙 مود داكن":"☀️ مود فاتح"));
+  toast(dark?"☀️ مود فاتح":"🌙 مود داكن");
 }
-/* لو غيّرت نظام جهازك وإحنا على تلقائي، التطبيق يتغيّر معاه */
-try{window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
-  if(store.get("qd_theme",null)===null)paintTheme();});}catch(e){}
 $("themeBtn").onclick=toggleTheme;
 document.documentElement.dataset.theme=store.get("qd_theme","light");
 paintTheme();applyAppName();
