@@ -693,6 +693,14 @@ footer{padding-bottom:40px}
 .migprog{text-align:center;font-size:13px;font-weight:800;color:var(--green);min-height:22px;margin-bottom:10px}
 .cloudinfo{margin-top:12px;padding:12px 14px;border-radius:13px;font-size:13px;font-weight:800;line-height:1.9;
   background:var(--surface-2);border:1px solid var(--line)}
+.recbody{font-size:13.5px;font-weight:800;line-height:1.9;color:var(--ink)}
+.rectotal{text-align:center;margin-bottom:12px}
+.recgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.reccell{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center}
+.reccell b{display:block;font-size:19px;color:var(--green)}
+.reccell span{font-size:11px;font-weight:700;color:var(--gray)}
+.recstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:14px;max-height:200px;overflow:auto}
+.recstrip img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px;background:var(--surface-2);border:1px solid var(--line)}
 .cloudinfo small{font-weight:700;color:var(--gray);font-size:11.5px}
 .cloudinfo.good{background:color-mix(in srgb,var(--green) 10%,transparent);border-color:color-mix(in srgb,var(--green) 26%,transparent)}
 .cloudinfo.warn{background:color-mix(in srgb,var(--amber) 12%,transparent);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
@@ -1430,8 +1438,32 @@ function cloudPayload(){
     stamp:Date.now()
   };
 }
-function applyCloud(d){
+/* عدد الصور في أي نسخة بيانات */
+function imgCountOf(d){
+  if(!d)return 0;
+  let n=0;
+  (d.offers||[]).forEach(o=>{if(o.imgData)n++;if(o.logoData)n++;});
+  (d.banners||[]).forEach(b=>{if(b.imgData)n++;});
+  n+=Object.keys(d.brandlogos||{}).length;
+  n+=Object.keys(d.platlogos||{}).length;
+  if(d.heroimg)n++;
+  return n;
+}
+function localImgTotal(){return imgCountOf(cloudPayload());}
+
+function applyCloud(d,force){
   if(!d||typeof d!=="object")return false;
+  /* حماية: ما نستبدلش نسخة فيها صور بنسخة أفقر منها.
+     ده الباج اللي ضيّع الصور قبل كده. */
+  if(!force){
+    const cloudImgs=imgCountOf(d), myImgs=localImgTotal();
+    if(myImgs>0&&cloudImgs<myImgs){
+      cloudConflict={cloudImgs:cloudImgs,myImgs:myImgs};
+      setCloudBadge("err");
+      return false;
+    }
+  }
+  cloudConflict=null;
   if(Array.isArray(d.offers)&&d.offers.length){OFFERS.length=0;d.offers.forEach(o=>OFFERS.push(o));}
   if(Array.isArray(d.banners))BANNERS=d.banners;
   if(Array.isArray(d.merchants))MERCHANTS=d.merchants;
@@ -1453,7 +1485,7 @@ function applyCloud(d){
       store.set("qd_platlogos",PLATLOGOS);store.set("qd_brandlogos",BRANDLOGOS);}catch(e){}
   return true;
 }
-async function cloudLoad(silent){
+async function cloudLoad(silent,force){
   if(!cloudOn)return false;
   try{
     /* قراءة مباشرة بدون كاش — المكتبة بتترك المتصفح يخزّن النتيجة
@@ -1467,7 +1499,7 @@ async function cloudLoad(silent){
     const rows=await r.json();
     const d=rows&&rows[0]&&rows[0].data;
     if(d&&Object.keys(d).length){
-      applyCloud(d);
+      applyCloud(d,force);
       if(!silent)toast("☁️ تم تحميل أحدث البيانات");
       return true;
     }
@@ -1479,6 +1511,7 @@ async function cloudLoad(silent){
   return false;
 }
 let cloudLastError=null;
+let cloudConflict=null;   // { cloudImgs, myImgs } لما السحابة أفقر من الجهاز
 /* ===== ترحيل بيانات الجهاز للسحابة (مرة واحدة) ===== */
 function isDataUrl(v){return typeof v==="string"&&v.indexOf("data:")===0;}
 function countLocalImages(){
@@ -1546,6 +1579,60 @@ function openMigrate(){
     </div>`);
   $("close").onclick=closeModal;
   $("mig_go").onclick=()=>{const b=$("mig_go");b.disabled=true;b.textContent="جاري الرفع…";migrateToCloud();};
+}
+
+/* ===== استعادة الصور المرفوعة على التخزين =====
+   بيقرا ملفات bucket ويرجّع اللي اتصنّف (banner / brand / plat / hero)
+   للأماكن الصح، حتى لو روابطها اتمسحت من قاعدة البيانات. */
+async function listStorage(){
+  const r=await fetch(SB_URL+"/storage/v1/object/list/"+SB_BUCKET,{
+    method:"POST",
+    headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json"},
+    body:JSON.stringify({prefix:"",limit:500,offset:0,sortBy:{column:"created_at",order:"asc"}})
+  });
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  const j=await r.json();
+  return Array.isArray(j)?j.filter(f=>f.name&&f.name.indexOf(".")>-1):[];
+}
+function pubUrl(name){return SB_URL+"/storage/v1/object/public/"+SB_BUCKET+"/"+name;}
+async function openRecover(){
+  clearInterval(cdTimer);
+  openModal(`<button class="close" id="close">✕</button>
+    <div style="padding:30px 24px 24px">
+      <div style="font-size:38px;text-align:center">🖼️</div>
+      <div style="text-align:center;font-weight:900;font-size:18px;margin:8px 0 14px">استعادة الصور من التخزين</div>
+      <div id="recBody" class="recbody">⏳ بنقرا الصور المرفوعة…</div>
+    </div>`);
+  $("close").onclick=closeModal;
+  try{
+    const files=await listStorage();
+    const g={banner:[],brand:[],plat:[],hero:[],offer:[],logo:[]};
+    files.forEach(f=>{const k=f.name.split("-")[0];if(g[k])g[k].push(f.name);});
+    const body=$("recBody");
+    body.innerHTML=`
+      <div class="rectotal">لقينا <b>${files.length}</b> صورة مرفوعة على حسابك</div>
+      <div class="recgrid">
+        ${Object.entries(g).filter(([k,v])=>v.length).map(([k,v])=>{
+          const nm={banner:"بانرات",brand:"شعارات براندات",plat:"شعارات منصات",hero:"صورة الترحيب",offer:"صور عروض",logo:"شعارات متاجر"}[k];
+          return `<div class="reccell"><b>${v.length}</b><span>${nm}</span></div>`;}).join("")}
+      </div>
+      <div class="hint">هنرجّع <b>البانرات وصورة الترحيب</b> تلقائيًا (ترتيبها معروف).<br>
+        صور العروض والشعارات محتاجة تعرف كل صورة بتخص مين — فهتلاقيها كلها معروضة تحت وتختار بنفسك من لوحة الشعارات.</div>
+      <button class="subbtn" id="rec_go" style="width:100%">↩️ رجّع البانرات وصورة الترحيب</button>
+      <div class="recstrip">${files.slice(0,40).map(n=>`<img src="${pubUrl(n)}" loading="lazy" alt="">`).join("")}</div>`;
+    $("rec_go").onclick=async()=>{
+      let n=0;
+      g.banner.forEach((name,i)=>{ if(BANNERS[i]){BANNERS[i].imgData=pubUrl(name);n++;} });
+      if(g.hero.length){HEROIMG=pubUrl(g.hero[g.hero.length-1]);n++;}
+      saveData();saveHero();
+      const ok=await cloudSave();
+      closeModal();render();
+      toast(ok?`✅ رجّعنا ${n} صورة وحفظناها للكل`:`رجّعنا ${n} صورة محليًا — سجّل دخول عشان تحفظ`);
+    };
+  }catch(e){
+    const body=$("recBody");
+    if(body)body.innerHTML=`<div class="cloudinfo bad">⚠️ تعذّر قراءة التخزين: ${(e.message||"").slice(0,80)}</div>`;
+  }
 }
 
 /* زرّ تحديث يدوي للعميل */
@@ -2907,8 +2994,14 @@ function admSettings(){
       </div>
       ${(()=>{const n=countLocalImages();
         return n?`<div class="hint" style="margin-top:12px">📱 لقينا <b>${n} صورة</b> متخزّنة على هذا الجهاز فقط — ارفعها للسحابة عشان تظهر للكل.</div>`:"";})()}
+      ${cloudConflict?`<div class="cloudinfo bad" style="margin-top:12px">
+        🛑 <b>وقفنا التحميل من السحابة عشان نحمي صورك.</b><br>
+        السحابة فيها <b>${cloudConflict.cloudImgs}</b> صورة، والجهاز ده فيه <b>${cloudConflict.myImgs}</b>.<br>
+        اضغط «📤 ارفع بيانات هذا الجهاز» عشان ترفع نسخة الجهاز دي للسحابة.
+      </div>`:""}
       <div class="cloudinfo" id="cloudInfo">⏳ بنفحص السحابة…</div>
       <button class="subbtn bigsync" id="adm_migrate">📤 ارفع بيانات هذا الجهاز للسحابة</button>
+      <button class="subbtn" id="adm_recover" style="margin-top:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">🖼️ استعادة الصور المرفوعة على حسابك</button>
       <button class="subbtn" id="adm_pull" style="margin-top:10px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">⬇️ اجلب آخر نسخة من السحابة</button>
       <div class="hint"><b>ده الزرّ الصح للمزامنة</b> — مش «تصدير نسخة احتياطية» اللي تحت (ده بينزّل ملف على جهازك بس).<br>
         اعمل «ارفع» من الجهاز اللي فيه بياناتك الكاملة. بعد كده أي تعديل بيتزامن لوحده.</div>
@@ -3159,9 +3252,10 @@ function bind(){
     }catch(e){ci.className="cloudinfo bad";ci.textContent="⚠️ تعذّر فحص السحابة: "+(e.message||"").slice(0,60);}
   })();}
   const admMig=$("adm_migrate");if(admMig)admMig.onclick=openMigrate;
+  const admRec=$("adm_recover");if(admRec)admRec.onclick=openRecover;
   const admPull=$("adm_pull");if(admPull)admPull.onclick=async()=>{
     toast("⏳ بنجيب آخر نسخة…");
-    const ok=await cloudLoad(true);
+    const ok=await cloudLoad(true,true);
     render();toast(ok?"✅ اتحدّث لآخر نسخة من السحابة":"مفيش بيانات على السحابة");};
   const admDep=$("adm_deploy");if(admDep)admDep.onclick=exportDeployable;
   const admExp=$("adm_export");if(admExp)admExp.onclick=()=>{
